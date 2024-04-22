@@ -1,0 +1,269 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>LibroOrario</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href={% static "assets/img/favicon.png" %} rel="icon">
+  <link href={% static "assets/img/apple-touch-icon.png" %}    rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href={% static "assets/vendor/bootstrap/css/bootstrap.min.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/bootstrap-icons/bootstrap-icons.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/boxicons/css/boxicons.min.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/quill/quill.snow.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/quill/quill.bubble.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/remixicon/remixicon.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/simple-datatables/style.css" %} rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href={% static "assets/css/style.css" %} rel="stylesheet">
+
+  <style>
+    /* Adicione estas regras de estilo ao seu arquivo CSS personalizado */
+    .max-height-card {
+        max-height: 400px; /* Defina a altura máxima desejada para os cards */
+        overflow-y: auto; /* Adicione rolagem vertical quando o conteúdo exceder a altura máxima */
+    }
+
+    .card {
+        margin-bottom: 20px; /* Adiciona espaço entre os cards */
+    }
+
+    .card-body {
+        padding: 15px; /* Adiciona preenchimento interno ao corpo do card */
+    }
+
+    .card-title {
+        margin-bottom: 10px; /* Adiciona espaço abaixo do título do card */
+    }
+
+    .btn-group {
+        margin-top: 10px; /* Adiciona espaço entre os botões e o conteúdo do card */
+    }
+
+    .collapse {
+        margin-top: 10px; /* Adiciona espaço entre as seções colapsadas */
+    }
+
+    /* Estilo para diminuir o tamanho dos botões */
+    .btn-outline-primary.btn-sm {
+        font-size: 0.8rem; /* Tamanho da fonte menor */
+        padding: 0.25rem 0.5rem; /* Espaçamento interno menor */
+    }
+</style>
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="{% url 'encarregado' %}" class="logo d-flex align-items-center">
+        <img src={% static "assets/img/logo.png" %} alt="">
+        <span class="d-none d-lg-block">LibroOrario</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+        
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}" data-toggle="modal" data-target="#logoutModal">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sair</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Olá Novamente Sr. {{user.first_name}}</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="">O Seu Educando</a></li>
+          <li class="breadcrumb-item active">Aqui</li>
+        </ol>
+        <button class="btn btn-primary mt-3" onclick="history.back()">Voltar</button>
+      </nav>
+    </div><!-- End Page Title -->
+   
+      <section class="section">
+        <div class="container">
+            <h2>Educandos Associados:</h2>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for aluno in alunos_associados %}
+                <div class="col">
+                    <div class="card h-100 max-height-card">
+                        <div class="pagetitle">
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item active">Rode para baixo</li>
+                                </ol>
+                            </nav>
+                            <img src="{{ aluno.aluno.foto.url }}" class="card-img-top" alt="Foto do Aluno">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ aluno.aluno.nome }}</h5>
+                            <p class="card-text">Idade: {{ aluno.aluno.idade }}</p>
+                            <p class="card-text">Sexo: {{ aluno.aluno.sexo }}</p>
+                            <p class="card-text">Classe: {{ aluno.aluno.Classe }}</p>
+                            <p class="card-text">Turma: {{ aluno.aluno.turma }}</p>
+                            <div class="btn-group d-flex justify-content-center">
+                                <button class="btn btn-outline-primary btn-sm mr-2" type="button" data-toggle="collapse" data-target="#detalhesAluno{{ aluno.id }}" aria-expanded="false" aria-controls="detalhesAluno{{ aluno.id }}">Informações Acadêmicas</button>
+                                <button class="btn btn-outline-primary btn-sm mr-2" type="button" data-toggle="collapse" data-target="#comportamento{{ aluno.id }}" aria-expanded="false" aria-controls="comportamento{{ aluno.id }}">Comportamento e Disciplina</button>
+                                <button class="btn btn-outline-primary btn-sm" type="button" data-toggle="collapse" data-target="#atividades{{ aluno.id }}" aria-expanded="false" aria-controls="atividades{{ aluno.id }}">Atividades Extracurriculares</button>
+                            </div>
+                        </div>
+                        </div>
+                <!-- Seção de informações acadêmicas -->
+                <div class="collapse" id="detalhesAluno{{ aluno.id }}">
+                    <div class="card card-body">
+                        <h2>Informações Acadêmicas:</h2>
+                        {% for info_academica in aluno.informacoes_academicas  %}
+                            
+                                <ul>
+                                    <li>
+                                        <strong>Desempenho Acadêmico:</strong> {{ info_academica.desempenho_academico }}
+                                    </li>
+                                    <li>
+                                        <strong>Frequência Escolar:</strong> {{ info_academica.frequencia_escolar }}
+                                    </li>
+                                    <li>
+                                        <strong>Horário das Aulas:</strong> {{ info_academica.horario_aulas }}
+                                    </li>
+                                </ul>
+                         
+                        {% empty %}
+                            <p>Nenhuma informação acadêmica registrada para este aluno.</p>
+                        {% endfor %}
+
+                        {% if aluno.boletim %}
+                        <form action="{% url 'visualizar_boletim' aluno.aluno.pk %}" method="GET">
+                            <button class="btn btn-primary" type="submit">Ver Boletim</button>
+                        </form>
+                    {% else %}
+                        <p>Não há boletim disponível para este aluno.</p>
+                    {% endif %}
+                    </div>
+                </div>
+
+
+        
+                    <!-- Comportamento e Disciplina -->
+                    <div class="collapse" id="comportamento{{ aluno.id }}">
+                        <div class="card card-body">
+                            <!-- Adicione aqui as informações de comportamento e disciplina do aluno -->
+                            {{ aluno.nome }}
+                            <p>Comportamento: ...</p>
+                            <p>Disciplina: ...</p>
+                            <p>Ausências não justificadas: ...</p>
+                        </div>
+                    </div>
+        
+                    <!-- Atividades Extracurriculares -->
+                    <div class="collapse" id="atividades{{ aluno.id }}">
+                        <div class="card card-body">
+                            <!-- Adicione aqui as informações de atividades extracurriculares do aluno -->
+                            {{ aluno.nome }}
+                            <p>Participação em clubes: ...</p>
+                            <p>Participação em equipes esportivas: ...</p>
+                            <p>Participação em grupos de estudo: ...</p>
+                            <p>Desempenho em competições ou eventos: ...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                {% endfor %}
+            </div>
+        </div>
+        
+      </div>
+    </section>
+</main><!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+  <div class="copyright">
+    &copy; Copyright <strong><span>LibroOrario</span></strong>. All Rights Reserved
+  </div>
+  <div class="credits">
+    Designed by <a href="https://libroorario.netlify.app/">LibroOrario</a>
+  </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+<!-- Scripts do Bootstrap (CSS e JavaScript) -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- JavaScript para abrir e fechar os detalhes do aluno -->
+<script>
+    $(document).ready(function() {
+        // Adiciona um evento de clique para cada botão "Ver detalhes"
+        $('.ver-detalhes-btn').click(function() {
+            // Encontra o próximo elemento colapsável dentro do mesmo card e exibe-o
+            $(this).closest('.card').find('.collapse').collapse('toggle');
+        });
+    });
+</script>
+
+
+
+
+<!-- Vendor JS Files -->
+<script src={% static "assets/vendor/apexcharts/apexcharts.min.js" %}></script>
+<script src={% static "assets/vendor/bootstrap/js/bootstrap.bundle.min.js" %}></script>
+<script src={% static "assets/vendor/chart.js/chart.umd.js" %}></script>
+<script src={% static "assets/vendor/echarts/echarts.min.js" %}></script>
+<script src={% static "assets/vendor/quill/quill.min.js" %}></script>
+<script src={% static "assets/vendor/simple-datatables/simple-datatables.js" %}></script>
+<script src={% static "assets/vendor/tinymce/tinymce.min.js" %}></script>
+<script src={% static "assets/vendor/php-email-form/validate.js" %}></script>
+
+<!-- Template Main JS File -->
+<script src={% static "assets/js/main.js" %}></script>
+
+</body>
+
+</html>

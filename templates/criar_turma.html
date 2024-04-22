@@ -1,0 +1,27 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+
+    <section class="section dashboard">
+       
+              <div class="row">
+                <div class="pagetitle">
+                    <h1 style="font-size: 28px; color: #333; margin-bottom: 20px;">Criar Nova Turma</h1>
+                </div><!-- End Page Title -->
+                
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button type="submit" class="btn btn-primary">Criar Turma</button>
+                            <a href="{% url 'adicionar_aluno'  %}" class="btn btn-primary">Adicionar Mais Alunos</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

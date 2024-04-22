@@ -1,0 +1,37 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+
+ <!-- Left side columns -->
+ <div class="pagetitle">
+    <h1>Gestor(a) {{ user.first_name }} {{ user.last_name }}</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'verturmas' %}">Turmas</a></li>
+        <li class="breadcrumb-item"><a href="#">Detalhes da Turma</a></li>
+        <li class="breadcrumb-item active">Detalhes do Aluno</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+  
+  <section class="section dashboard">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="card">
+          <img src="{{ aluno.foto.url }}" class="card-img-top img-fluid" alt="{{ aluno.nome }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ aluno.nome }}</h5>
+            <p class="card-text">Idade: {{ aluno.idade }}</p>
+            <p class="card-text">Sexo: {{ aluno.sexo }}</p>
+            <p class="card-text">Profissão do Encarregado: {{ aluno.profissao_encarregado }}</p>
+            <!-- Outros detalhes do aluno podem ser adicionados aqui -->
+            <a href="" class="btn btn-primary">Ver Encarregado</a>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+<!-- atribuir_turmas_horarios.html -->
+{% extends 'base_admin.html' %}
+{% block content %}
+<h1>Atribuir Turmas e Horários a {{ professor.nome }}</h1>
+<form method="post">
+  {% csrf_token %}
+  <h2>Turmas</h2>
+  {% for turma in turmas %}
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" name="turmas" value="{{ turma.pk }}" id="turma{{ turma.pk }}">
+    <label class="form-check-label" for="turma{{ turma.pk }}">
+      {{ turma.nome }}
+    </label>
+  </div>
+  {% endfor %}
+  <h2>Horários</h2>
+  {% for horario in horarios %}
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" name="horarios" value="{{ horario.pk }}" id="horario{{ horario.pk }}">
+    <label class="form-check-label" for="horario{{ horario.pk }}">
+      {{ horario.dia_da_semana }} - {{ horario.hora_inicio }} às {{ horario.hora_fim }}
+    </label>
+  </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-primary">Atribuir Turmas e Horários</button>
+</form>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+
+ <div class="pagetitle">
+    <h1>Gestor(a) {{ user.first_name }} {{ user.last_name }}</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Turmas</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'verturmas' %}">Visualizar Turmas</a></li>
+        <li class="breadcrumb-item active">Adicionar Aluno</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+  
+  <section class="section dashboard">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Adicionar Aluno à Turma: {{ turma.nome }}</h5>
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="nome" class="form-label">Nome do Aluno</label>
+                <input type="text" class="form-control" id="nome" name="nome" required>
+              </div>
+              <div class="mb-3">
+                <label for="profissao_encarregado" class="form-label">Profissão do Encarregado</label>
+                <input type="text" class="form-control" id="profissao_encarregado" name="profissao_encarregado" required>
+              </div>
+              <div class="mb-3">
+                <label for="data_nascimento" class="form-label">Data de Nascimento</label>
+                <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" required>
+              </div>
+              <div class="mb-3">
+                <label for="foto" class="form-label">Foto</label>
+                <input type="file" class="form-control" id="foto" name="foto">
+              </div>
+              <div class="mb-3">
+                <label for="sexo" class="form-label">Sexo</label>
+                <select class="form-select" id="sexo" name="sexo" required>
+                  <option value="Masculino">Masculino</option>
+                  <option value="Feminino">Feminino</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="Classe" class="form-label">Classe</label>
+                <select class="form-select" id="Classe" name="Classe" required>
+                  <option value="10ª classe">10ª Classe</option>
+                  <option value="11ª classe">11ª Classe</option>
+                  <option value="12ª classe">12ª Classe</option>
+                  <option value="13ª classe">13ª Classe</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="encarregado_nome" class="form-label">Nome do Encarregado</label>
+                <input type="text" class="form-control" id="encarregado_nome" name="encarregado_nome" required>
+              </div>
+              <div class="mb-3">
+                <label for="encarregado_numero" class="form-label">Número do Encarregado</label>
+                <input type="text" class="form-control" id="encarregado_numero" name="encarregado_numero" required>
+              </div>
+              <div class="mb-3">
+                <label for="turma" class="form-label">Turma</label>
+                <select class="form-select" id="turma" name="turma">
+                    <option value="" disabled selected>Selecione a Turma</option>
+                    {% for turma in turmas %}
+                        <option value="{{ turma.id }}">{{ turma.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+              <button type="submit" class="btn btn-primary">Adicionar Aluno</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

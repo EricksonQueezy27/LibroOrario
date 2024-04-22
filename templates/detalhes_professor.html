@@ -1,0 +1,21 @@
+{% extends 'base_admin.html' %}
+{% block content %}
+<h1>Detalhes do Professor: {{ professor.nome }}</h1>
+<p>Email: {{ professor.email }}</p>
+<p>Departamento: {{ professor.departamento }}</p>
+<p>Titulação: {{ professor.titulacao }}</p>
+
+<h2>Horários</h2>
+<ul>
+  {% for horario in professor.horarios.all %}
+  <li>{{ horario }}</li>
+  {% endfor %}
+</ul>
+
+<h2>Turmas Associadas</h2>
+<ul>
+  {% for turma in professor.turmas_associadas.all %}
+  <li>{{ turma }}</li>
+  {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,598 @@
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+
+  <div class="d-flex align-items-center justify-content-between">
+    <a href="{% url 'prof' %}" class="logo d-flex align-items-center">
+      <img src={% static "assets/img/logo.png" %} alt="">
+      <span class="d-none d-lg-block">LibroOrario</span>
+    </a>
+    <i class="ri-menu-fold-fill toggle-sidebar-btn"></i>
+  </div><!-- End Logo -->
+
+  <div class="search-bar">
+    <form class="search-form d-flex align-items-center" method="POST" action="#">
+      <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+      <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+    </form>
+  </div><!-- End Search Bar -->
+
+  <nav class="header-nav ms-auto">
+    <ul class="d-flex align-items-center">
+
+      <li class="nav-item d-block d-lg-none">
+        <a class="nav-link nav-icon search-bar-toggle " href="#">
+          <i class="bi bi-search"></i>
+        </a>
+      </li><!-- End Search Icon-->
+
+      <li class="nav-item dropdown">
+
+        <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+          <i class="bi bi-bell"></i>
+          <span class="badge bg-primary badge-number">4</span>
+        </a><!-- End Notification Icon -->
+
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+          <li class="dropdown-header">
+            Você tem 4 notificações
+            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Ver tudo</span></a>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+
+          <li class="notification-item">
+            <i class="bi bi-exclamation-circle text-warning"></i>
+            <div>
+              <h4>Lorem Ipsum</h4>
+              <p>Quae dolorem earum veritatis oditseno</p>
+              <p>30 min. ago</p>
+            </div>
+          </li>
+
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+
+          <li class="notification-item">
+            <i class="bi bi-x-circle text-danger"></i>
+            <div>
+              <h4>Atque rerum nesciunt</h4>
+              <p>Quae dolorem earum veritatis oditseno</p>
+              <p>1 hr. ago</p>
+            </div>
+          </li>
+
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+
+          <li class="notification-item">
+            <i class="bi bi-check-circle text-success"></i>
+            <div>
+              <h4>Sit rerum fuga</h4>
+              <p>Quae dolorem earum veritatis oditseno</p>
+              <p>2 hrs. ago</p>
+            </div>
+          </li>
+
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+
+          <li class="notification-item">
+            <i class="bi bi-info-circle text-primary"></i>
+            <div>
+              <h4>Dicta reprehenderit</h4>
+              <p>Quae dolorem earum veritatis oditseno</p>
+              <p>4 hrs. ago</p>
+            </div>
+          </li>
+
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li class="dropdown-footer">
+            <a href="#">Fechar notificação</a>
+          </li>
+
+        </ul><!-- End Notification Dropdown Items -->
+
+      </li><!-- End Notification Nav -->
+
+      <li class="nav-item dropdown">
+
+        <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+          <i class="bi bi-chat-left-text"></i>
+          <span class="badge bg-success badge-number">{{ numero_mensagens_respondidas }}</span>
+        </a><!-- End Messages Icon -->
+
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+
+          <li class="dropdown-header">
+            Você tem {{ numero_mensagens_respondidas }} mensagem
+            <button type="button" class="badge rounded-pill bg-primary p-2 ms-2" data-toggle="modal" data-target="#smsModal">
+              Enviar SMS
+            </button>
+            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Ver tudo</span></a>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          
+{% comment %} <!-- Adicione o seguinte código onde deseja exibir as mensagens não respondidas -->
+<h2>Mensagens Não Respondidas</h2>
+{% for mensagem in mensagens_nao_respondidas %}
+  <div class="mensagem">
+      <p>{{ mensagem.mensagem }}</p>
+      <form method="post" action="{% url 'prof' %}">
+          {% csrf_token %}
+          {{ resposta_form.as_p }}
+          <input type="hidden" name="mensagem_id" value="{{ mensagem.id }}">
+          <button type="submit">Responder</button>
+      </form>
+  </div>
+{% endfor %} {% endcomment %}
+{% for mensagem in mensagens_respondidas %}
+          <li class="message-item">
+            <a href="#">
+              <img src="{{ mensagem.encarregado.foto.url }}" alt="" class="rounded-circle">
+              <div>
+                <h4>{{ mensagem.encarregado.nome }}</h4>
+                <p>{{ mensagem.mensagem }}</p>
+                <p>{{ mensagem.data_envio|date:"d/m/Y H:i:s" }}</p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          {% comment %} <form method="post" action="{% url 'prof' %}">
+            {% csrf_token %}
+            {{ resposta_form.as_p }}
+            <input type="hidden" name="mensagem_id" value="{{ mensagem.id }}">
+            <button type="submit">Responder</button>
+        </form> {% endcomment %}
+          {% endfor %}
+         
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          
+          <li class="dropdown-footer">
+            <a href="#">Fechar mensagem</a>
+          </li>
+
+        </ul><!-- End Messages Dropdown Items -->
+
+      </li><!-- End Messages Nav -->
+
+      <li class="nav-item dropdown pe-3">
+
+        <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+          <img src="/media/{{ user.foto }}" alt="Profile" class="rounded-circle">
+          <span class="d-none d-md-block dropdown-toggle ps-2">{{user.first_name}}</span>
+        </a><!-- End Profile Iamge Icon -->
+
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+          <li class="dropdown-header">
+            <h6>{{user.first_name}}</h6>
+            <span>Professor</span>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+
+          <li>
+            <a class="dropdown-item d-flex align-items-center" href="{% url 'Perfilenc' % }">
+              <i class="bi bi-person"></i>
+              <span>Meu perfil</span>
+            </a>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+
+          <li>
+            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+              <i class="bi bi-gear"></i>
+              <span>Definição</span>
+            </a>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+
+          <li>
+            <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+              <i class="bi bi-question-circle"></i>
+              <span>Ajuda</span>
+            </a>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+
+          <li>
+            <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}" data-toggle="modal" data-target="#logoutModal">
+              <i class="bi bi-box-arrow-right"></i>
+              <span>Sair</span>
+            </a>
+          </li>
+
+        </ul><!-- End Profile Dropdown Items -->
+      </li><!-- End Profile Nav -->
+
+    </ul>
+  </nav><!-- End Icons Navigation -->
+
+</header><!-- End Header -->
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+  <ul class="sidebar-nav" id="sidebar-nav">
+
+    <li class="nav-item">
+      <a class="nav-link " href="#">
+        <i class="ri-menu-add-fill"></i>
+        <span>Menu</span>
+      </a>
+    </li><!-- End Dashboard Nav -->
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+        <i class="ri-home-smile-line"></i><span>Turmas</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+     
+        <li>
+          <a href="{% url 'turmas' %}">
+            <i class="bi bi-circle"></i><span>Ver Turmas Associadas</span>
+          </a>
+        </li>
+        <li>
+          
+      </ul>
+    </li><!-- End Components Nav -->
+
+    
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#components-nav2" data-bs-toggle="collapse" href="#">
+        <i class="ri-contacts-book-line"></i><span>Avalições</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="components-nav2" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+     
+        <li>
+          <a href="{% url 'turmas' %}">
+            <i class="bi bi-circle"></i><span>Gerenciar</span>
+          </a>
+        </li>
+        <li>
+          
+      </ul>
+    </li><!-- End Components Nav -->
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#components-nav3" data-bs-toggle="collapse" href="#">
+        <i class="ri-run-line"></i><span>Atividades</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="components-nav3" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+     
+        <li>
+          <a href="{% url 'turmas' %}">
+            <i class="bi bi-circle"></i><span>Gerenciar</span>
+          </a>
+        </li>
+        <li>
+          
+      </ul>
+    </li><!-- End Components Nav -->
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+        <i class="ri-user-voice-line"></i><span>Comunicados</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a href="forms-elements.html">
+            <i class="bi bi-circle"></i><span>Fazer Uma Publicação</span>
+          </a>
+        </li>
+        <li>
+   
+      </ul>
+    </li><!-- End Forms Nav -->
+
+    </li><!-- End Icons Nav -->
+
+    <li class="nav-heading">Pages</li>
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="{% url 'perfilpro' %}">
+        <i class="bi bi-person"></i>
+        <span>Perfil</span>
+      </a>
+    </li><!-- End Profile Page Nav -->
+
+    
+  </ul>
+
+</aside><!-- End Sidebar-->
+
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1>Professor(a) {{user.first_name}}</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="">Seja</a></li>
+        <li class="breadcrumb-item active">Bem-Vindo</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+  <section class="section dashboard">
+    <div class="row">
+
+      <!-- Left side columns -->
+      <div class="col-lg-8">
+        <div class="row">
+
+          <!-- Sales Card -->
+          <div class="col-xxl-4 col-md-6">
+            <div class="card info-card sales-card">
+
+              <div class="filter">
+                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+              </div>
+
+              <div class="card-body">
+                <h5 class="card-title">Numero de Turmas Associadas</h5>
+
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="ri-team-fill"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>{{ numero_de_turmas }}</h6>
+                    <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div><!-- End Sales Card -->
+
+          <!-- Revenue Card -->
+          <div class="col-xxl-4 col-md-6">
+            <div class="card info-card revenue-card">
+
+              <div class="filter">
+                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                
+              </div>
+
+              <div class="card-body">
+                <h5 class="card-title">As Tuas Disciplinas<span id="months-left"></span> aqui:</h5>
+
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="ri-book-3-fill"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>{{ numero_de_disciplinas}}</h6>
+                    {% for disciplina in professor.disciplinas_associadas.all %}
+                    <span class="text-success small pt-1 fw-bold">-</span> <span class="text-muted small pt-2 ps-1">
+                      
+                     <h4 class="badge bg-warning"> {{disciplina.nome}}  </h4  >                      
+                      
+                    </span>
+                    {%endfor%}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div><!-- End Revenue Card -->
+
+          <!-- Customers Card -->
+          <div class="col-xxl-4 col-xl-12">
+
+            <div class="card info-card customers-card">
+
+              <div class="filter">
+                <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                
+              </div>
+
+              <div class="card-body">
+                <h5 class="card-title">Numero de Alunos Controlados <span>| este ano</span></h5>
+
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i class="bi bi-people"></i>
+                  </div>
+                  <div class="ps-3">
+                    {% for alunos in professor.turmas_associadas.alunos_relacionados %}
+                    <h6>{{alunos_relacionados}}</h6>
+                    {%endfor%}
+                    <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div><!-- End Customers Card -->
+          <div class="container-xxl flex-grow-1 container-p-y">
+            <div class="row">
+              <div class="col-lg-8 mb-4 order-0">
+                <div class="card">
+                  <div class="d-flex align-items-end row">
+                    <div class="col-sm-7">
+                      <div class="card-body">
+                        <h5 class="card-title text-primary">Congratulations John! 🎉</h5>
+                        <p class="mb-4">
+                          You have done <span class="fw-bold">72%</span> more sales today. Check your new badge in
+                          your profile.
+                        </p>
+
+                        <a href="javascript:;" class="btn btn-sm btn-outline-primary">View Badges</a>
+                      </div>
+                    </div>
+                    <div class="col-sm-5 text-center text-sm-left">
+                      <div class="card-body pb-0 px-0 px-md-4">
+                        <img
+                          src="../assets/img/illustrations/man-with-laptop-light.png"
+                          height="140"
+                          alt="View Badge User"
+                          data-app-dark-img="illustrations/man-with-laptop-dark.png"
+                          data-app-light-img="illustrations/man-with-laptop-light.png"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Publicidade <span>| Escolar</span> </h5>
+          
+              <!-- Slides with captions -->
+              <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                  <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                  <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                  <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                </div>
+          
+                <div class="carousel-inner">
+                  {% for pub in publicidade %}
+                  <div class="carousel-item{% if forloop.first %} active{% endif %}">
+                    <img src="{{ pub.imagem.url }}" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                      <p class="badge bg-warning">{{ pub.titulo }}</p>
+                      <br>
+                      <p class="badge bg-warning">{{ pub.conteudo }}</p>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+          
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div><!-- End Slides with captions -->
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mb-3 font-weight-bold">Adicionar/Modificar Evento</h5>
+                <form method="post" action="{% url 'prof' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_titulo" class="form-label">Título:</label>
+                        {{ evento_form.titulo }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_descricao" class="form-label">Descrição:</label>
+                        {{ evento_form.descricao }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_data" class="form-label">Data:</label>
+                        {{ evento_form.data }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_hora_inicio" class="form-label">Hora de Início:</label>
+                        {{ evento_form.hora_inicio }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_hora_fim" class="form-label">Hora de Fim:</label>
+                        {{ evento_form.hora_fim }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Salvar Evento</button>
+                </form>
+            </div>
+        </div>
+      </div>
+      
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="smsModal" tabindex="-1" role="dialog" aria-labelledby="smsModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="smsModalLabel">Enviar SMS</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <!-- Conteúdo do formulário -->
+            <form method="post" action="{% url 'prof' %}">
+                {% csrf_token %}
+                {{ sms_form.encarregado }}
+                {{ sms_form.mensagem }}
+                <button type="submit" class="btn btn-primary">Enviar SMS</button>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+      <div class="card">
+        <div class="card-body pb-0">
+            <h5 class="card-title mb-3 font-weight-bold">Horário do Professor</h5>
+    
+            <div class="row">
+                {% for horario in horarios_professor %}
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-primary text-white shadow">
+                        <div class="card-body">
+                            <div class="card-text">
+                                <ul class="list-unstyled">
+                                    <li class="badge badge-success mb-2">{{ horario }}</li>
+                                    <ul class="list-unstyled">
+                                        {% for aula in horario.aulas.all %}
+                                        <li class="badge badge-warning">{{ aula }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+          
+          
+  </section>
+
+</main><!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+  <div class="copyright">
+    &copy; Copyright <strong><span>LibroOrario</span></strong>. All Rights Reserved
+  </div>
+  <div class="credits">
+    Designed by <a href="https://libroorario.netlify.app/">LibroOrario</a>
+  </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>

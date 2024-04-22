@@ -1,0 +1,197 @@
+{% extends 'base_admin.html' %}
+
+{% block sidebar %}
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link " href="{% url 'iadmin' %}">
+          <i class="bi bi-grid"></i>
+          <span>Menu</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Opções</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+       
+          <li>
+            <a href="{% url 'verturmas' %}">Ver Turmas no Sistema</a>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'ver_professores' %}">Ver Professores</a>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'ver_alunos' %}">Ver Alunos</a>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'cadastrar_publicidade_comunicado' %}">Publicidade e Comunicado</a>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Components Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav1" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Perfil</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav1" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+       
+          <li>
+            <a href="{% url 'edit_profile' %}">Editar Perfil</a>
+            </a>
+          </li>
+          <li>
+            
+        </ul>
+      </li><!-- End Components Nav -->
+    </aside><!-- End Sidebar-->
+
+{% endblock %}
+{% block content %}
+
+ <!-- Left side columns -->
+ <div class="pagetitle">
+    <h1>Gestor(a) {{ user.first_name }} {{ user.last_name }}</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="">Seja</a></li>
+        <li class="breadcrumb-item active">Bem-Vindo</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->   
+  <section class="section dashboard">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="row">
+                <!-- Turmas Card -->
+                <div class="col-xxl-4 col-md-6">
+                    <div class="card info-card turmas-card bg-primary">
+                        <div class="filter">
+                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Número de Turmas</h5>
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-people-fill"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>{{ numero_de_turmas }}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- End Turmas Card -->
+    
+                <!-- Alunos Card -->
+                <div class="col-xxl-4 col-md-6">
+                    <div class="card info-card alunos-card bg-success">
+                        <div class="filter">
+                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Número de Alunos</h5>
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-person"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>{{ numero_de_alunos }}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- End Alunos Card -->
+    
+                <!-- Professores Card -->
+                <div class="col-xxl-4 col-md-6">
+                    <div class="card info-card professores-card bg-warning">
+                        <div class="filter">
+                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Número de Professores</h5>
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-people"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>{{ numero_de_professores }}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- End Professores Card -->
+    
+                <!-- Encarregados Card -->
+                <div class="col-xxl-4 col-md-6">
+                    <div class="card info-card encarregados-card bg-info">
+                        <div class="filter">
+                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Número de Encarregados</h5>
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-person-check"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>{{ numero_de_encarregados }}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- End Encarregados Card -->
+            </div><!-- End row -->
+        </div><!-- End col-lg-8 -->
+    </div>
+    
+<hr>
+
+    <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Publicidade <span>| Escolar</span> </h5>
+      
+          <!-- Slides with captions -->
+          <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+      
+            <div class="carousel-inner">
+              {% for pub in publicidades %}
+              <div class="carousel-item{% if forloop.first %} active{% endif %}">
+                <img src="{{ pub.imagem.url }}" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                  <p class="badge bg-warning">{{ pub.titulo }}</p>
+                  <br>
+                  <p class="badge bg-warning">{{ pub.conteudo }}</p>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+      
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div><!-- End Slides with captions -->
+        </div>
+      </div>
+
+  </section>
+
+{% endblock %}

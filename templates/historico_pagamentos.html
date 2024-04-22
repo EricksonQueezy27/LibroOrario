@@ -1,0 +1,282 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>LibroOrario</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href={% static "assets/img/favicon.png" %} rel="icon">
+  <link href={% static "assets/img/apple-touch-icon.png" %}    rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href={% static "assets/vendor/bootstrap/css/bootstrap.min.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/bootstrap-icons/bootstrap-icons.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/boxicons/css/boxicons.min.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/quill/quill.snow.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/quill/quill.bubble.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/remixicon/remixicon.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/simple-datatables/style.css" %} rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href={% static "assets/css/style.css" %} rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Updated: Jan 09 2024 with Bootstrap v5.3.2
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="{% url 'encarregado' %}" class="logo d-flex align-items-center">
+        <img src={% static "assets/img/logo.png" %} alt="">
+        <span class="d-none d-lg-block">LibroOrario</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+        
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}" data-toggle="modal" data-target="#logoutModal">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sair</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link " href="{% static 'enc' %}">
+          <i class="bi bi-grid"></i>
+          <span>Menu</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+  </aside><!-- End Sidebar-->
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Olá Novamente Sr. {{user.first_name}}</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="">Seja</a></li>
+          <li class="breadcrumb-item active">Bem-Vindo</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+    <section class="section dashboard">
+        <div class="row">
+  
+          <!-- Left side columns -->
+          <div class="col-lg-8">
+            <div class="row">
+  
+              <!-- Sales Card -->
+              <div class="col-xxl-4 col-md-6">
+                <div class="card info-card sales-card">  
+                  <div class="card-body">
+                    <h5 class="card-title">Consulte aqui os Seus Pagamentos!</h5>
+  
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="ri-team-fill"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6>{{ numero_de_turmas }}</h6>
+                        <span class="text-success small pt-1 fw-bold">Ver</span> <span class="text-muted small pt-2 ps-1">Pagamentos</span>
+  
+                      </div>
+                    </div>
+                  </div>
+  
+                </div>
+              </div><!-- End Sales Card -->
+              <hr>
+      </section>
+      <section class="section">
+
+        <div class="container mt-5">
+          <h1 class="mb-4">Histórico de Pagamentos do Encarregado: {{ encarregado.nome }}</h1>
+          
+          <div class="table-responsive">
+              <table class="table table-striped">
+                  <thead>
+                      <tr>
+                          <th>Aluno</th>
+                          <th>Data de Pagamento</th>
+                          <th>Valor</th>
+                          <th>Tipo de Pagamento</th>
+                          <th>Status</th>
+                          <th>Ação</th> <!-- Adicionamos uma nova coluna para a ação -->
+                      </tr>
+                  </thead>
+                  <tbody>
+               {% for propina in propinas %}
+                  <tr>
+                      <td>{{ propina.aluno.nome }}</td>
+                      <td>{{ propina.data_pagamento }}</td>
+                      <td>Akzs {{ propina.valor }}</td>
+                      <td>{{ propina.tipo_pagamento }}</td>
+                      <td>{{ propina.calcular_status_propina }}</td>
+                      <td>
+                          <!-- Botão para fazer um novo pagamento associado ao ID do aluno -->
+                          <a href="{% url 'realizar_pagamento' aluno_id=propina.aluno.id %}" class="btn btn-primary">Fazer Pagamento</a>
+                      </td>
+                  </tr>
+                  {% endfor %}
+
+                  </tbody>
+              </table>
+          </div>
+      </div>
+      
+            </div>
+        {% comment %} </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Mês</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for mes, nome_mes in MONTH_CHOICES %}
+              <tr>
+                <td>{{ nome_mes }}</td>
+                <td style="background-color: {% if aluno_pagou_mes(encarregado.aluno, mes) %}green{% else %}red{% endif %}">
+                  {% if aluno_pagou_mes(encarregado.aluno, mes) %}
+                    Pago
+                  {% else %}
+                    Em Dívida
+                  {% endif %}
+                </td>
+                
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+         {% endcomment %}
+        
+    <!-- verificar_comunicado_pagamento.html -->
+<!-- verificar_comunicado_pagamento.html -->
+<!-- historico_pagamentos.html -->
+<div class="container mt-5">
+    <h1 class="mb-4">Comunicados de Pagamento</h1>
+    
+    <div class="list-group">
+        {% if comunicados_pagamento %}
+            {% for comunicado in comunicados_pagamento %}
+                <a href="#" class="list-group-item list-group-item-action">
+                    <h5 class="mb-1">{{ comunicado.titulo }}</h5>
+                    <p class="mb-1">{{ comunicado.mensagem }}</p>
+                    <small>Publicado em: {{ comunicado.data_publicacao }}</small>
+                </a>
+            {% endfor %}
+        {% else %}
+            <p>Nenhum comunicado de pagamento encontrado.</p>
+        {% endif %}
+    </div>
+</div>
+
+
+
+    </section>
+</main><!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+  <div class="copyright">
+    &copy; Copyright <strong><span>LibroOrario</span></strong>. All Rights Reserved
+  </div>
+  <div class="credits">
+    Designed by <a href="https://libroorario.netlify.app/">LibroOrario</a>
+  </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script src={% static "assets/vendor/apexcharts/apexcharts.min.js" %}></script>
+<script src={% static "assets/vendor/bootstrap/js/bootstrap.bundle.min.js" %}></script>
+<script src={% static "assets/vendor/chart.js/chart.umd.js" %}></script>
+<script src={% static "assets/vendor/echarts/echarts.min.js" %}></script>
+<script src={% static "assets/vendor/quill/quill.min.js" %}></script>
+<script src={% static "assets/vendor/simple-datatables/simple-datatables.js" %}></script>
+<script src={% static "assets/vendor/tinymce/tinymce.min.js" %}></script>
+<script src={% static "assets/vendor/php-email-form/validate.js" %}></script>
+
+<!-- Template Main JS File -->
+<script src={% static "assets/js/main.js" %}></script>
+<script>
+
+  const currentMonth = new Date().toLocaleString('pt-pt', { month: 'long' });
+  document.getElementById('current-month').textContent = currentMonth;
+  
+  const currentMonthIndex = new Date().getMonth();
+  const monthsLeft = 12 - currentMonthIndex - 1;
+  document.getElementById('months-left').textContent = monthsLeft;
+  
+  const monthList = document.getElementById('month-list');
+  for (let i = currentMonthIndex + 1; i < 12; i++) {
+    const month = new Date(1900, i, 1).toLocaleString('pt-br', { month: 'long' });
+    const listItem = document.createElement('li');
+    listItem.textContent = month;
+    monthList.appendChild(listItem);
+  }
+ 
+      $(document).ready(function () {
+          $('#carouselExample').carousel();
+      });
+
+  
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,588 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>LibroOrario</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href={% static "assets/img/favicon.png" %} rel="icon">
+  <link href={% static "assets/img/apple-touch-icon.png" %}    rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href={% static "assets/vendor/bootstrap/css/bootstrap.min.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/bootstrap-icons/bootstrap-icons.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/boxicons/css/boxicons.min.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/quill/quill.snow.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/quill/quill.bubble.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/remixicon/remixicon.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/simple-datatables/style.css" %} rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href={% static "assets/css/style.css" %} rel="stylesheet">
+  <style>
+    .aluno-imagem {
+        max-width: 100%; /* Define a largura máxima para garantir o mesmo tamanho para todas as imagens */
+        height: auto; /* Permite que a altura seja ajustada proporcionalmente à largura */
+    }
+</style>
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="{% url 'encarregado' %}" class="logo d-flex align-items-center">
+        <img src={% static "assets/img/logo.png" %} alt="">
+        <span class="d-none d-lg-block">LibroOrario</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-bell"></i>
+            <span class="badge bg-primary badge-number">{{eventoscount}}</span>
+          </a><!-- End Notification Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+            <li class="dropdown-header">
+              Você tem {{eventoscount}} Notifações
+              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            
+            {% for evento in eventos %}
+            <li class="notification-item">
+              <i class="bi bi-exclamation-circle text-warning"></i>
+              <div>
+                <p>  
+                                   
+                    <!-- Adiciona uma nova linha a cada dois eventos -->
+                    <div class="row">
+                
+                      <h6>{{ evento.titulo }}</h6>
+                      <p><strong>Data e Hora:</strong> {{ evento.data_hora_inicio }} - {{ evento.data_hora_fim }}</p>
+                      <p><strong>Local:</strong> {{ evento.local }}</p>
+                      <p><strong>Descrição:</strong> {{ evento.descricao }}</p>
+                      <!-- Adicione mais informações do evento conforme necessário -->
+                  </div>
+              </p>
+                <p>{{evento.data_publicacao}}</p>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                
+              </div>
+            </li>{% endfor %}
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li class="dropdown-footer">
+              <a href="#">Fechar</a>
+            </li>
+
+          </ul><!-- End Notification Dropdown Items -->
+
+        </li><!-- End Notification Nav -->
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-chat-left-text"></i>
+            <span class="badge bg-success badge-number">3</span>
+          </a><!-- End Messages Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+            <li class="dropdown-header">
+              You have 3 new messages
+              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="message-item">
+              <a href="#">
+                <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle">
+                <div>
+                  <h4>Maria Hudson</h4>
+                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                  <p>4 hrs. ago</p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="message-item">
+              <a href="#">
+                <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
+                <div>
+                  <h4>Anna Nelson</h4>
+                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                  <p>6 hrs. ago</p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="message-item">
+              <a href="#">
+                <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle">
+                <div>
+                  <h4>David Muldon</h4>
+                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                  <p>8 hrs. ago</p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="dropdown-footer">
+              <a href="#">Show all messages</a>
+            </li>
+
+          </ul><!-- End Messages Dropdown Items -->
+
+        </li><!-- End Messages Nav -->
+
+        <li class="nav-item dropdown pe-3">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="/media/{{ user.foto }}" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{user.first_name}}</span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>{{user.first_name}}</h6>
+              <span>Encarregado</span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'perfilenc' % }">
+                <i class="bi bi-person"></i>
+                <span>Meu perfil</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="">
+                <i class="bi bi-gear"></i>
+                <span>Definição</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="">
+                <i class="bi bi-question-circle"></i>
+                <span>Ajuda</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}" data-toggle="modal" data-target="#logoutModal">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sair</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link " href="{% url 'encarregado' %}">
+          <i class="bi bi-grid"></i>
+          <span>Menu</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Opções</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+       
+          <li>
+            <a href="{% url 'historico_pagamentos' encarregado_id=request.user.encarregado.id %}">
+
+              <i class="bi bi-circle"></i><span>Pagamentos</span>
+            </a>
+          </li>
+          <li>
+            <li>
+                <a href="{% url 'visualizar_educandos' encarregado_id=request.user.encarregado.id %}">
+                  <i class="bi bi-circle"></i><span>Ver Educandos</span>
+                </a>
+              </li>
+              <li>
+        </ul>
+      </li><!-- End Components Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-journal-text"></i><span>Comunicados</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span>Chat</span>
+            </a>
+          </li>
+          <li>
+            <li>
+                <a href="">
+                  <i class="bi bi-circle"></i><span>Informações</span>
+                </a>
+              </li>
+              <li>
+     
+        </ul>
+      </li><!-- End Forms Nav -->
+
+      </li><!-- End Icons Nav -->
+
+      <li class="nav-heading">Paginas</li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'perfilenc' %}">
+          <i class="bi bi-person"></i>
+          <span>Perfil</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+
+      
+    </ul>
+
+  </aside><!-- End Sidebar-->
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Encarregado(a) {{user.first_name}} {{user.last_name}}</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="">Seja</a></li>
+          <li class="breadcrumb-item active">Bem-Vindo</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+      <div class="row">
+
+        <!-- Left side columns -->
+        <div class="col-lg-8">
+          <div class="row">
+<!-- Sales Card -->
+<div class="col-xxl-4 col-md-6">
+  <div class="card info-card sales-card">
+    <div class="card-body">
+      <h5 class="card-title">Número de Alunos Associados</h5>
+
+      <div class="d-flex align-items-center">
+        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+          <i class="ri-team-fill"></i>
+        </div>
+        <div class="ps-3">
+          <h6>{{ alunosn }}</h6>
+          <span class="text-success small pt-1 fw-bold">Os Teus</span>
+          <span class="text-muted small pt-2 ps-1">Filhos</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Sales Card -->
+
+<!-- Revenue Card -->
+<div class="col-xxl-4 col-md-6">
+  <div class="card info-card revenue-card">
+    <div class="card-body">
+      <h5 class="card-title"><h6 id="info-ano-letivo"> Meses</h6></h5>
+
+      <div class="d-flex align-items-center">
+        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+          <i class="bi bi-calendar-event"></i>
+        </div>
+        <div class="ps-3">
+          
+          <span class="text-muted small pt-2">Até o fim do ano</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Revenue Card -->
+
+<!-- Customers Card -->
+<div class="col-xxl-4 col-xl-12">
+  <div class="card info-card customers-card">
+    <div class="card-body">
+      <h5 class="card-title">Clientes | Este Ano</h5>
+
+      <div class="d-flex align-items-center">
+        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+          <i class="bi bi-people"></i>
+        </div>
+        <div class="ps-3">
+          <h6>1244</h6>
+          <span class="text-danger small pt-1 fw-bold">12% de Decrease</span>
+          <span class="text-muted small pt-2">Comparado ao ano passado</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Customers Card -->
+
+
+            <!-- Recent Sales -->
+            <div class="col-12">
+              <div class="card recent-sales overflow-auto">
+
+                <div class="container">
+                  <div class="card-body">
+                      <h5 class="card-title">Presença dos Alunos <span>| {{ aula_atual.data }}</span></h5>
+              
+                      <div class="row">
+                          {% for aluno in encarregado.alunos_associados.all %}
+                              <div class="card shadow mb-4 col-sm-6">
+                                  <img src="{% if aluno.foto %}{{ aluno.foto.url }}{% else %}/caminho/para/uma/imagem/de/placeholder.jpg{% endif %}"
+                                       class="card-img-top img-fluid aluno-img" alt="Foto do Aluno">
+                                  <div class="card-body">
+                                      <h5 class="card-title">{{ aluno.nome }}</h5>
+                                      <p class="card-text">Turma: {{ aluno.turma }}</p>
+              
+                                      <div class="card">
+                                          <div class="card-body">
+                                              <h5 class="card-title text-primary">Aula Atual: {{ aula_atual.disciplina }}</h5>
+                                              <p class="card-text">Presença:</p>
+                                              <ul>
+                                                  {% for presenca in presencas_aula_atual %}
+                                                      {% if presenca.aluno == aluno %}
+                                                          <li>
+                                                              {{ presenca.status }}
+                                                              {% if presenca.presente == 'Em Aula' %}
+                                                                  <span class="badge badge-success">{{ presenca.presente }}</span>
+                                                              {% elif presenca.presente == 'justificado' %}
+                                                                  <span class="badge badge-warning">{{ presenca.presente }}</span>
+                                                                  <small class="text-success">{{ presenca.justificativa }}</small>
+                                                              {% elif presenca.presente == 'Falta' %}
+                                                                  <span class="badge badge-danger">{{ presenca.presente }}</span>
+                                                              {% endif %}
+                                                          </li>
+                                                      {% endif %}
+                                                  {% endfor %}
+                                              </ul>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          {% endfor %}
+                      </div>
+                  </div>
+              </div>
+              
+
+              </div>
+            </div><!-- End Recent Sales -->
+
+            <!-- Top Selling -->
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Publicidade <span>| Escolar</span> </h5>
+  
+                <!-- Slides with captions -->
+                <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+                  <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                  </div>
+                  {% for pub in publicidade %}
+                  <div class="carousel-inner">
+                    <div class="carousel-item active{% if forloop.first %}active{% endif %}">
+                      <img src="{{ pub.imagem.url }}" class="d-block w-100" alt="...">
+                      <div class="carousel-caption d-none d-md-block">
+                        <p class="badge bg-warning">{{ pub.titulo }}</p>
+                        <br>
+                        <p class="badge bg-warning">{{ pub.conteudo }}</p>
+                      </div>
+                    </div>
+                    {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+                  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+  
+                </div><!-- End Slides with captions -->
+  
+          </div>
+        </div><!-- End Left side columns -->
+        </div>
+
+      {% for mensagem in mensagens_nao_respondidas %}
+      <div class="mensagem">
+          <p>{{ mensagem.mensagem }}</p>
+          <form method="post" action="{% url 'encarregado' %}">
+            {% csrf_token %}
+            {{ resposta_form.as_p }}
+            <input type="hidden" name="mensagem_id" value="{{ mensagem.id }}">
+            <button type="submit">Responder</button>
+        </form>
+        
+      </div>
+  {% endfor %}
+
+    </section>
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong><span>LibroOrario</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+      Designed by <a href="https://libroorario.netlify.app/">LibroOrario</a>
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src={% static "assets/vendor/apexcharts/apexcharts.min.js" %}></script>
+  <script src={% static "assets/vendor/bootstrap/js/bootstrap.bundle.min.js" %}></script>
+  <script src={% static "assets/vendor/chart.js/chart.umd.js" %}></script>
+  <script src={% static "assets/vendor/echarts/echarts.min.js" %}></script>
+  <script src={% static "assets/vendor/quill/quill.min.js" %}></script>
+  <script src={% static "assets/vendor/simple-datatables/simple-datatables.js" %}></script>
+  <script src={% static "assets/vendor/tinymce/tinymce.min.js" %}></script>
+  <script src={% static "assets/vendor/php-email-form/validate.js" %}></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+                console.log('Service Worker registrado com sucesso:', registration.scope);
+            }, function(err) {
+                console.error('Falha ao registrar o Service Worker:', err);
+            });
+        });
+    }
+</script>
+
+  <!-- Template Main JS File -->
+  <script src={% static "assets/js/main.js" %}></script>
+  <script>
+    function mostrarMesAtualEMesesRestantesNoAnoLetivo() {
+      const dataAtual = new Date();
+      const mesAtual = dataAtual.getMonth() + 1; // Ajuste para meses de 1 a 12
+      const anoAtual = dataAtual.getFullYear();
+
+      // Definição do Ano Letivo (começa em setembro)
+      const mesInicioAnoLetivo = 9;
+
+      // Cálculo dos meses restantes no ano letivo
+      let mesesRestantesNoAnoLetivo;
+      if (mesAtual < mesInicioAnoLetivo) {
+        mesesRestantesNoAnoLetivo = mesInicioAnoLetivo - mesAtual;
+      } else {
+        mesesRestantesNoAnoLetivo = 12 - mesAtual + mesInicioAnoLetivo - 1; // Considerando o ano seguinte
+      }
+
+      // Formatação da saída
+      const nomeMesAtual = obterNomeMes(mesAtual);
+      const formattedOutput = `Mês atual: ${nomeMesAtual}. Meses restantes no ano letivo: ${mesesRestantesNoAnoLetivo}`;
+
+      document.getElementById('info-ano-letivo').innerHTML = formattedOutput;
+    }
+
+    function obterNomeMes(mes) {
+      const nomesMeses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+      return nomesMeses[mes - 1];
+    }
+
+    mostrarMesAtualEMesesRestantesNoAnoLetivo();
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.0/main.min.js"></script>
+  
+      
+  <script link rel="stylesheet" href="{% static 'fullcalendar/core/main.css' %}"></script>
+  
+  <script src="{% static 'fullcalendar/core/main.js' %}"></script>
+  
+</body>
+
+</html>

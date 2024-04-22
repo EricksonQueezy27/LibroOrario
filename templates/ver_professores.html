@@ -1,0 +1,36 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+<h1>Lista de Professores</h1>
+<div class="row">
+    {% for professor in professores %}
+    <div class="col-lg-4">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5 class="card-title">{{ professor.nome }}</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Email: {{ professor.email }}</p>
+                <p class="card-text">Departamento: {{ professor.departamento }}</p>
+                <p class="card-text">Titulação: {{ professor.titulacao }}</p>
+                <p class="card-text">Disciplinas Associadas:</p>
+                <ul class="list-group">
+                    {% for disciplina in professor.disciplinas_associadas.all %}
+                    <li class="list-group-item">{{ disciplina.nome }}</li>
+                    {% endfor %}
+                </ul>
+                <p class="card-text">Turmas Associadas:</p>
+                <ul class="list-group">
+                    {% for turma in professor.turmas_associadas.all %}
+                    <li class="list-group-item">{{ turma.nome }}-{{ turma.classe  }}</li>
+                    <a href="{% url 'visualizar_turma' turma.id %}" class="btn btn-primary">Visualizar Turma</a>
+                    {% endfor %}
+                </ul>
+                <!-- Link para atribuir turmas e horários -->
+                <a href="{% url 'atribuir_turmas_horarios' professor.id %}" class="btn btn-success">Atribuir Turmas e Horários</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,138 @@
+<!-- cadastrar_publicidade_comunicado.html -->
+{% extends 'base_admin.html' %}
+
+{% block content %}
+<section class="section dashboard">
+    <div class="container">
+        <div class="row">
+            <!-- Card de Publicidade -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Cadastrar Publicidade</h5>
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="id_publicidade_titulo" class="form-label">Título da Publicidade</label>
+                                {{ publicidade_form.titulo }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_publicidade_conteudo" class="form-label">Conteúdo da Publicidade</label>
+                                {{ publicidade_form.conteudo }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_publicidade_imagem" class="form-label">Imagem da Publicidade</label>
+                                {{ publicidade_form.imagem }}
+                            </div>
+                            <button type="submit" name="submit_publicidade" class="btn btn-primary">Cadastrar Publicidade</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card de Comunicado -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Cadastrar Comunicado</h5>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="id_comunicado_titulo" class="form-label">Título do Comunicado</label>
+                                {{ comunicado_form.titulo }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_comunicado_mensagem" class="form-label">Mensagem do Comunicado</label>
+                                {{ comunicado_form.mensagem }}
+                            </div>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="id_comunicado_enviar_para_todos" name="comunicado_enviar_para_todos">
+                                <label class="form-check-label" for="id_comunicado_enviar_para_todos">Enviar para Todos</label>
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_comunicado_encarregado_destino" class="form-label">Encarregado Destino</label>
+                                {{ comunicado_form.encarregado_destino }}
+                            </div>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="id_comunicado_requerido_pagamento" name="comunicado_requerido_pagamento">
+                                <label class="form-check-label" for="id_comunicado_requerido_pagamento">Requer Pagamento?</label>
+                            </div>
+                            <button type="submit" name="submit_comunicado" class="btn btn-primary">Cadastrar Comunicado</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Cards de Publicidades -->
+<section class="section">
+    <div class="container">
+        <h2>Publicidades</h2>
+        <div class="row">
+            {% for publicidade in publicidades %}
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="{{ publicidade.imagem.url }}" class="card-img-top" alt="{{ publicidade.titulo }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ publicidade.titulo }}</h5>
+                        <p class="card-text">{{ publicidade.conteudo }}</p>
+                        <!-- Botões de Editar e Excluir em Modal -->
+                        <!-- Botão para abrir o modal de edição -->
+                        <a href="{% url 'editar_publicidade' publicidade.id %}" class="btn btn-primary">Editar</a>
+
+  
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#excluirPublicidadeModal{{ publicidade.id }}">
+                            Excluir
+                        </button>
+                    </div>
+                </div>
+            </div>
+       <!-- Modal de edição -->
+        <div class="modal fade" id="editarPublicidade{{ publicidade.id }}" tabindex="-1" aria-labelledby="editarPublicidade{{ publicidade.id }}Label" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="editarPublicidade{{ publicidade.id }}Label">Editar Publicidade</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                <!-- Formulário de edição -->
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                </form>
+                </div>
+            </div>
+            </div>
+        </div>
+        
+            <!-- Modal de Exclusão -->
+            <div class="modal fade" id="excluirPublicidadeModal{{ publicidade.id }}" tabindex="-1" aria-labelledby="excluirPublicidadeModalLabel{{ publicidade.id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="excluirPublicidadeModalLabel{{ publicidade.id }}">Excluir Publicidade</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Tem certeza de que deseja excluir esta publicidade?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <form method="post" action="{% url 'excluir_publicidade' publicidade.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Excluir</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}
