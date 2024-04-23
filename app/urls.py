@@ -58,6 +58,8 @@ urlpatterns = [
     path('detalhes_professor/<int:professor_id>/', detalhes_professor, name='detalhes_professor'),
     path('excluir_publicidade/<int:publicidade_id>/', excluir_publicidade, name='excluir_publicidade'),
     path('editar_publicidade/<int:publicidade_id>/', editar_publicidade, name='editar_publicidade'),  
+    path('editar_aluno/<int:id>/', editar_aluno, name='editar_aluno'),
+    path('avalicao', avalicao, name='avalicao'),
     # Outras URLs...
 
 

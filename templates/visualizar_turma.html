@@ -51,7 +51,9 @@
                 <tbody>
                   {% for aluno in turma.alunos.all %}
                   <tr>
+                    {% if aluno.foto %}
                     <td><img src="{{ aluno.foto.url }}" alt="{{ aluno.nome }}" class="img-thumbnail" style="width: 80px; height: auto;"></td>
+                    {% endif %}
                     <td>{{ aluno.nome }}</td>
                     <td>{{ aluno.idade }}</td>
                     <td>{{ aluno.sexo }}</td>

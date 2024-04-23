@@ -153,62 +153,64 @@
       <h1>Professor(a) {{user.first_name}}</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="">Seja</a></li>
-          <li class="breadcrumb-item active">Bem-Vindo</li>
+          <li class="breadcrumb-item"><a href="">turmas</a></li>
+          <li class="breadcrumb-item active">Lançar notas</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
 
-    <h1>{{ turma.nome }}-{{turma.classe}}</h1>
+    <h1>Lançar notas em: {{ turma.nome }}-{{turma.classe}}</h1>
 
     <h3 Class="btn btn-primary ">{{ titulo }}</h3>
     
-    <!-- Formulário para avaliação individual -->
-    <form method="post">
-      {% csrf_token %}
-      
-      <label for="disciplina">Disciplina:</label>
-      <select name="disciplina" required>
-          {% for disciplina in disciplinas %}
-              <option value="{{ disciplina.id }}">{{ disciplina.nome }}</option>
-          {% endfor %}
-      </select>
-      
-      <label for="aluno">Aluno:</label>
-      <select name="aluno" required>
-          {% for aluno in alunos_associados %}
-              <option value="{{ aluno.id }}">{{ aluno.nome }}</option>
-          {% endfor %}
-      </select>
-  
-      <label for="nota">Nota:</label>
-      <input type="text" name="nota" required>
-  
-      <button type="submit">Adicionar Avaliação</button>
-  </form>
-  
-  
-    
-    <!-- Exibição de avaliações individuais -->
-    <h2>Avaliações Individuais</h2>
-    <ul>
-        {% for avaliacao in avaliacoes_individuais %}
-            <li>{{ avaliacao }}</li>
-        {% endfor %}
-    </ul>
+    <div class="container">
+      <h2 class="mt-5 mb-4">Lançar Notas para Avaliação</h2>
+      <div class="row mb-4">
+          <div class="col-md-6">
+              <form method="post">
+                  {% csrf_token %}
+                  <div class="mb-3">
+                      <label for="tipo" class="form-label">Tipo de Avaliação:</label>
+                      <select id="tipo" name="tipo" class="form-select" required>
+                          <option value="Prova">Prova</option>
+                          <option value="Trabalho">Trabalho</option>
+                          <option value="Projeto">Projeto</option>
+                          <!-- Adicione mais opções conforme necessário -->
+                      </select>
+                  </div>
+                  <div class="mb-3">
+                      <label for="nota" class="form-label">Nota:</label>
+                      <input type="number" id="nota" name="nota" min="0" max="10" step="0.01" class="form-control" required>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Salvar Nota</button>
+              </form>
+          </div>
+      </div>
 
-    <!-- Exibição da média por disciplina -->
-    <h2>Média por Disciplina</h2>
-    <ul>
-        {% for disciplina, media in media_por_disciplina.items %}
-            <li>{{ disciplina }}: {{ media }}</li>
-        {% endfor %}
-    </ul>
-        <section class="section"> 
-    <!-- DataTales Example -->
-    
-<!-- End Small Modal--> 
-    </section>
+      <h2 class="mt-5 mb-4">Alunos</h2>
+      <table class="table">
+          <thead>
+              <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Nome</th>
+                  <th scope="col">Classe</th>
+                  <th scope="col">Turma</th>
+                  <!-- Adicione mais cabeçalhos conforme necessário -->
+              </tr>
+          </thead>
+          <tbody>
+              {% for aluno in alunos %}
+              <tr>
+                  <th scope="row">{{ forloop.counter }}</th>
+                  <td>{{ aluno.nome }}</td>
+                  <td>{{ aluno.Classe }}</td>
+                  <td>{{ aluno.turma }}</td>
+                  <!-- Adicione mais colunas conforme necessário -->
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+  </div>
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->

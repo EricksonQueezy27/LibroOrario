@@ -322,49 +322,6 @@
       </nav>
     </div><!-- End Page Title -->
 
-    <section class="section dashboard">
-      <div class="row">
-
-        <!-- Left side columns -->
-        <div class="col-lg-8">
-          <div class="row">
-
-            <!-- Sales Card -->
-            <div class="col-xxl-4 col-md-6">
-              <div class="card info-card sales-card">
-
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
-
-                <div class="card-body">
-                  <h5 class="card-title">Numero de Turmas Associadas</h5>
-
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="ri-team-fill"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6>{{ numero_de_turmas }}</h6>
-                      <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div><!-- End Sales Card -->
-            <hr>
-    </section>
     <h1>Detalhes da Turma: {{ turma.nome }}-{{turma.classe}}</h1>
     
     <div style="text-align: center; margin-top: 20px;">
@@ -403,60 +360,116 @@
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Registre Suas Presenças na Disciplina de: <h4 class="badge bg-warning">{{disciplinaData.disciplina.nome}}</h4> </h6>
         </div>
-        <div class="card-body">
-            <div class="table-responsive">
+        <div class="container">
+          <h2 class="mt-5 mb-4">Lançar Notas para Avaliação</h2>
+          <div class="card-body">
+              <div class="table-responsive">
+  
+                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                      <thead>
+                          <tr>
+                              <th>Numro do Aluno</th>
+                              <th>Nome do Aluno</th>
+                              <th>Idade</th>
+                              <th>Sexo</th>
+                              <th>Encarregado</th>
+                              <th>Numero</th>
+                              <th>Detalhes</th>
+                              <th>Lançar Nota</th>  <!-- Nova coluna para o botão de lançar nota -->
+                              <th>Presença</th>
+                          </tr>
+                      </thead>
+                      
+                      <tbody>
+                          {% for aluno in alunos_relacionados %}
+                              <tr>
+                                  <td>{{ aluno.id }}</td>
+                                  <td>{{ aluno.nome }}</td>
+                                  <td>{{ aluno.data_nascimento }}</td>
+                                  <td>{{ aluno.sexo }}</td>
+                                  <td>{{ aluno.encarregado_nome }}</td>
+                                  <td>{{ aluno.encarregado_numero }}</td>
+                                  <td>
+                                      {% if aluno.id %}
+                                          <a href="{% url 'detalhes_aluno' aluno.id %}">Detalhes do Aluno</a>
+                                      {% else %}
+                                          <p>ID do aluno inválido ou vazio.</p>
+                                      {% endif %}
+                                  </td>
+                                  <td>
+                                      <!-- Botão para lançar a nota -->
+                                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{ aluno.id }}">
+                                          Lançar Nota
+                                      </button>
+                                  </td>
+                                  <td>
+                                      <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#smallModal">
+                                          <i class="fas fa-check"></i>
+                                      </button>
+                                      <button type="button" class="btn btn-danger">
+                                          <i class="fas fa-times"></i>
+                                      </button>
+                                  </td>
+                              </tr>
+                          {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+  
+      {% for aluno in alunos_relacionados %}
+      <div class="modal fade" id="exampleModal{{ aluno.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Lançar Nota para {{ aluno.nome }}</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <!-- Formulário para lançar a nota -->
+                      <form method="post">
+                          {% csrf_token %}
+                          <div class="mb-3">
+                              <label for="disciplina" class="form-label">Disciplina:</label>
+                              <select name="disciplina" id="disciplina" class="form-select" required>
+                                  <option value="" disabled selected>Selecione a Disciplina</option>
+                                  {% for disciplina in disciplinas %}
+                                      <option value="{{ disciplina.disciplina.id }}">{{ disciplina.disciplina.nome }}</option>
+                                  {% endfor %}
+                              </select>
+                          </div>
+                          <div class="mb-3">
+                              <label for="trimestre" class="form-label">Trimestre:</label>
+                              <select name="trimestre" id="trimestre" class="form-select" required>
+                                  <option value="" disabled selected>Selecione o Trimestre</option>
+                                  {% for choice in trimestre_choices %}
+                                      <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                  {% endfor %}
+                              </select>
+                          </div>
+                          <div class="mb-3">
+                              <label for="tipo_prova" class="form-label">Tipo de Prova:</label>
+                              <select name="tipo_prova" id="tipo_prova" class="form-select" required>
+                                  <option value="" disabled selected>Selecione o Tipo de Prova</option>
+                                  {% for choice in tipo_prova_choices %}
+                                      <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                  {% endfor %}
+                              </select>
+                          </div>
+                          <div class="mb-3">
+                              <label for="nota" class="form-label">Nota:</label>
+                              <input type="number" id="nota" name="nota" min="0" max="10" step="0.01" class="form-control" required>
+                          </div>
+                          <button type="submit" class="btn btn-primary">Salvar Nota</button>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+      {% endfor %}
+      
 
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Numro do Aluno</th>
-                            <th>Nome do Aluno</th>
-                            <th>Idade</th>
-                            <th>Sexo</th>
-                            <th>Encarregado</th>
-                            <th>Numero</th>
-                            <th>Detalhes</th>
-                            <th>Presença</th>
-                        </tr>
-                    </thead>
-                    
-                    <tbody>
-                        {% for aluno in alunos_relacionados %}
-                            <tr>
-                                <td>{{ aluno.id }}</td>
-                                <td>{{ aluno.nome }}</td>
-                                <td>{{ aluno.data_nascimento }}</td>
-                                <td>{{ aluno.sexo }}</td>  {# Certifique-se de usar o campo correto para o sexo do aluno #}
-                                <td>{{ aluno.encarregado_nome }}</td>
-                                <td>{{ aluno.encarregado_numero }}</td>
-                                <td>
-                                    {% if aluno.id %}
-                                        <a href="{% url 'detalhes_aluno' aluno.id %}">Detalhes do Aluno</a>
-                                    {% else %}
-                                        <p>ID do aluno inválido ou vazio.</p>
-                                    {% endif %}
-                                     
-                                  
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#smallModal">
-                                        <i class="fas fa-check"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-danger">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                        
-                </table>
-            </div>
-        </div>
-    </div>
-
-</div>
 
   <div class="modal fade" id="smallModal" tabindex="-1">
     <div class="modal-dialog modal-sm">

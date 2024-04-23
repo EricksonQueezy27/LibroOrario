@@ -1,0 +1,17 @@
+<!-- editar_aluno.html -->
+{% extends 'base_admin.html' %}
+
+{% block content %}
+
+<section class="section">
+    <div class="container">
+        <h2>Editar Aluno</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+        </form>
+    </div>
+</section>
+
+{% endblock %}

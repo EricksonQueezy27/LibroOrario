@@ -216,3 +216,26 @@ class PublicidadeForm(forms.ModelForm):
     class Meta:
         model = Publicidade
         fields = ['titulo', 'conteudo', 'imagem']
+        
+
+class AlunoForm(forms.ModelForm):
+    class Meta:
+        model = Aluno
+        fields = ['nome', 'profissao_encarregado', 'data_nascimento', 'foto', 'sexo', 'Classe', 'encarregado_nome', 'encarregado_numero']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['nome'].widget.attrs['placeholder'] = 'Digite o nome do aluno'
+    
+
+class NotaForm(forms.ModelForm):
+    class Meta:
+        model = Nota
+        fields = ['aluno', 'disciplina', 'trimestre', 'tipo', 'nota']
+        labels = {
+            'aluno': 'Aluno',
+            'disciplina': 'Disciplina',
+            'trimestre': 'Trimestre',
+            'tipo': 'Tipo',
+            'nota': 'Nota',
+        }

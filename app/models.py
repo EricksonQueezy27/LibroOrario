@@ -140,36 +140,30 @@ class Comportamento(models.Model):
 
     def __str__(self):
         return f"Comportamento de {self.aluno.nome}"
-
-class Avaliacao(models.Model):
-    aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE)
-    disciplina = models.ForeignKey(ProfessorDisciplina, on_delete=models.CASCADE)
-    trimestre = models.IntegerField()
     
-    def __str__(self):
-        return f"{self.aluno} - {self.disciplina} (Trimestre {self.trimestre})"
-
-    class Meta:
-        unique_together = ('aluno', 'disciplina', 'trimestre',)
-
-
 class Nota(models.Model):
     TIPO_CHOICES = [
         ('Prova', 'Prova'),
         ('Trabalho', 'Trabalho'),
         ('Projeto', 'Projeto'),
-        # Adicione outros tipos conforme necessário
+        ('Participação', 'Participação'),
+        ('Tarefa', 'Tarefa'),
+        ('Apresentação', 'Apresentação'),
+        ('Exercício', 'Exercício'),
+        ('Avaliação Oral', 'Avaliação Oral'),
+        ('Outro', 'Outro'),
+        # Adicione outras opções conforme necessário
     ]
     
-    avaliacao = models.ForeignKey(Avaliacao, on_delete=models.CASCADE)
-    tipo_prova = models.CharField(max_length=100, choices=TIPO_CHOICES)
+    aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE)
+    disciplina = models.ForeignKey(ProfessorDisciplina, on_delete=models.CASCADE)
+    trimestre = models.IntegerField(choices=((1, '1º Trimestre'), (2, '2º Trimestre'), (3, '3º Trimestre')))
+    tipo = models.CharField(max_length=100, choices=TIPO_CHOICES)
     nota = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
-        return f"{self.avaliacao} - {self.tipo_prova}: {self.nota}"
+        return f"{self.aluno} - {self.disciplina} (Trimestre {self.trimestre}) - {self.tipo}: {self.nota}"
 
-    class Meta:
-        unique_together = ('avaliacao', 'tipo_prova',)
        
 
 class Aula(models.Model):

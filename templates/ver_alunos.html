@@ -1,33 +1,32 @@
-<!-- cadastrar_publicidade_comunicado.html -->
 {% extends 'base_admin.html' %}
 
 {% block content %}
-
 
 <!-- Cards de Publicidades -->
 <section class="section">
     <div class="container">
         <h2>Alunos Matriculados</h2>
         <div class="row">
-            {% for alunos in alunos %}
+            {% for aluno in alunos %}
             <div class="col-md-4">
                 <div class="card">
-                    <img src="{{ alunos.foto.url }}" class="card-img-top" alt="{{ alunos.nome }}">
+                    {% if aluno.foto %}  <!-- Use 'aluno.foto' em vez de 'foto' -->
+                    <img src="{{ aluno.foto.url }}" class="card-img-top" alt="{{ aluno.nome }}">
+                    {% endif %} 
                     <div class="card-body">
-                        <h5 class="card-title">{{ alunos.nome }}</h5>
-                        <p class="card-text">Idade: {{ alunos.idade }}</p>
-                        <p class="card-text">Genêro: {{ alunos.sexo }}</p>
-                        <p class="card-text">Encarregado: {{ alunos.encarregado_nome }}</p>
-                        <p class="card-text">Turma: {{ alunos.turma }} {{ alunos.turma.classe }}</p>
-                          
-                        <a href="" class="btn btn-primary">Editar</a>                    
+                        <h5 class="card-title">{{ aluno.nome }}</h5>
+                        <p class="card-text">Idade: {{ aluno.idade }}</p>
+                        <p class="card-text">Gênero: {{ aluno.sexo }}</p>
+                        <p class="card-text">Encarregado: {{ aluno.encarregado_nome }}</p>
+                        <p class="card-text">Turma: {{ aluno.turma }} {{ aluno.turma.classe }}</p>
+                        
+                        <a href="{% url 'editar_aluno' aluno.id %}">Editar {{ aluno.nome }}</a>
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
     </div>
-     
 </section>
 
 {% endblock %}

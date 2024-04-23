@@ -445,6 +445,10 @@ def detalhes_aula(request, aula_id):
 
     return render(request, 'detalhes_aula.html', context)
 
+def avalicao(request):
+    
+    
+    return  render(request, 'avalicao.html')
 
 @login_required
 def detalhes_turma(request, turma_id):
@@ -469,17 +473,27 @@ def detalhes_turma(request, turma_id):
         if troca_disciplina_form.is_valid():
             disciplina_selecionada = troca_disciplina_form.cleaned_data['disciplinas']
     
- 
+    if request.method == 'POST':
+            # Passe os dados do aluno para o formulário NotaForm
+            nota_form = NotaForm(request.POST)
+            if nota_form.is_valid():
+                # Salve a nota no banco de dados
+                nota_form.save()
+                # Redirecione de volta para a página de detalhes da turma após salvar a nota
+                return redirect('detalhes_turma', turma_id=turma_id)
+    else:
+        # Se o método não for POST, crie uma instância do formulário NotaForm sem dados
+        nota_form = NotaForm()
+        
     context = {
         'turma': turma,
         'alunos_relacionados': alunos_relacionados,
-        
         'horarios': horarios,
         'troca_disciplina_form': troca_disciplina_form,
         'nova_disciplina': disciplina_selecionada,
         'disciplinas': disciplinas,
         'disciplinaData': disciplina_selecionada_instance,
-        
+        'nota_form': nota_form,  # Adicionando o formulário de lançamento de notas ao contexto
     }
 
     return render(request, 'detalhes_turma.html', context)
@@ -574,7 +588,7 @@ def lancar_notas(request, pk):
         'aula': aula,
         'alunos': alunos,
     }
-    return render(request, 'lancar_notas.html', context)
+    return render(request, 'avaliacao.html', context)
 
 def visualizar_boletim(request, aluno_id):
     aluno = get_object_or_404(Aluno, pk=aluno_id)
@@ -890,6 +904,18 @@ def editar_publicidade(request, publicidade_id):
         form = PublicidadeForm(instance=publicidade)
     
     return render(request, 'editar_publicidade.html', {'form': form})
+
+@user_passes_test(is_superuser)
+def editar_aluno(request, id):  
+    aluno = get_object_or_404(Aluno, id=id)  
+    if request.method == 'POST':
+        form = AlunoForm(request.POST, instance=aluno)
+        if form.is_valid():
+            form.save()
+            return redirect('ver_alunos')  
+    else:
+        form = AlunoForm(instance=aluno)
+    return render(request, 'editar_aluno.html', {'form': form})
 
 @user_passes_test(is_superuser)
 def excluir_publicidade(request, publicidade_id):
