@@ -13,7 +13,7 @@ RUN apt-get update && \
     apt-get install -y python3-dev
 # Create a virtual environment and activate it
 RUN python -m venv /opt/venv && \
-    . /opt/venv/bin/activate && || . /opt/venv/Scripts/activate\
+    . /opt/venv/bin/activate && || \
     pip install --upgrade pip && \
     pip install -r requirements.txt\
     python manage.py collectstatic\
@@ -26,4 +26,5 @@ ENV NAME World
 
 # Run app.py when the container launches
 CMD ["gunicorn config.wsgi--log-file -"]
+
 EXPOSE 8000
