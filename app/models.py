@@ -6,7 +6,7 @@ from datetime import date
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from django.utils.dateparse import parse_date
-from Libro01.settings import AUTH_USER_MODEL
+from config.settings import AUTH_USER_MODEL
 # Create your models here.
 class CustomUser(AbstractUser):
     # Adicione campos personalizados, se necessário
