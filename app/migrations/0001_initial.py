@@ -6,7 +6,7 @@ import django.contrib.auth.validators
 from django.db import migrations, models
 import django.db.models.deletion
 import django.utils.timezone
-from config.settings import AUTH_USER_MODEL
+from Libro01.settings import AUTH_USER_MODEL
 
 class Migration(migrations.Migration):
 

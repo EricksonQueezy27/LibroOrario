@@ -25,6 +25,6 @@ RUN python -m venv /opt/venv && \
 ENV NAME World
 
 # Run app.py when the container launches
-CMD ["gunicorn config.wsgi--log-file -"]
+CMD ["gunicorn Libro01.wsgi--log-file -"]
 
 EXPOSE 8000
