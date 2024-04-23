@@ -6,7 +6,7 @@ from datetime import date
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from django.utils.dateparse import parse_date
-
+from Libro01.settings import AUTH_USER_MODEL
 # Create your models here.
 class CustomUser(AbstractUser):
     # Adicione campos personalizados, se necessário
@@ -263,7 +263,7 @@ class Publicidade(models.Model):
         return self.titulo
     
 class Encarregado(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(AUTH_USER_MODEL, on_delete=models.CASCADE)
     nome = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     telefone = models.CharField(max_length=20)

@@ -6,7 +6,7 @@ import django.contrib.auth.validators
 from django.db import migrations, models
 import django.db.models.deletion
 import django.utils.timezone
-
+from Libro01.settings import AUTH_USER_MODEL
 
 class Migration(migrations.Migration):
 
@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('auth', '0012_alter_user_first_name_max_length'),
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        migrations.swappable_dependency(AUTH_USER_MODEL),
     ]
 
     operations = [
@@ -143,7 +143,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='professor',
             name='user',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=AUTH_USER_MODEL),
         ),
         migrations.CreateModel(
             name='Presenca',
@@ -161,8 +161,8 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('mensagem', models.TextField()),
                 ('data_envio', models.DateTimeField(auto_now_add=True)),
-                ('encarregado', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='mensagens_recebidas', to=settings.AUTH_USER_MODEL)),
-                ('professor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='mensagens_enviadas', to=settings.AUTH_USER_MODEL)),
+                ('encarregado', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='mensagens_recebidas', to=AUTH_USER_MODEL)),
+                ('professor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='mensagens_enviadas', to=AUTH_USER_MODEL)),
             ],
         ),
         migrations.AddField(
@@ -197,7 +197,7 @@ class Migration(migrations.Migration):
                 ('profissao', models.CharField(max_length=100)),
                 ('foto', models.ImageField(blank=True, null=True, upload_to='images/encarregados/')),
                 ('alunos_associados', models.ManyToManyField(blank=True, to='app.aluno')),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(

@@ -11,14 +11,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='mensagemsms',
-            name='encarregado',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='mensagens_recebidas', to='app.encarregado'),
-        ),
-        migrations.AlterField(
-            model_name='mensagemsms',
-            name='professor',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='mensagens_enviadas', to='app.professor'),
-        ),
+
+
     ]
