@@ -28,6 +28,29 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+handler404 = 'core.views.error_404'
+handler500 = 'core.views.error_500'
+
+CORS_ALLOW_HEADERS = (
+    "accept",
+    "authorization",
+    "content-type",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+)
+
+CORS_ALLOWED_ORIGINS = ['https://railyay.app']  
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+CORS_ALLOWED_HEADERS = ["*"]
+CORS_EXPOSE_HEADERS = []
+CORS_PREFLIGHT_MAX_AGE = 86400
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS =  ["https://"]
 
 
 # Application definition
@@ -45,6 +68,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'crispy_forms',
+    "corsheaders",
     #'crispy_bootstrap4',
     'push_notifications',
 ]
@@ -56,6 +80,7 @@ AUTH_USER_MODEL="users.User"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -63,6 +88,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
+        'corsheaders.middleware.CorsMiddleware'
 ]
 
 ROOT_URLCONF = 'Libro01.urls'
