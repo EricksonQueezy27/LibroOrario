@@ -13,7 +13,7 @@ RUN apt-get update && \
     apt-get install -y python3-dev
 # Create a virtual environment and activate it
 RUN python -m venv /opt/venv && \
-    . /opt/venv/bin/activate && \
+    . /opt/venv/bin/activate && || . /opt/venv/Scripts/activate\
     pip install --upgrade pip && \
     pip install -r requirements.txt\
     python manage.py collectstatic\
