@@ -5863,11 +5863,11 @@
         Element.prototype.updateInnerText = function (forceUpdate) {
             var textEl = this._textContent;
             if (textEl && (!textEl.ignore || forceUpdate)) {
-                if (!this.textConfig) {
-                    this.textConfig = {};
+                if (!this.textconfig) {
+                    this.textconfig = {};
                 }
-                var textConfig = this.textConfig;
-                var isLocal = textConfig.local;
+                var textconfig = this.textconfig;
+                var isLocal = textconfig.local;
                 var innerTransformable = textEl.innerTransformable;
                 var textAlign = void 0;
                 var textVerticalAlign = void 0;
@@ -5875,10 +5875,10 @@
                 innerTransformable.parent = isLocal ? this : null;
                 var innerOrigin = false;
                 innerTransformable.copyTransform(textEl);
-                if (textConfig.position != null) {
+                if (textconfig.position != null) {
                     var layoutRect = tmpBoundingRect;
-                    if (textConfig.layoutRect) {
-                        layoutRect.copy(textConfig.layoutRect);
+                    if (textconfig.layoutRect) {
+                        layoutRect.copy(textconfig.layoutRect);
                     }
                     else {
                         layoutRect.copy(this.getBoundingRect());
@@ -5887,17 +5887,17 @@
                         layoutRect.applyTransform(this.transform);
                     }
                     if (this.calculateTextPosition) {
-                        this.calculateTextPosition(tmpTextPosCalcRes, textConfig, layoutRect);
+                        this.calculateTextPosition(tmpTextPosCalcRes, textconfig, layoutRect);
                     }
                     else {
-                        calculateTextPosition(tmpTextPosCalcRes, textConfig, layoutRect);
+                        calculateTextPosition(tmpTextPosCalcRes, textconfig, layoutRect);
                     }
                     innerTransformable.x = tmpTextPosCalcRes.x;
                     innerTransformable.y = tmpTextPosCalcRes.y;
                     textAlign = tmpTextPosCalcRes.align;
                     textVerticalAlign = tmpTextPosCalcRes.verticalAlign;
-                    var textOrigin = textConfig.origin;
-                    if (textOrigin && textConfig.rotation != null) {
+                    var textOrigin = textconfig.origin;
+                    if (textOrigin && textconfig.rotation != null) {
                         var relOriginX = void 0;
                         var relOriginY = void 0;
                         if (textOrigin === 'center') {
@@ -5913,10 +5913,10 @@
                         innerTransformable.originY = -innerTransformable.y + relOriginY + (isLocal ? 0 : layoutRect.y);
                     }
                 }
-                if (textConfig.rotation != null) {
-                    innerTransformable.rotation = textConfig.rotation;
+                if (textconfig.rotation != null) {
+                    innerTransformable.rotation = textconfig.rotation;
                 }
-                var textOffset = textConfig.offset;
+                var textOffset = textconfig.offset;
                 if (textOffset) {
                     innerTransformable.x += textOffset[0];
                     innerTransformable.y += textOffset[1];
@@ -5925,16 +5925,16 @@
                         innerTransformable.originY = -textOffset[1];
                     }
                 }
-                var isInside = textConfig.inside == null
-                    ? (typeof textConfig.position === 'string' && textConfig.position.indexOf('inside') >= 0)
-                    : textConfig.inside;
+                var isInside = textconfig.inside == null
+                    ? (typeof textconfig.position === 'string' && textconfig.position.indexOf('inside') >= 0)
+                    : textconfig.inside;
                 var innerTextDefaultStyle = this._innerTextDefaultStyle || (this._innerTextDefaultStyle = {});
                 var textFill = void 0;
                 var textStroke = void 0;
                 var autoStroke = void 0;
                 if (isInside && this.canBeInsideText()) {
-                    textFill = textConfig.insideFill;
-                    textStroke = textConfig.insideStroke;
+                    textFill = textconfig.insideFill;
+                    textStroke = textconfig.insideStroke;
                     if (textFill == null || textFill === 'auto') {
                         textFill = this.getInsideTextFill();
                     }
@@ -5944,8 +5944,8 @@
                     }
                 }
                 else {
-                    textFill = textConfig.outsideFill;
-                    textStroke = textConfig.outsideStroke;
+                    textFill = textconfig.outsideFill;
+                    textStroke = textconfig.outsideStroke;
                     if (textFill == null || textFill === 'auto') {
                         textFill = this.getOutsideFill();
                     }
@@ -6002,8 +6002,8 @@
         };
         Element.prototype.traverse = function (cb, context) { };
         Element.prototype.attrKV = function (key, value) {
-            if (key === 'textConfig') {
-                this.setTextConfig(value);
+            if (key === 'textconfig') {
+                this.setTextconfig(value);
             }
             else if (key === 'textContent') {
                 this.setTextContent(value);
@@ -6062,8 +6062,8 @@
             if (!normalState) {
                 normalState = this._normalState = {};
             }
-            if (toState.textConfig && !normalState.textConfig) {
-                normalState.textConfig = this.textConfig;
+            if (toState.textconfig && !normalState.textconfig) {
+                normalState.textconfig = this.textconfig;
             }
             this._savePrimaryToNormal(toState, normalState, PRIMARY_STATES_KEYS);
         };
@@ -6251,29 +6251,29 @@
         };
         Element.prototype._mergeStates = function (states) {
             var mergedState = {};
-            var mergedTextConfig;
+            var mergedTextconfig;
             for (var i = 0; i < states.length; i++) {
                 var state = states[i];
                 extend(mergedState, state);
-                if (state.textConfig) {
-                    mergedTextConfig = mergedTextConfig || {};
-                    extend(mergedTextConfig, state.textConfig);
+                if (state.textconfig) {
+                    mergedTextconfig = mergedTextconfig || {};
+                    extend(mergedTextconfig, state.textconfig);
                 }
             }
-            if (mergedTextConfig) {
-                mergedState.textConfig = mergedTextConfig;
+            if (mergedTextconfig) {
+                mergedState.textconfig = mergedTextconfig;
             }
             return mergedState;
         };
         Element.prototype._applyStateObj = function (stateName, state, normalState, keepCurrentStates, transition, animationCfg) {
             var needsRestoreToNormal = !(state && keepCurrentStates);
-            if (state && state.textConfig) {
-                this.textConfig = extend({}, keepCurrentStates ? this.textConfig : normalState.textConfig);
-                extend(this.textConfig, state.textConfig);
+            if (state && state.textconfig) {
+                this.textconfig = extend({}, keepCurrentStates ? this.textconfig : normalState.textconfig);
+                extend(this.textconfig, state.textconfig);
             }
             else if (needsRestoreToNormal) {
-                if (normalState.textConfig) {
-                    this.textConfig = normalState.textConfig;
+                if (normalState.textconfig) {
+                    this.textconfig = normalState.textconfig;
                 }
             }
             var transitionTarget = {};
@@ -6384,15 +6384,15 @@
             this._textContent = textEl;
             this.markRedraw();
         };
-        Element.prototype.setTextConfig = function (cfg) {
-            if (!this.textConfig) {
-                this.textConfig = {};
+        Element.prototype.setTextconfig = function (cfg) {
+            if (!this.textconfig) {
+                this.textconfig = {};
             }
-            extend(this.textConfig, cfg);
+            extend(this.textconfig, cfg);
             this.markRedraw();
         };
-        Element.prototype.removeTextConfig = function () {
-            this.textConfig = null;
+        Element.prototype.removeTextconfig = function () {
+            this.textconfig = null;
             this.markRedraw();
         };
         Element.prototype.removeTextContent = function () {
@@ -14451,7 +14451,7 @@
      * Return null if animation is disabled.
      */
 
-    function getAnimationConfig(animationType, animatableModel, dataIndex, // Extra opts can override the option in animatable model.
+    function getAnimationconfig(animationType, animatableModel, dataIndex, // Extra opts can override the option in animatable model.
     extraOpts, // TODO It's only for pictorial bar now.
     extraDelayParams) {
       var animationPayload; // Check if there is global animation configuration from dataZoom/resize can override the config in option.
@@ -14530,13 +14530,13 @@
         el.stopAnimation('leave');
       }
 
-      var animationConfig = getAnimationConfig(animationType, animatableModel, dataIndex, isRemove ? removeOpt || {} : null, animatableModel && animatableModel.getAnimationDelayParams ? animatableModel.getAnimationDelayParams(el, dataIndex) : null);
+      var animationconfig = getAnimationconfig(animationType, animatableModel, dataIndex, isRemove ? removeOpt || {} : null, animatableModel && animatableModel.getAnimationDelayParams ? animatableModel.getAnimationDelayParams(el, dataIndex) : null);
 
-      if (animationConfig && animationConfig.duration > 0) {
-        var duration = animationConfig.duration;
-        var animationDelay = animationConfig.delay;
-        var animationEasing = animationConfig.easing;
-        var animateConfig = {
+      if (animationconfig && animationconfig.duration > 0) {
+        var duration = animationconfig.duration;
+        var animationDelay = animationconfig.delay;
+        var animationEasing = animationconfig.easing;
+        var animateconfig = {
           duration: duration,
           delay: animationDelay || 0,
           easing: animationEasing,
@@ -14548,7 +14548,7 @@
           scope: animationType,
           during: during
         };
-        isFrom ? el.animateFrom(props, animateConfig) : el.animateTo(props, animateConfig);
+        isFrom ? el.animateFrom(props, animateconfig) : el.animateTo(props, animateconfig);
       } else {
         el.stopAnimation(); // If `isFrom`, the props is the "from" props.
 
@@ -15088,7 +15088,7 @@
       return val <= 1e-6 && val >= -1e-6;
     }
 
-    function setTooltipConfig(opt) {
+    function setTooltipconfig(opt) {
       var itemTooltipOption = opt.itemTooltipOption;
       var componentModel = opt.componentModel;
       var itemName = opt.itemName;
@@ -15117,7 +15117,7 @@
       var ecData = getECData(opt.el);
       ecData.componentMainType = mainType;
       ecData.componentIndex = componentIndex;
-      ecData.tooltipConfig = {
+      ecData.tooltipconfig = {
         name: itemName,
         option: defaults({
           content: itemName,
@@ -15190,7 +15190,7 @@
         createIcon: createIcon,
         linePolygonIntersect: linePolygonIntersect,
         lineLineIntersect: lineLineIntersect,
-        setTooltipConfig: setTooltipConfig,
+        setTooltipconfig: setTooltipconfig,
         traverseElements: traverseElements,
         Group: Group,
         Image: ZRImage,
@@ -15302,7 +15302,7 @@
 
         if (!isSetOnText) {
           // Always create new
-          targetEl.setTextConfig(createTextConfig(normalModel, opt, false));
+          targetEl.setTextconfig(createTextconfig(normalModel, opt, false));
         }
 
         for (var i = 0; i < SPECIAL_STATES.length; i++) {
@@ -15322,7 +15322,7 @@
 
             if (!isSetOnText) {
               var targetElEmphasisState = targetEl.ensureState(stateName);
-              targetElEmphasisState.textConfig = createTextConfig(stateModel, opt, true);
+              targetElEmphasisState.textconfig = createTextconfig(stateModel, opt, true);
             }
           }
         } // PENDING: if there is many requirements that emphasis position
@@ -15384,9 +15384,9 @@
 
       return textStyle;
     }
-    function createTextConfig(textStyleModel, opt, isNotNormal) {
+    function createTextconfig(textStyleModel, opt, isNotNormal) {
       opt = opt || {};
-      var textConfig = {};
+      var textconfig = {};
       var labelPosition;
       var labelRotate = textStyleModel.getShallow('rotate');
       var labelDistance = retrieve2(textStyleModel.getShallow('distance'), isNotNormal ? null : 5);
@@ -15397,25 +15397,25 @@
       labelPosition === 'outside' && (labelPosition = opt.defaultOutsidePosition || 'top');
 
       if (labelPosition != null) {
-        textConfig.position = labelPosition;
+        textconfig.position = labelPosition;
       }
 
       if (labelOffset != null) {
-        textConfig.offset = labelOffset;
+        textconfig.offset = labelOffset;
       }
 
       if (labelRotate != null) {
         labelRotate *= Math.PI / 180;
-        textConfig.rotation = labelRotate;
+        textconfig.rotation = labelRotate;
       }
 
       if (labelDistance != null) {
-        textConfig.distance = labelDistance;
+        textconfig.distance = labelDistance;
       } // fill and auto is determined by the color of path fill if it's not specified by developers.
 
 
-      textConfig.outsideFill = textStyleModel.get('color') === 'inherit' ? opt.inheritColor || null : 'auto';
-      return textConfig;
+      textconfig.outsideFill = textStyleModel.get('color') === 'inherit' ? opt.inheritColor || null : 'auto';
+      return textconfig;
     }
     /**
      * The uniform entry of set text style, that is, retrieve style definitions
@@ -17687,7 +17687,7 @@
       animationEasing: 'cubicInOut',
       animationEasingUpdate: 'cubicInOut',
       animationThreshold: 2000,
-      // Configuration for progressive/incremental rendering
+      // configuration for progressive/incremental rendering
       progressiveThreshold: 3000,
       progressive: 400,
       // Threshold of if use single hover layer to optimize.
@@ -22947,7 +22947,7 @@
      * PENDING: Whether to provide transposition transform?
      *
      * [IMPLEMENTAION_MEMO]:
-     * "sourceVisitConfig" are calculated from `metaRawOption` and `data`.
+     * "sourceVisitconfig" are calculated from `metaRawOption` and `data`.
      * They will not be calculated until `source` is about to be visited (to prevent from
      * duplicate calcuation). `source` is visited only in series and input to transforms.
      *
@@ -25045,7 +25045,7 @@
           fill: 'none'
         },
         textContent: textContent,
-        textConfig: {
+        textconfig: {
           position: 'right',
           distance: 10
         },
@@ -29695,10 +29695,10 @@
           }
 
           if (labelLine) {
-            var textGuideLineConfig = el.textGuideLineConfig;
+            var textGuideLineconfig = el.textGuideLineconfig;
             labelLine.z = z;
             labelLine.zlevel = zlevel;
-            isFinite(maxZ2) && (labelLine.z2 = maxZ2 + (textGuideLineConfig && textGuideLineConfig.showAbove ? 1 : -1));
+            isFinite(maxZ2) && (labelLine.z2 = maxZ2 + (textGuideLineconfig && textGuideLineconfig.showAbove ? 1 : -1));
           }
 
           return maxZ2;
@@ -36918,8 +36918,8 @@
 
         labelLine.style.fill = null;
         var showAbove = normalModel.get('showAbove');
-        var labelLineConfig = targetEl.textGuideLineConfig = targetEl.textGuideLineConfig || {};
-        labelLineConfig.showAbove = showAbove || false; // Custom the buildPath.
+        var labelLineconfig = targetEl.textGuideLineconfig = targetEl.textGuideLineconfig || {};
+        labelLineconfig.showAbove = showAbove || false; // Custom the buildPath.
 
         labelLine.buildPath = buildLabelLinePath;
       }
@@ -39060,7 +39060,7 @@
             this._zlevelList = [];
             this._prevDisplayList = [];
             this._layers = {};
-            this._layerConfig = {};
+            this._layerconfig = {};
             this._needsManuallyCompositing = false;
             this.type = 'canvas';
             var singleCanvas = !root.nodeName
@@ -39349,11 +39349,11 @@
                 layer = new Layer('zr_' + zlevel, this, this.dpr);
                 layer.zlevel = zlevel;
                 layer.__builtin__ = true;
-                if (this._layerConfig[zlevel]) {
-                    merge(layer, this._layerConfig[zlevel], true);
+                if (this._layerconfig[zlevel]) {
+                    merge(layer, this._layerconfig[zlevel], true);
                 }
-                else if (this._layerConfig[zlevel - EL_AFTER_INCREMENTAL_INC]) {
-                    merge(layer, this._layerConfig[zlevel - EL_AFTER_INCREMENTAL_INC], true);
+                else if (this._layerconfig[zlevel - EL_AFTER_INCREMENTAL_INC]) {
+                    merge(layer, this._layerconfig[zlevel - EL_AFTER_INCREMENTAL_INC], true);
                 }
                 if (virtual) {
                     layer.virtual = virtual;
@@ -39536,18 +39536,18 @@
         };
         CanvasPainter.prototype.configLayer = function (zlevel, config) {
             if (config) {
-                var layerConfig = this._layerConfig;
-                if (!layerConfig[zlevel]) {
-                    layerConfig[zlevel] = config;
+                var layerconfig = this._layerconfig;
+                if (!layerconfig[zlevel]) {
+                    layerconfig[zlevel] = config;
                 }
                 else {
-                    merge(layerConfig[zlevel], config, true);
+                    merge(layerconfig[zlevel], config, true);
                 }
                 for (var i = 0; i < this._zlevelList.length; i++) {
                     var _zlevel = this._zlevelList[i];
                     if (_zlevel === zlevel || _zlevel === zlevel + EL_AFTER_INCREMENTAL_INC) {
                         var layer = this._layers[_zlevel];
-                        merge(layer, layerConfig[zlevel], true);
+                        merge(layer, layerconfig[zlevel], true);
                     }
                 }
             }
@@ -42072,7 +42072,7 @@
               },
               enableTextSetter: true
             }, getEndLabelStateSpecified(endLabelModel, coordSys));
-            polyline.textConfig.position = null;
+            polyline.textconfig.position = null;
           }
         } else if (this._endLabel) {
           this._polyline.removeTextContent();
@@ -42875,13 +42875,13 @@
     function setSectorTextRotation(sector, textPosition, positionMapping, rotateType) {
       if (isNumber(rotateType)) {
         // user-set rotation
-        sector.setTextConfig({
+        sector.setTextconfig({
           rotation: rotateType
         });
         return;
       } else if (isArray(textPosition)) {
         // user-set position, use 0 as auto rotation
-        sector.setTextConfig({
+        sector.setTextconfig({
           rotation: 0
         });
         return;
@@ -42914,7 +42914,7 @@
           break;
 
         default:
-          sector.setTextConfig({
+          sector.setTextconfig({
             rotation: 0
           });
           return;
@@ -42933,7 +42933,7 @@
         rotate -= Math.PI;
       }
 
-      sector.setTextConfig({
+      sector.setTextconfig({
         rotation: rotate
       });
     }
@@ -43744,7 +43744,7 @@
 
       if (isPolar && label) {
         var position = itemModel.get(['label', 'position']);
-        el.textConfig.inside = position === 'middle' ? true : null;
+        el.textconfig.inside = position === 'middle' ? true : null;
         setSectorTextRotation(el, position === 'outside' ? labelPositionOutside : position, createPolarPositionMapping(isHorizontalOrRadial), itemModel.get(['label', 'rotate']));
       }
 
@@ -44649,7 +44649,7 @@
           }
         }
 
-        sector.setTextConfig({
+        sector.setTextconfig({
           inside: isLabelInside
         });
       });
@@ -44695,7 +44695,7 @@
               points: linePoints
             }); // Set the anchor to the midpoint of sector
 
-            label.__hostTarget.textGuideLineConfig = {
+            label.__hostTarget.textGuideLineconfig = {
               anchor: new Point(linePoints[0][0], linePoints[0][1])
             };
           }
@@ -44844,9 +44844,9 @@
           defaultOpacity: visualOpacity,
           defaultText: seriesModel.getFormattedLabel(idx, 'normal') || data.getName(idx)
         });
-        var labelText = sector.getTextContent(); // Set textConfig on sector.
+        var labelText = sector.getTextContent(); // Set textconfig on sector.
 
-        sector.setTextConfig({
+        sector.setTextconfig({
           // reset position, rotation
           position: null,
           rotation: null
@@ -47350,7 +47350,7 @@
           }),
           z2: 1
         });
-        setTooltipConfig({
+        setTooltipconfig({
           el: textEl,
           componentModel: axisModel,
           itemName: name
@@ -49996,7 +49996,7 @@
      * Whether need to call `convertEC4CompatibleStyle`.
      */
 
-    function isEC4CompatibleStyle(style, elType, hasOwnTextContentOption, hasOwnTextConfig) {
+    function isEC4CompatibleStyle(style, elType, hasOwnTextContentOption, hasOwnTextconfig) {
       // Since echarts5, `RectText` is separated from its host element and style.text
       // does not exist any more. The compat work brings some extra burden on performance.
       // So we provide:
@@ -50006,20 +50006,20 @@
       //     But in this case we do not compat (difficult to detect and rare case):
       //     Becuse custom series and graphic component support "merge", users may firstly
       //     only set `textStrokeWidth` style or secondly only set `text`.
-      return style && (style.legacy || style.legacy !== false && !hasOwnTextContentOption && !hasOwnTextConfig && elType !== 'tspan' // Difficult to detect whether legacy for a "text" el.
+      return style && (style.legacy || style.legacy !== false && !hasOwnTextContentOption && !hasOwnTextconfig && elType !== 'tspan' // Difficult to detect whether legacy for a "text" el.
       && (elType === 'text' || hasOwn(style, 'text')));
     }
     /**
      * `EC4CompatibleStyle` is style that might be in echarts4 format or echarts5 format.
      * @param hostStyle The properties might be modified.
-     * @return If be text el, `textContentStyle` and `textConfig` will not be returned.
-     *         Otherwise a `textContentStyle` and `textConfig` will be created, whose props area
+     * @return If be text el, `textContentStyle` and `textconfig` will not be returned.
+     *         Otherwise a `textContentStyle` and `textconfig` will be created, whose props area
      *         retried from the `hostStyle`.
      */
 
     function convertFromEC4CompatibleStyle(hostStyle, elType, isNormal) {
       var srcStyle = hostStyle;
-      var textConfig;
+      var textconfig;
       var textContent;
       var textContentStyle;
 
@@ -50045,19 +50045,19 @@
           // That might cause incorrect state.
           silent: true
         };
-        textConfig = {};
+        textconfig = {};
         var hasOwnPos = hasOwn(srcStyle, 'textPosition');
 
         if (isNormal) {
-          textConfig.position = hasOwnPos ? srcStyle.textPosition : 'inside';
+          textconfig.position = hasOwnPos ? srcStyle.textPosition : 'inside';
         } else {
-          hasOwnPos && (textConfig.position = srcStyle.textPosition);
+          hasOwnPos && (textconfig.position = srcStyle.textPosition);
         }
 
-        hasOwn(srcStyle, 'textPosition') && (textConfig.position = srcStyle.textPosition);
-        hasOwn(srcStyle, 'textOffset') && (textConfig.offset = srcStyle.textOffset);
-        hasOwn(srcStyle, 'textRotation') && (textConfig.rotation = srcStyle.textRotation);
-        hasOwn(srcStyle, 'textDistance') && (textConfig.distance = srcStyle.textDistance);
+        hasOwn(srcStyle, 'textPosition') && (textconfig.position = srcStyle.textPosition);
+        hasOwn(srcStyle, 'textOffset') && (textconfig.offset = srcStyle.textOffset);
+        hasOwn(srcStyle, 'textRotation') && (textconfig.rotation = srcStyle.textRotation);
+        hasOwn(srcStyle, 'textDistance') && (textconfig.distance = srcStyle.textDistance);
       }
 
       convertEC4CompatibleRichItem(textContentStyle, hostStyle);
@@ -50065,7 +50065,7 @@
         convertEC4CompatibleRichItem(richItem, richItem);
       });
       return {
-        textConfig: textConfig,
+        textconfig: textconfig,
         textContent: textContent
       };
     }
@@ -50117,9 +50117,9 @@
     var ELEMENT_ANIMATABLE_PROPS = ['', 'style', 'shape', 'extra'];
     var transitionInnerStore = makeInner();
 
-    function getElementAnimationConfig(animationType, el, elOption, parentModel, dataIndex) {
+    function getElementAnimationconfig(animationType, el, elOption, parentModel, dataIndex) {
       var animationProp = animationType + "Animation";
-      var config = getAnimationConfig(animationType, parentModel, dataIndex) || {};
+      var config = getAnimationconfig(animationType, parentModel, dataIndex) || {};
       var userDuring = transitionInnerStore(el).userDuring; // Only set when duration is > 0 and it's need to be animated.
 
       if (config.duration > 0) {
@@ -50177,7 +50177,7 @@
               extend(propName ? enterFromProps_1[propName] : enterFromProps_1, prop.enterFrom);
             }
           });
-          var config = getElementAnimationConfig('enter', el, elOption, animatableModel, dataIndex);
+          var config = getElementAnimationconfig('enter', el, elOption, animatableModel, dataIndex);
 
           if (config.duration > 0) {
             el.animateFrom(enterFromProps_1, config);
@@ -50220,7 +50220,7 @@
         if (leaveToProps) {
           // TODO TODO use leave after leaveAnimation in series is introduced
           // TODO Data index?
-          var config = getElementAnimationConfig('update', el, elOption, animatableModel, 0);
+          var config = getElementAnimationconfig('update', el, elOption, animatableModel, 0);
 
           config.done = function () {
             parent_1.remove(el);
@@ -50285,7 +50285,7 @@
     function applyPropsTransition(el, elOption, dataIndex, model, // Can be null/undefined
     transFromProps) {
       if (transFromProps) {
-        var config = getElementAnimationConfig('update', el, elOption, model, dataIndex);
+        var config = getElementAnimationconfig('update', el, elOption, model, dataIndex);
 
         if (config.duration > 0) {
           el.animateFrom(transFromProps, config);
@@ -50639,7 +50639,7 @@
       if (animatableModel && duration == null) {
         // Default to use duration of config.
         // NOTE: animation config from payload will be ignored because they are mainly for transitions.
-        var config = getAnimationConfig('enter', animatableModel, 0);
+        var config = getAnimationconfig('enter', animatableModel, 0);
         duration = config && config.duration;
       }
 
@@ -50805,13 +50805,13 @@
           }
 
           var textContentOption = elOption.textContent;
-          var textConfig = elOption.textConfig;
+          var textconfig = elOption.textconfig;
 
-          if (elOptionStyle && isEC4CompatibleStyle(elOptionStyle, elType, !!textConfig, !!textContentOption)) {
+          if (elOptionStyle && isEC4CompatibleStyle(elOptionStyle, elType, !!textconfig, !!textContentOption)) {
             var convertResult = convertFromEC4CompatibleStyle(elOptionStyle, elType, true);
 
-            if (!textConfig && convertResult.textConfig) {
-              textConfig = elOption.textConfig = convertResult.textConfig;
+            if (!textconfig && convertResult.textconfig) {
+              textconfig = elOption.textconfig = convertResult.textconfig;
             }
 
             if (!textContentOption && convertResult.textContent) {
@@ -50899,10 +50899,10 @@
             }
 
             var elInner = inner$a(el);
-            el.setTextConfig(textConfig);
+            el.setTextconfig(textconfig);
             elInner.option = elOption;
             setEventData(el, graphicModel, elOption);
-            setTooltipConfig({
+            setTooltipconfig({
               el: el,
               componentModel: graphicModel,
               itemName: el.name,
@@ -52680,7 +52680,7 @@
               ignore: true
             });
             path.setTextContent(textContent);
-            setTooltipConfig({
+            setTooltipconfig({
               el: path,
               componentModel: toolboxModel,
               itemName: iconName,
@@ -52697,7 +52697,7 @@
                 fill: iconStyleEmphasisModel.get('textFill') || hoverStyle.fill || hoverStyle.stroke || '#000',
                 backgroundColor: iconStyleEmphasisModel.get('textBackgroundColor')
               });
-              path.setTextConfig({
+              path.setTextconfig({
                 position: iconStyleEmphasisModel.get('textPosition') || defaultTextPosition
               });
               textContent.ignore = !toolboxModel.get('showTitle'); // Use enterEmphasis and leaveEmphasis provide by ec.
@@ -52728,7 +52728,7 @@
           // TODO simplify code?
 
           var emphasisState = icon.ensureState('emphasis');
-          var emphasisTextConfig = emphasisState.textConfig || (emphasisState.textConfig = {});
+          var emphasisTextconfig = emphasisState.textconfig || (emphasisState.textconfig = {});
           var textContent = icon.getTextContent();
           var emphasisTextState = textContent && textContent.ensureState('emphasis'); // May be background element
 
@@ -52740,17 +52740,17 @@
             var needPutOnTop = false;
 
             if (offsetY + rect.height > api.getHeight()) {
-              emphasisTextConfig.position = 'top';
+              emphasisTextconfig.position = 'top';
               needPutOnTop = true;
             }
 
             var topOffset = needPutOnTop ? -5 - rect.height : itemSize + 10;
 
             if (offsetX + rect.width / 2 > api.getWidth()) {
-              emphasisTextConfig.position = ['100%', topOffset];
+              emphasisTextconfig.position = ['100%', topOffset];
               emphasisTextStyle.align = 'right';
             } else if (offsetX - rect.width / 2 < 0) {
-              emphasisTextConfig.position = [0, topOffset];
+              emphasisTextconfig.position = [0, topOffset];
               emphasisTextStyle.align = 'left';
             }
           }
@@ -53853,25 +53853,25 @@
 
       /**
        * Update covers.
-       * @param coverConfigList
-       *        If coverConfigList is null/undefined, all covers removed.
+       * @param coverconfigList
+       *        If coverconfigList is null/undefined, all covers removed.
        */
 
 
-      BrushController.prototype.updateCovers = function (coverConfigList) {
+      BrushController.prototype.updateCovers = function (coverconfigList) {
         if ("development" !== 'production') {
           assert(this._mounted);
         }
 
-        coverConfigList = map(coverConfigList, function (coverConfig) {
-          return merge(clone(DEFAULT_BRUSH_OPT), coverConfig, true);
+        coverconfigList = map(coverconfigList, function (coverconfig) {
+          return merge(clone(DEFAULT_BRUSH_OPT), coverconfig, true);
         });
         var tmpIdPrefix = '\0-brush-index-';
         var oldCovers = this._covers;
         var newCovers = this._covers = [];
         var controller = this;
         var creatingCover = this._creatingCover;
-        new DataDiffer(oldCovers, coverConfigList, oldGetKey, getKey).add(addOrUpdate).update(addOrUpdate).remove(remove).execute();
+        new DataDiffer(oldCovers, coverconfigList, oldGetKey, getKey).add(addOrUpdate).update(addOrUpdate).remove(remove).execute();
         return this;
 
         function getKey(brushOption, index) {
@@ -53883,7 +53883,7 @@
         }
 
         function addOrUpdate(newIndex, oldIndex) {
-          var newBrushInternal = coverConfigList[newIndex]; // Consider setOption in event listener of brushSelect,
+          var newBrushInternal = coverconfigList[newIndex]; // Consider setOption in event listener of brushSelect,
           // where updating cover when creating should be forbidden.
 
           if (oldIndex != null && oldCovers[oldIndex] === creatingCover) {
@@ -56010,7 +56010,7 @@
           el.x = payload.x;
           el.y = payload.y;
           el.update();
-          getECData(el).tooltipConfig = {
+          getECData(el).tooltipconfig = {
             name: null,
             option: payload.tooltip
           }; // Manually show tooltip while view is not using zrender elements.
@@ -56142,7 +56142,7 @@
             } // Tooltip provided directly. Like legend.
 
 
-            if (getECData(target).tooltipConfig != null) {
+            if (getECData(target).tooltipconfig != null) {
               cmptDispatcher_1 = target;
               return true;
             }
@@ -56319,8 +56319,8 @@
 
       TooltipView.prototype._showComponentItemTooltip = function (e, el, dispatchAction) {
         var ecData = getECData(el);
-        var tooltipConfig = ecData.tooltipConfig;
-        var tooltipOpt = tooltipConfig.option || {};
+        var tooltipconfig = ecData.tooltipconfig;
+        var tooltipOpt = tooltipconfig.option || {};
 
         if (isString(tooltipOpt)) {
           var content = tooltipOpt;
@@ -56728,9 +56728,9 @@
       var view = api.getViewOfComponentModel(model);
       var el;
       view.group.traverse(function (subEl) {
-        var tooltipConfig = getECData(subEl).tooltipConfig;
+        var tooltipconfig = getECData(subEl).tooltipconfig;
 
-        if (tooltipConfig && tooltipConfig.name === payload.name) {
+        if (tooltipconfig && tooltipconfig.name === payload.name) {
           el = subEl;
           return true; // stop
         }
@@ -57918,7 +57918,7 @@
           label.__labelDistance = distance;
         }
 
-        this.setTextConfig({
+        this.setTextconfig({
           position: null,
           local: true,
           inside: false // Can't be inside for stroke element.
@@ -59621,7 +59621,7 @@
         var tooltipModel = legendItemModel.getModel('tooltip');
 
         if (tooltipModel.get('show')) {
-          setTooltipConfig({
+          setTooltipconfig({
             el: hitRect,
             componentModel: legendModel,
             itemName: name,
@@ -61261,7 +61261,7 @@
     var VERTICAL = 'vertical';
     var LABEL_GAP = 5;
     var SHOW_DATA_SHADOW_SERIES_TYPE = ['line', 'bar', 'candlestick', 'scatter'];
-    var REALTIME_ANIMATION_CONFIG = {
+    var REALTIME_ANIMATION_config = {
       easing: 'cubicOut',
       duration: 100,
       delay: 0
@@ -61650,7 +61650,7 @@
           style: {
             fill: dataZoomModel.get('fillerColor')
           },
-          textConfig: {
+          textconfig: {
             position: 'inside'
           }
         });
@@ -62075,7 +62075,7 @@
           type: 'dataZoom',
           from: this.uid,
           dataZoomId: this.dataZoomModel.id,
-          animation: realtime ? REALTIME_ANIMATION_CONFIG : null,
+          animation: realtime ? REALTIME_ANIMATION_config : null,
           start: range[0],
           end: range[1]
         });

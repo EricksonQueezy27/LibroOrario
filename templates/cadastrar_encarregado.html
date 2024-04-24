@@ -1,0 +1,43 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Cadastrar Encarregado</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_username" class="form-label">Nome de Usuário</label>
+                    {{ form.username }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_nome" class="form-label">Nome</label>
+                    {{ form.nome }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_email" class="form-label">Email</label>
+                    {{ form.email }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_telefone" class="form-label">Telefone</label>
+                    {{ form.telefone }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_profissao" class="form-label">Profissão</label>
+                    {{ form.profissao }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_alunos_associados" class="form-label">Alunos Associados</label>
+                    {{ form.alunos_associados }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_foto" class="form-label">Foto</label>
+                    {{ form.foto }}
+                </div>
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

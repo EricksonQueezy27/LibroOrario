@@ -1,14 +1,39 @@
 {% extends 'base_admin.html' %}
 
 {% block content %}
+
+<div class="row">
+    <!-- Conteúdo das turmas -->
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Adicionar mais professores</h5>
+        <a href="{% url 'sigup' %}" class="btn btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+            <path d="M2 3a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3zm0 1v3h12V4a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1z"/>
+            <path d="M3.5 9a2.5 2.5 0 1 1 5 0 2.5 2.5 0 0 1-5 0zM8 10a3 3 0 1 0 3 3 3 3 0 0 0-3-3z"/>
+            <path d="M6 11a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/>
+          </svg>
+          Cadastrar Professores
+        </a>
+      </div>
+    </div>
 <h1>Lista de Professores</h1>
 <div class="row">
     {% for professor in professores %}
     <div class="col-lg-4">
         <div class="card mb-3">
             <div class="card-header">
-                <h5 class="card-title">{{ professor.nome }}</h5>
+                <h5 class="card-title">Professor(a) {{ professor.nome }}</h5>
             </div>
+            {% if professor.foto %}
+                <img src="{{ professor.foto.url }}" class="card-img-top" alt="Foto do Professor">
+            {% else %}
+                <!-- Ícone de usuário usando Bootstrap -->
+          <!-- Ícone de usuário usando Bootstrap -->
+            <span class="bi bi-person-circle" style="font-size: 3em; display: block; margin: 0 auto;"></span>
+
+
+            {% endif %}
             <div class="card-body">
                 <p class="card-text">Email: {{ professor.email }}</p>
                 <p class="card-text">Departamento: {{ professor.departamento }}</p>
@@ -22,12 +47,17 @@
                 <p class="card-text">Turmas Associadas:</p>
                 <ul class="list-group">
                     {% for turma in professor.turmas_associadas.all %}
-                    <li class="list-group-item">{{ turma.nome }}-{{ turma.classe  }}</li>
+                    <li class="list-group-item">{{ turma.nome }} - {{ turma.classe }}</li>
                     <a href="{% url 'visualizar_turma' turma.id %}" class="btn btn-primary">Visualizar Turma</a>
+                    <br> <!-- Adiciona uma quebra de linha após cada turma -->
                     {% endfor %}
                 </ul>
+
+                  <br>
                 <!-- Link para atribuir turmas e horários -->
                 <a href="{% url 'atribuir_turmas_horarios' professor.id %}" class="btn btn-success">Atribuir Turmas e Horários</a>
+                <a href="{% url 'eliminar_professor' professor.id %}" class="btn btn-danger">Eliminar Professor</a>
+
             </div>
         </div>
     </div>

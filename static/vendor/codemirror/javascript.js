@@ -11,13 +11,13 @@
 })(function(CodeMirror) {
 "use strict";
 
-CodeMirror.defineMode("javascript", function(config, parserConfig) {
+CodeMirror.defineMode("javascript", function(config, parserconfig) {
   var indentUnit = config.indentUnit;
-  var statementIndent = parserConfig.statementIndent;
-  var jsonldMode = parserConfig.jsonld;
-  var jsonMode = parserConfig.json || jsonldMode;
-  var isTS = parserConfig.typescript;
-  var wordRE = parserConfig.wordCharacters || /[\w$\xa1-\uffff]/;
+  var statementIndent = parserconfig.statementIndent;
+  var jsonldMode = parserconfig.jsonld;
+  var jsonMode = parserconfig.json || jsonldMode;
+  var isTS = parserconfig.typescript;
+  var wordRE = parserconfig.wordCharacters || /[\w$\xa1-\uffff]/;
 
   // Tokenizer
 
@@ -290,7 +290,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       }
     }
     // Fall through means this is global
-    if (parserConfig.globalVars && !inList(varname, state.globalVars))
+    if (parserconfig.globalVars && !inList(varname, state.globalVars))
       state.globalVars = new Var(varname, state.globalVars)
   }
   function registerVarScoped(varname, context) {
@@ -851,12 +851,12 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
         lastType: "sof",
         cc: [],
         lexical: new JSLexical((basecolumn || 0) - indentUnit, 0, "block", false),
-        localVars: parserConfig.localVars,
-        context: parserConfig.localVars && new Context(null, null, false),
+        localVars: parserconfig.localVars,
+        context: parserconfig.localVars && new Context(null, null, false),
         indented: basecolumn || 0
       };
-      if (parserConfig.globalVars && typeof parserConfig.globalVars == "object")
-        state.globalVars = parserConfig.globalVars;
+      if (parserconfig.globalVars && typeof parserconfig.globalVars == "object")
+        state.globalVars = parserconfig.globalVars;
       return state;
     },
 
@@ -898,7 +898,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       else if (type == "form") return lexical.indented + indentUnit;
       else if (type == "stat")
         return lexical.indented + (isContinuedStatement(state, textAfter) ? statementIndent || indentUnit : 0);
-      else if (lexical.info == "switch" && !closing && parserConfig.doubleIndentSwitch != false)
+      else if (lexical.info == "switch" && !closing && parserconfig.doubleIndentSwitch != false)
         return lexical.indented + (/^(?:case|default)\b/.test(textAfter) ? indentUnit : 2 * indentUnit);
       else if (lexical.align) return lexical.column + (closing ? 0 : 1);
       else return lexical.indented + (closing ? 0 : indentUnit);

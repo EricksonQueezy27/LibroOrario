@@ -6416,7 +6416,7 @@
     var getRowType = function (editor, elm) {
       return mapSectionNameToType(detectHeaderRow(editor, elm).fold(function () {
         return getSection(elm);
-      }, function (_rowConfig) {
+      }, function (_rowconfig) {
         return 'thead';
       }));
     };

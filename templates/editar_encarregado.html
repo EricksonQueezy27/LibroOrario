@@ -1,0 +1,15 @@
+<!-- editar_encarregado.html -->
+{% extends 'base_admin.html' %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h2>Editar Encarregado</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

@@ -1019,7 +1019,7 @@ exports.default = Block;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.overload = exports.expandConfig = undefined;
+exports.default = exports.overload = exports.expandconfig = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -1133,7 +1133,7 @@ var Quill = function () {
 
     _classCallCheck(this, Quill);
 
-    this.options = expandConfig(container, options);
+    this.options = expandconfig(container, options);
     this.container = this.options.container;
     if (this.container == null) {
       return debug.error('Invalid Quill container', container);
@@ -1592,25 +1592,25 @@ Quill.imports = {
   'core/theme': _theme2.default
 };
 
-function expandConfig(container, userConfig) {
-  userConfig = (0, _extend2.default)(true, {
+function expandconfig(container, userconfig) {
+  userconfig = (0, _extend2.default)(true, {
     container: container,
     modules: {
       clipboard: true,
       keyboard: true,
       history: true
     }
-  }, userConfig);
-  if (!userConfig.theme || userConfig.theme === Quill.DEFAULTS.theme) {
-    userConfig.theme = _theme2.default;
+  }, userconfig);
+  if (!userconfig.theme || userconfig.theme === Quill.DEFAULTS.theme) {
+    userconfig.theme = _theme2.default;
   } else {
-    userConfig.theme = Quill.import('themes/' + userConfig.theme);
-    if (userConfig.theme == null) {
-      throw new Error('Invalid theme ' + userConfig.theme + '. Did you register it?');
+    userconfig.theme = Quill.import('themes/' + userconfig.theme);
+    if (userconfig.theme == null) {
+      throw new Error('Invalid theme ' + userconfig.theme + '. Did you register it?');
     }
   }
-  var themeConfig = (0, _extend2.default)(true, {}, userConfig.theme.DEFAULTS);
-  [themeConfig, userConfig].forEach(function (config) {
+  var themeconfig = (0, _extend2.default)(true, {}, userconfig.theme.DEFAULTS);
+  [themeconfig, userconfig].forEach(function (config) {
     config.modules = config.modules || {};
     Object.keys(config.modules).forEach(function (module) {
       if (config.modules[module] === true) {
@@ -1618,7 +1618,7 @@ function expandConfig(container, userConfig) {
       }
     });
   });
-  var moduleNames = Object.keys(themeConfig.modules).concat(Object.keys(userConfig.modules));
+  var moduleNames = Object.keys(themeconfig.modules).concat(Object.keys(userConfig.modules));
   var moduleConfig = moduleNames.reduce(function (config, name) {
     var moduleClass = Quill.import('modules/' + name);
     if (moduleClass == null) {

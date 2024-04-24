@@ -2206,9 +2206,9 @@
     return "w-".concat(n);
   }));
 
-  var initial = WINDOW.FontAwesomeConfig || {};
+  var initial = WINDOW.FontAwesomeconfig || {};
 
-  function getAttrConfig(attr) {
+  function getAttrconfig(attr) {
     var element = DOCUMENT.querySelector('script[' + attr + ']');
 
     if (element) {
@@ -2233,7 +2233,7 @@
           attr = _ref2[0],
           key = _ref2[1];
 
-      var val = coerce(getAttrConfig(attr));
+      var val = coerce(getAttrconfig(attr));
 
       if (val !== undefined && val !== null) {
         initial[key] = val;
@@ -2261,7 +2261,7 @@
 
   var config = _objectSpread({}, _config);
 
-  WINDOW.FontAwesomeConfig = config;
+  WINDOW.FontAwesomeconfig = config;
 
   var w = WINDOW || {};
   if (!w[NAMESPACE_IDENTIFIER]) w[NAMESPACE_IDENTIFIER] = {};

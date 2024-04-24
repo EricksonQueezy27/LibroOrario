@@ -58,6 +58,6 @@ export default class BasePlatform {
      * Updates config with platform specific requirements
      * @param {import('../core/core.config.js').default} config
      */
-    updateConfig(config: import('../core/core.config.js').default): void;
+    updateconfig(config: import('../core/core.config.js').default): void;
 }
 export type Chart = import('../core/core.controller.js').default;

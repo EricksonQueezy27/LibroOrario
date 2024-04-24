@@ -1,49 +1,53 @@
 {% extends 'base_admin.html' %}
 
 {% block content %}
-
- <div class="pagetitle">
+<div class="pagetitle">
     <h1>Gestor(a) {{ user.first_name }} {{ user.last_name }}</h1>
     <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="">Seja</a></li>
-        <li class="breadcrumb-item active">Bem-Vindo</li>
-      </ol>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="">Seja</a></li>
+            <li class="breadcrumb-item active">Bem-Vindo</li>
+        </ol>
     </nav>
-  </div><!-- End Page Title -->
-  
-  <section class="section dashboard">
+</div><!-- End Page Title -->
+
+<section class="section dashboard">
     <div class="row">
-      <!-- Conteúdo das turmas -->
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Criar Nova Turma</h5>
-          <a href="{% url 'criar_turma' %}" class="btn btn-primary">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
-              <path d="M2 3a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3zm0 1v3h12V4a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1z"/>
-              <path d="M3.5 9a2.5 2.5 0 1 1 5 0 2.5 2.5 0 0 1-5 0zM8 10a3 3 0 1 0 3 3 3 3 0 0 0-3-3z"/>
-              <path d="M6 11a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/>
-            </svg>
-            Criar Nova Turma
-          </a>
-        </div>
-      </div>
-      
-      {% for turma in turmas %}
-      <div class="col-lg-4 mb-4">
+        <!-- Conteúdo das turmas -->
         <div class="card">
-          <img src="{{ turma.imagem.url }}" class="card-img-top" alt="{{ turma.nome }}">
-          <div class="card-body">
-            <h5 class="card-title">{{ turma.nome }}</h5>
-            <p class="card-text">Classe: {{ turma.classe }}</p>
-            <p class="card-text">Número de Alunos: {{ turma.alunos.count }}</p>
-            <a href="{% url 'visualizar_turma' turma.id %}" class="btn btn-primary">Visualizar Turma</a>
-            <a href="{% url 'editar_turma' turma.id %}">Editar Turma</a>
-          </div>
+            <div class="card-body">
+                <h5 class="card-title">Criar Nova Turma</h5>
+                <a href="{% url 'criar_turma' %}" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-people-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M2 3a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V3zm0 1v3h12V4a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1z" />
+                        <path
+                            d="M3.5 9a2.5 2.5 0 1 1 5 0 2.5 2.5 0 0 1-5 0zM8 10a3 3 0 1 0 3 3 3 3 0 0 0-3-3z" />
+                        <path d="M6 11a2 2 0 1 1 4 0 2 2 0 0 1-4 0z" />
+                    </svg>
+                    Criar Nova Turma
+                </a>
+            </div>
         </div>
-      </div>
-      {% endfor %}
+
+        {% for turma in turmas %}
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <img src="{{ turma.imagem.url }}" class="card-img-top" alt="{{ turma.nome }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ turma.nome }}</h5>
+                    <p class="card-text">Classe: {{ turma.classe }}</p>
+                    <p class="card-text">Número de Alunos: {{ turma.alunos.count }}</p>
+                    <a href="{% url 'visualizar_turma' turma.id %}" class="btn btn-primary">Visualizar Turma</a>
+                    <a href="{% url 'editar_turma' turma.id %}" class="btn btn-secondary">Editar Turma</a>
+                    <a href="{% url 'eliminar_turma' turma.id %}" class="btn btn-danger">Eliminar Turma</a>
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
-  </section>
+</section>
 
 {% endblock %}

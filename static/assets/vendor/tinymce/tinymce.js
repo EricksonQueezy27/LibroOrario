@@ -15936,7 +15936,7 @@
       let ALLOW_SELF_CLOSE_IN_ATTR = true;
       let SAFE_FOR_TEMPLATES = false;
       let WHOLE_DOCUMENT = false;
-      let SET_CONFIG = false;
+      let SET_config = false;
       let FORCE_BODY = false;
       let RETURN_DOM = false;
       let RETURN_DOM_FRAGMENT = false;
@@ -16019,13 +16019,13 @@
       ];
       const DEFAULT_PARSER_MEDIA_TYPE = 'text/html';
       let transformCaseFunc;
-      let CONFIG = null;
+      let config = null;
       const formElement = document.createElement('form');
       const isRegexOrFunction = function isRegexOrFunction(testValue) {
         return testValue instanceof RegExp || testValue instanceof Function;
       };
-      const _parseConfig = function _parseConfig(cfg) {
-        if (CONFIG && CONFIG === cfg) {
+      const _parseconfig = function _parseconfig(cfg) {
+        if (config && config === cfg) {
           return;
         }
         if (!cfg || typeof cfg !== 'object') {
@@ -16153,7 +16153,7 @@
         if (freeze) {
           freeze(cfg);
         }
-        CONFIG = cfg;
+        config = cfg;
       };
       const MATHML_TEXT_INTEGRATION_POINTS = addToSet({}, [
         'mi',
@@ -16309,7 +16309,7 @@
           return;
         }
         arrayForEach(hooks[entryPoint], hook => {
-          hook.call(DOMPurify, currentNode, data, CONFIG);
+          hook.call(DOMPurify, currentNode, data, config);
         });
       };
       const _sanitizeElements = function _sanitizeElements(currentNode) {
@@ -16514,8 +16514,8 @@
         if (!DOMPurify.isSupported) {
           return dirty;
         }
-        if (!SET_CONFIG) {
-          _parseConfig(cfg);
+        if (!SET_config) {
+          _parseconfig(cfg);
         }
         DOMPurify.removed = [];
         if (typeof dirty === 'string') {
@@ -16588,17 +16588,17 @@
         }
         return trustedTypesPolicy && RETURN_TRUSTED_TYPE ? trustedTypesPolicy.createHTML(serializedHTML) : serializedHTML;
       };
-      DOMPurify.setConfig = function (cfg) {
-        _parseConfig(cfg);
-        SET_CONFIG = true;
+      DOMPurify.setconfig = function (cfg) {
+        _parseconfig(cfg);
+        SET_config = true;
       };
-      DOMPurify.clearConfig = function () {
-        CONFIG = null;
-        SET_CONFIG = false;
+      DOMPurify.clearconfig = function () {
+        config = null;
+        SET_config = false;
       };
       DOMPurify.isValidAttribute = function (tag, attr, value) {
-        if (!CONFIG) {
-          _parseConfig({});
+        if (!config) {
+          _parseconfig({});
         }
         const lcTag = transformCaseFunc(tag);
         const lcName = transformCaseFunc(attr);
@@ -17047,8 +17047,8 @@
       });
       return purify$1;
     };
-    const getPurifyConfig = (settings, mimeType) => {
-      const basePurifyConfig = {
+    const getPurifyconfig = (settings, mimeType) => {
+      const basePurifyconfig = {
         IN_PLACE: true,
         ALLOW_UNKNOWN_PROTOCOLS: true,
         ALLOWED_TAGS: [
@@ -17058,7 +17058,7 @@
         ],
         ALLOWED_ATTR: []
       };
-      const config = { ...basePurifyConfig };
+      const config = { ...basePurifyconfig };
       config.PARSER_MEDIA_TYPE = mimeType;
       if (settings.allow_script_urls) {
         config.ALLOWED_URI_REGEXP = /.*/;
@@ -17097,7 +17097,7 @@
       if (settings.sanitize) {
         const purify = setupPurify(settings, schema, namespaceTracker);
         const sanitizeHtmlElement = (body, mimeType) => {
-          purify.sanitize(body, getPurifyConfig(settings, mimeType));
+          purify.sanitize(body, getPurifyconfig(settings, mimeType));
           purify.removed = [];
           namespaceTracker.reset();
         };
@@ -29170,7 +29170,7 @@
     const hasSection = (sectionResult, name) => {
       return has$2(sectionResult.sections(), name);
     };
-    const getSectionConfig = (sectionResult, name) => {
+    const getSectionconfig = (sectionResult, name) => {
       return hasSection(sectionResult, name) ? sectionResult.sections()[name] : {};
     };
     const getMobileOverrideOptions = (mobileOptions, isPhone) => {
@@ -29210,8 +29210,8 @@
     const processPlugins = (isMobileDevice, sectionResult, defaultOverrideOptions, options) => {
       const forcedPlugins = normalizePlugins(defaultOverrideOptions.forced_plugins);
       const desktopPlugins = normalizePlugins(options.plugins);
-      const mobileConfig = getSectionConfig(sectionResult, 'mobile');
-      const mobilePlugins = mobileConfig.plugins ? normalizePlugins(mobileConfig.plugins) : desktopPlugins;
+      const mobileconfig = getSectionconfig(sectionResult, 'mobile');
+      const mobilePlugins = mobileconfig.plugins ? normalizePlugins(mobileconfig.plugins) : desktopPlugins;
       const platformPlugins = getPlatformPlugins(isMobileDevice, sectionResult, desktopPlugins, mobilePlugins);
       const combinedPlugins = combinePlugins(forcedPlugins, platformPlugins);
       return Tools.extend(options, {

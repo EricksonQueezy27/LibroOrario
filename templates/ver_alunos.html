@@ -21,6 +21,7 @@
                         <p class="card-text">Turma: {{ aluno.turma }} {{ aluno.turma.classe }}</p>
                         
                         <a href="{% url 'editar_aluno' aluno.id %}">Editar {{ aluno.nome }}</a>
+                        <a href="{% url 'eliminar_aluno' aluno.id %}" class="btn btn-danger">Eliminar {{ aluno.nome }}</a>
                     </div>
                 </div>
             </div>

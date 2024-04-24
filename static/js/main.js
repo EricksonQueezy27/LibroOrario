@@ -113,6 +113,6 @@ let menu, animate;
 
   // If current layout is vertical and current window screen is > small
 
-  // Auto update menu collapsed/expanded based on the themeConfig
+  // Auto update menu collapsed/expanded based on the themeconfig
   window.Helpers.setCollapsed(true, false);
 })();

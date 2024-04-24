@@ -205,7 +205,7 @@
     var momentProperties = (hooks.momentProperties = []),
         updateInProgress = false;
 
-    function copyConfig(to, from) {
+    function copyconfig(to, from) {
         var i, prop, val;
 
         if (!isUndefined(from._isAMomentObject)) {
@@ -254,7 +254,7 @@
 
     // Moment prototype object
     function Moment(config) {
-        copyConfig(this, config);
+        copyconfig(this, config);
         this._d = new Date(config._d != null ? config._d.getTime() : NaN);
         if (!this.isValid()) {
             this._d = new Date(NaN);
@@ -369,27 +369,27 @@
         );
     }
 
-    function mergeConfigs(parentConfig, childConfig) {
-        var res = extend({}, parentConfig),
+    function mergeconfigs(parentconfig, childconfig) {
+        var res = extend({}, parentconfig),
             prop;
-        for (prop in childConfig) {
-            if (hasOwnProp(childConfig, prop)) {
-                if (isObject(parentConfig[prop]) && isObject(childConfig[prop])) {
+        for (prop in childconfig) {
+            if (hasOwnProp(childconfig, prop)) {
+                if (isObject(parentconfig[prop]) && isObject(childconfig[prop])) {
                     res[prop] = {};
-                    extend(res[prop], parentConfig[prop]);
-                    extend(res[prop], childConfig[prop]);
-                } else if (childConfig[prop] != null) {
-                    res[prop] = childConfig[prop];
+                    extend(res[prop], parentconfig[prop]);
+                    extend(res[prop], childconfig[prop]);
+                } else if (childconfig[prop] != null) {
+                    res[prop] = childconfig[prop];
                 } else {
                     delete res[prop];
                 }
             }
         }
-        for (prop in parentConfig) {
+        for (prop in parentconfig) {
             if (
-                hasOwnProp(parentConfig, prop) &&
-                !hasOwnProp(childConfig, prop) &&
-                isObject(parentConfig[prop])
+                hasOwnProp(parentconfig, prop) &&
+                !hasOwnProp(childconfig, prop) &&
+                isObject(parentconfig[prop])
             ) {
                 // make sure changes to properties don't modify parent config
                 res[prop] = extend({}, res[prop]);
@@ -2001,7 +2001,7 @@
         }
     }
 
-    var baseConfig = {
+    var baseconfig = {
         calendar: defaultCalendar,
         longDateFormat: defaultLongDateFormat,
         invalidDate: defaultInvalidDate,
@@ -2131,7 +2131,7 @@
     function defineLocale(name, config) {
         if (config !== null) {
             var locale,
-                parentConfig = baseConfig;
+                parentconfig = baseconfig;
             config.abbr = name;
             if (locales[name] != null) {
                 deprecateSimple(
@@ -2141,14 +2141,14 @@
                         'config) should only be used for creating a new locale ' +
                         'See http://momentjs.com/guides/#/warnings/define-locale/ for more info.'
                 );
-                parentConfig = locales[name]._config;
+                parentconfig = locales[name]._config;
             } else if (config.parentLocale != null) {
                 if (locales[config.parentLocale] != null) {
-                    parentConfig = locales[config.parentLocale]._config;
+                    parentconfig = locales[config.parentLocale]._config;
                 } else {
                     locale = loadLocale(config.parentLocale);
                     if (locale != null) {
-                        parentConfig = locale._config;
+                        parentconfig = locale._config;
                     } else {
                         if (!localeFamilies[config.parentLocale]) {
                             localeFamilies[config.parentLocale] = [];
@@ -2161,7 +2161,7 @@
                     }
                 }
             }
-            locales[name] = new Locale(mergeConfigs(parentConfig, config));
+            locales[name] = new Locale(mergeconfigs(parentconfig, config));
 
             if (localeFamilies[name]) {
                 localeFamilies[name].forEach(function (x) {
@@ -2186,18 +2186,18 @@
         if (config != null) {
             var locale,
                 tmpLocale,
-                parentConfig = baseConfig;
+                parentconfig = baseconfig;
 
             if (locales[name] != null && locales[name].parentLocale != null) {
                 // Update existing child locale in-place to avoid memory-leaks
-                locales[name].set(mergeConfigs(locales[name]._config, config));
+                locales[name].set(mergeconfigs(locales[name]._config, config));
             } else {
                 // MERGE
                 tmpLocale = loadLocale(name);
                 if (tmpLocale != null) {
-                    parentConfig = tmpLocale._config;
+                    parentconfig = tmpLocale._config;
                 }
-                config = mergeConfigs(parentConfig, config);
+                config = mergeconfigs(parentconfig, config);
                 if (tmpLocale == null) {
                     // updateLocale is called for creating a new locale
                     // Set abbr so it will have a name (getters return
@@ -2847,7 +2847,7 @@
 
     // date from string and array of format strings
     function configFromStringAndArray(config) {
-        var tempConfig,
+        var tempconfig,
             bestMoment,
             scoreToBeat,
             i,
@@ -2864,24 +2864,24 @@
         for (i = 0; i < config._f.length; i++) {
             currentScore = 0;
             validFormatFound = false;
-            tempConfig = copyConfig({}, config);
+            tempconfig = copyconfig({}, config);
             if (config._useUTC != null) {
-                tempConfig._useUTC = config._useUTC;
+                tempconfig._useUTC = config._useUTC;
             }
-            tempConfig._f = config._f[i];
-            configFromStringAndFormat(tempConfig);
+            tempconfig._f = config._f[i];
+            configFromStringAndFormat(tempconfig);
 
-            if (isValid(tempConfig)) {
+            if (isValid(tempconfig)) {
                 validFormatFound = true;
             }
 
             // if there is any input that was not parsed add a penalty for that format
-            currentScore += getParsingFlags(tempConfig).charsLeftOver;
+            currentScore += getParsingFlags(tempconfig).charsLeftOver;
 
             //or tokens
-            currentScore += getParsingFlags(tempConfig).unusedTokens.length * 10;
+            currentScore += getParsingFlags(tempconfig).unusedTokens.length * 10;
 
-            getParsingFlags(tempConfig).score = currentScore;
+            getParsingFlags(tempconfig).score = currentScore;
 
             if (!bestFormatIsValid) {
                 if (
@@ -2890,7 +2890,7 @@
                     validFormatFound
                 ) {
                     scoreToBeat = currentScore;
-                    bestMoment = tempConfig;
+                    bestMoment = tempconfig;
                     if (validFormatFound) {
                         bestFormatIsValid = true;
                     }
@@ -2898,12 +2898,12 @@
             } else {
                 if (currentScore < scoreToBeat) {
                     scoreToBeat = currentScore;
-                    bestMoment = tempConfig;
+                    bestMoment = tempconfig;
                 }
             }
         }
 
-        extend(config, bestMoment || tempConfig);
+        extend(config, bestMoment || tempconfig);
     }
 
     function configFromObject(config) {
@@ -2923,8 +2923,8 @@
         configFromArray(config);
     }
 
-    function createFromConfig(config) {
-        var res = new Moment(checkOverflow(prepareConfig(config)));
+    function createFromconfig(config) {
+        var res = new Moment(checkOverflow(prepareconfig(config)));
         if (res._nextDay) {
             // Adding is smart enough around DST
             res.add(1, 'd');
@@ -2934,7 +2934,7 @@
         return res;
     }
 
-    function prepareConfig(config) {
+    function prepareconfig(config) {
         var input = config._i,
             format = config._f;
 
@@ -3018,7 +3018,7 @@
         c._f = format;
         c._strict = strict;
 
-        return createFromConfig(c);
+        return createFromconfig(c);
     }
 
     function createLocal(input, format, locale, strict) {
@@ -3409,8 +3409,8 @@
         var c = {},
             other;
 
-        copyConfig(c, this);
-        c = prepareConfig(c);
+        copyconfig(c, this);
+        c = prepareconfig(c);
 
         if (c._a) {
             other = c._isUTC ? createUTC(c._a) : createLocal(c._a);

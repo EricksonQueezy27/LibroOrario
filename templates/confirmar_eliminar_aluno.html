@@ -1,0 +1,21 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+
+<section class="section">
+    <div class="container">
+        <h2>Confirmação de Eliminação</h2>
+        <div class="card">
+            <div class="card-body">
+                <p>Tem certeza de que deseja eliminar o aluno <strong>{{ aluno.nome }}</strong>?</p>
+                <form method="post" action="{% url 'eliminar_aluno' aluno.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Confirmar Eliminação</button>
+                    <a href="{% url 'ver_alunos' %}" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

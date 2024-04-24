@@ -71,7 +71,7 @@
 	 * be  accessed.
 	 *
 	 *  @class
-	 *  @param {object} [init={}] Configuration object for DataTables. Options
+	 *  @param {object} [init={}] configuration object for DataTables. Options
 	 *    are defined by {@link DataTable.defaults}
 	 *  @requires jQuery 1.7+
 	 *
@@ -10585,7 +10585,7 @@
 	
 	
 		/**
-		 * Configure DataTables to use server-side processing. Note that the
+		 * configure DataTables to use server-side processing. Note that the
 		 * `ajax` parameter must also be given in order to give DataTables a
 		 * source to obtain the required data for each draw.
 		 *  @type boolean

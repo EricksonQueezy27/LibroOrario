@@ -172,7 +172,7 @@
     isElement: function isElement(obj) {
       return (obj[0] || obj).nodeType;
     },
-    typeCheckConfig: function typeCheckConfig(componentName, config, configTypes) {
+    typeCheckconfig: function typeCheckconfig(componentName, config, configTypes) {
       for (var property in configTypes) {
         if (Object.prototype.hasOwnProperty.call(configTypes, property)) {
           var expectedTypes = configTypes[property];
@@ -670,7 +670,7 @@
       this.touchTimeout = null;
       this.touchStartX = 0;
       this.touchDeltaX = 0;
-      this._config = this._getConfig(config);
+      this._config = this._getconfig(config);
       this._element = element;
       this._indicatorsElement = this._element.querySelector(SELECTOR_INDICATORS);
       this._touchSupported = 'ontouchstart' in document.documentElement || navigator.maxTouchPoints > 0;
@@ -778,9 +778,9 @@
     } // Private
     ;
 
-    _proto._getConfig = function _getConfig(config) {
+    _proto._getconfig = function _getconfig(config) {
       config = _extends({}, Default, config);
-      Util.typeCheckConfig(NAME$2, config, DefaultType);
+      Util.typeCheckconfig(NAME$2, config, DefaultType);
       return config;
     };
 
@@ -1224,7 +1224,7 @@
     function Collapse(element, config) {
       this._isTransitioning = false;
       this._element = element;
-      this._config = this._getConfig(config);
+      this._config = this._getconfig(config);
       this._triggerArray = [].slice.call(document.querySelectorAll("[data-toggle=\"collapse\"][href=\"#" + element.id + "\"]," + ("[data-toggle=\"collapse\"][data-target=\"#" + element.id + "\"]")));
       var toggleList = [].slice.call(document.querySelectorAll(SELECTOR_DATA_TOGGLE$1));
 
@@ -1402,11 +1402,11 @@
     } // Private
     ;
 
-    _proto._getConfig = function _getConfig(config) {
+    _proto._getconfig = function _getconfig(config) {
       config = _extends({}, Default$1, config);
       config.toggle = Boolean(config.toggle); // Coerce string values
 
-      Util.typeCheckConfig(NAME$3, config, DefaultType$1);
+      Util.typeCheckconfig(NAME$3, config, DefaultType$1);
       return config;
     };
 
@@ -4201,7 +4201,7 @@
     boundary: 'scrollParent',
     reference: 'toggle',
     display: 'dynamic',
-    popperConfig: null
+    popperconfig: null
   };
   var DefaultType$2 = {
     offset: '(number|string|function)',
@@ -4209,7 +4209,7 @@
     boundary: '(string|element)',
     reference: '(string|element)',
     display: 'string',
-    popperConfig: '(null|object)'
+    popperconfig: '(null|object)'
   };
   /**
    * ------------------------------------------------------------------------
@@ -4221,7 +4221,7 @@
     function Dropdown(element, config) {
       this._element = element;
       this._popper = null;
-      this._config = this._getConfig(config);
+      this._config = this._getconfig(config);
       this._menu = this._getMenuElement();
       this._inNavbar = this._detectNavbar();
 
@@ -4299,7 +4299,7 @@
           $__default['default'](parent).addClass(CLASS_NAME_POSITION_STATIC);
         }
 
-        this._popper = new Popper(referenceElement, this._menu, this._getPopperConfig());
+        this._popper = new Popper(referenceElement, this._menu, this._getPopperconfig());
       } // If this is a touch-enabled device we add extra
       // empty mouseover listeners to the body's immediate children;
       // only needed because of broken event delegation on iOS
@@ -4377,9 +4377,9 @@
       });
     };
 
-    _proto._getConfig = function _getConfig(config) {
+    _proto._getconfig = function _getconfig(config) {
       config = _extends({}, this.constructor.Default, $__default['default'](this._element).data(), config);
-      Util.typeCheckConfig(NAME$4, config, this.constructor.DefaultType);
+      Util.typeCheckconfig(NAME$4, config, this.constructor.DefaultType);
       return config;
     };
 
@@ -4433,8 +4433,8 @@
       return offset;
     };
 
-    _proto._getPopperConfig = function _getPopperConfig() {
-      var popperConfig = {
+    _proto._getPopperconfig = function _getPopperconfig() {
+      var popperconfig = {
         placement: this._getPlacement(),
         modifiers: {
           offset: this._getOffset(),
@@ -4448,12 +4448,12 @@
       }; // Disable Popper if we have a static display
 
       if (this._config.display === 'static') {
-        popperConfig.modifiers.applyStyle = {
+        popperconfig.modifiers.applyStyle = {
           enabled: false
         };
       }
 
-      return _extends({}, popperConfig, this._config.popperConfig);
+      return _extends({}, popperconfig, this._config.popperconfig);
     } // Static
     ;
 
@@ -4717,7 +4717,7 @@
 
   var Modal = /*#__PURE__*/function () {
     function Modal(element, config) {
-      this._config = this._getConfig(config);
+      this._config = this._getconfig(config);
       this._element = element;
       this._dialog = element.querySelector(SELECTOR_DIALOG);
       this._backdrop = null;
@@ -4856,9 +4856,9 @@
     } // Private
     ;
 
-    _proto._getConfig = function _getConfig(config) {
+    _proto._getconfig = function _getconfig(config) {
       config = _extends({}, Default$3, config);
-      Util.typeCheckConfig(NAME$5, config, DefaultType$3);
+      Util.typeCheckconfig(NAME$5, config, DefaultType$3);
       return config;
     };
 
@@ -5425,7 +5425,7 @@
     sanitize: 'boolean',
     sanitizeFn: '(null|function)',
     whiteList: 'object',
-    popperConfig: '(null|object)'
+    popperconfig: '(null|object)'
   };
   var AttachmentMap = {
     AUTO: 'auto',
@@ -5451,7 +5451,7 @@
     sanitize: true,
     sanitizeFn: null,
     whiteList: DefaultWhitelist,
-    popperConfig: null
+    popperconfig: null
   };
   var HOVER_STATE_SHOW = 'show';
   var HOVER_STATE_OUT = 'out';
@@ -5495,7 +5495,7 @@
       this._popper = null; // Protected
 
       this.element = element;
-      this.config = this._getConfig(config);
+      this.config = this._getconfig(config);
       this.tip = null;
 
       this._setListeners();
@@ -5527,7 +5527,7 @@
         var context = $__default['default'](event.currentTarget).data(dataKey);
 
         if (!context) {
-          context = new this.constructor(event.currentTarget, this._getDelegateConfig());
+          context = new this.constructor(event.currentTarget, this._getDelegateconfig());
           $__default['default'](event.currentTarget).data(dataKey, context);
         }
 
@@ -5617,7 +5617,7 @@
         }
 
         $__default['default'](this.element).trigger(this.constructor.Event.INSERTED);
-        this._popper = new Popper(this.element, tip, this._getPopperConfig(attachment));
+        this._popper = new Popper(this.element, tip, this._getPopperconfig(attachment));
         $__default['default'](tip).addClass(CLASS_NAME_SHOW$4);
         $__default['default'](tip).addClass(this.config.customClass); // If this is a touch-enabled device we add extra
         // empty mouseover listeners to the body's immediate children;
@@ -5766,10 +5766,10 @@
     } // Private
     ;
 
-    _proto._getPopperConfig = function _getPopperConfig(attachment) {
+    _proto._getPopperconfig = function _getPopperconfig(attachment) {
       var _this3 = this;
 
-      var defaultBsConfig = {
+      var defaultBsconfig = {
         placement: attachment,
         modifiers: {
           offset: this._getOffset(),
@@ -5792,7 +5792,7 @@
           return _this3._handlePopperPlacementChange(data);
         }
       };
-      return _extends({}, defaultBsConfig, this.config.popperConfig);
+      return _extends({}, defaultBsconfig, this.config.popperconfig);
     };
 
     _proto._getOffset = function _getOffset() {
@@ -5880,7 +5880,7 @@
       context = context || $__default['default'](event.currentTarget).data(dataKey);
 
       if (!context) {
-        context = new this.constructor(event.currentTarget, this._getDelegateConfig());
+        context = new this.constructor(event.currentTarget, this._getDelegateconfig());
         $__default['default'](event.currentTarget).data(dataKey, context);
       }
 
@@ -5913,7 +5913,7 @@
       context = context || $__default['default'](event.currentTarget).data(dataKey);
 
       if (!context) {
-        context = new this.constructor(event.currentTarget, this._getDelegateConfig());
+        context = new this.constructor(event.currentTarget, this._getDelegateconfig());
         $__default['default'](event.currentTarget).data(dataKey, context);
       }
 
@@ -5950,7 +5950,7 @@
       return false;
     };
 
-    _proto._getConfig = function _getConfig(config) {
+    _proto._getconfig = function _getconfig(config) {
       var dataAttributes = $__default['default'](this.element).data();
       Object.keys(dataAttributes).forEach(function (dataAttr) {
         if (DISALLOWED_ATTRIBUTES.indexOf(dataAttr) !== -1) {
@@ -5974,7 +5974,7 @@
         config.content = config.content.toString();
       }
 
-      Util.typeCheckConfig(NAME$6, config, this.constructor.DefaultType);
+      Util.typeCheckconfig(NAME$6, config, this.constructor.DefaultType);
 
       if (config.sanitize) {
         config.template = sanitizeHtml(config.template, config.whiteList, config.sanitizeFn);
@@ -5983,7 +5983,7 @@
       return config;
     };
 
-    _proto._getDelegateConfig = function _getDelegateConfig() {
+    _proto._getDelegateconfig = function _getDelegateconfig() {
       var config = {};
 
       if (this.config) {
@@ -6016,7 +6016,7 @@
 
     _proto._fixTransition = function _fixTransition() {
       var tip = this.getTipElement();
-      var initConfigAnimation = this.config.animation;
+      var initconfigAnimation = this.config.animation;
 
       if (tip.getAttribute('x-placement') !== null) {
         return;
@@ -6026,7 +6026,7 @@
       this.config.animation = false;
       this.hide();
       this.show();
-      this.config.animation = initConfigAnimation;
+      this.config.animation = initconfigAnimation;
     } // Static
     ;
 
@@ -6339,7 +6339,7 @@
 
       this._element = element;
       this._scrollElement = element.tagName === 'BODY' ? window : element;
-      this._config = this._getConfig(config);
+      this._config = this._getconfig(config);
       this._selector = this._config.target + " " + SELECTOR_NAV_LINKS + "," + (this._config.target + " " + SELECTOR_LIST_ITEMS + ",") + (this._config.target + " " + SELECTOR_DROPDOWN_ITEMS);
       this._offsets = [];
       this._targets = [];
@@ -6410,7 +6410,7 @@
     } // Private
     ;
 
-    _proto._getConfig = function _getConfig(config) {
+    _proto._getconfig = function _getconfig(config) {
       config = _extends({}, Default$6, typeof config === 'object' && config ? config : {});
 
       if (typeof config.target !== 'string' && Util.isElement(config.target)) {
@@ -6424,7 +6424,7 @@
         config.target = "#" + id;
       }
 
-      Util.typeCheckConfig(NAME$8, config, DefaultType$6);
+      Util.typeCheckconfig(NAME$8, config, DefaultType$6);
       return config;
     };
 
@@ -6848,7 +6848,7 @@
   var Toast = /*#__PURE__*/function () {
     function Toast(element, config) {
       this._element = element;
-      this._config = this._getConfig(config);
+      this._config = this._getconfig(config);
       this._timeout = null;
 
       this._setListeners();
@@ -6931,9 +6931,9 @@
     } // Private
     ;
 
-    _proto._getConfig = function _getConfig(config) {
+    _proto._getconfig = function _getconfig(config) {
       config = _extends({}, Default$7, $__default['default'](this._element).data(), typeof config === 'object' && config ? config : {});
-      Util.typeCheckConfig(NAME$a, config, this.constructor.DefaultType);
+      Util.typeCheckconfig(NAME$a, config, this.constructor.DefaultType);
       return config;
     };
 

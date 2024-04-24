@@ -147,7 +147,7 @@ function isValidKey(key) {
 }
 /**
  * The default merger when Chart.helpers.merge is called without merger option.
- * Note(SB): also used by mergeConfig and mergeScaleConfig as fallback.
+ * Note(SB): also used by mergeconfig and mergeScaleconfig as fallback.
  * @private
  */ function _merger(key, target, source, options) {
     if (!isValidKey(key)) {

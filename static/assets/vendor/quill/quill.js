@@ -1019,7 +1019,7 @@ exports.default = Block;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.overload = exports.expandConfig = undefined;
+exports.default = exports.overload = exports.expandconfig = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -1133,7 +1133,7 @@ var Quill = function () {
 
     _classCallCheck(this, Quill);
 
-    this.options = expandConfig(container, options);
+    this.options = expandconfig(container, options);
     this.container = this.options.container;
     if (this.container == null) {
       return debug.error('Invalid Quill container', container);
@@ -1592,25 +1592,25 @@ Quill.imports = {
   'core/theme': _theme2.default
 };
 
-function expandConfig(container, userConfig) {
-  userConfig = (0, _extend2.default)(true, {
+function expandconfig(container, userconfig) {
+  userconfig = (0, _extend2.default)(true, {
     container: container,
     modules: {
       clipboard: true,
       keyboard: true,
       history: true
     }
-  }, userConfig);
-  if (!userConfig.theme || userConfig.theme === Quill.DEFAULTS.theme) {
-    userConfig.theme = _theme2.default;
+  }, userconfig);
+  if (!userconfig.theme || userconfig.theme === Quill.DEFAULTS.theme) {
+    userconfig.theme = _theme2.default;
   } else {
-    userConfig.theme = Quill.import('themes/' + userConfig.theme);
-    if (userConfig.theme == null) {
-      throw new Error('Invalid theme ' + userConfig.theme + '. Did you register it?');
+    userconfig.theme = Quill.import('themes/' + userconfig.theme);
+    if (userconfig.theme == null) {
+      throw new Error('Invalid theme ' + userconfig.theme + '. Did you register it?');
     }
   }
-  var themeConfig = (0, _extend2.default)(true, {}, userConfig.theme.DEFAULTS);
-  [themeConfig, userConfig].forEach(function (config) {
+  var themeconfig = (0, _extend2.default)(true, {}, userconfig.theme.DEFAULTS);
+  [themeconfig, userconfig].forEach(function (config) {
     config.modules = config.modules || {};
     Object.keys(config.modules).forEach(function (module) {
       if (config.modules[module] === true) {
@@ -1618,8 +1618,8 @@ function expandConfig(container, userConfig) {
       }
     });
   });
-  var moduleNames = Object.keys(themeConfig.modules).concat(Object.keys(userConfig.modules));
-  var moduleConfig = moduleNames.reduce(function (config, name) {
+  var moduleNames = Object.keys(themeconfig.modules).concat(Object.keys(userconfig.modules));
+  var moduleconfig = moduleNames.reduce(function (config, name) {
     var moduleClass = Quill.import('modules/' + name);
     if (moduleClass == null) {
       debug.error('Cannot load ' + name + ' module. Are you sure you registered it?');
@@ -1629,24 +1629,24 @@ function expandConfig(container, userConfig) {
     return config;
   }, {});
   // Special case toolbar shorthand
-  if (userConfig.modules != null && userConfig.modules.toolbar && userConfig.modules.toolbar.constructor !== Object) {
-    userConfig.modules.toolbar = {
-      container: userConfig.modules.toolbar
+  if (userconfig.modules != null && userconfig.modules.toolbar && userconfig.modules.toolbar.constructor !== Object) {
+    userconfig.modules.toolbar = {
+      container: userconfig.modules.toolbar
     };
   }
-  userConfig = (0, _extend2.default)(true, {}, Quill.DEFAULTS, { modules: moduleConfig }, themeConfig, userConfig);
+  userconfig = (0, _extend2.default)(true, {}, Quill.DEFAULTS, { modules: moduleconfig }, themeconfig, userconfig);
   ['bounds', 'container', 'scrollingContainer'].forEach(function (key) {
-    if (typeof userConfig[key] === 'string') {
-      userConfig[key] = document.querySelector(userConfig[key]);
+    if (typeof userconfig[key] === 'string') {
+      userconfig[key] = document.querySelector(userconfig[key]);
     }
   });
-  userConfig.modules = Object.keys(userConfig.modules).reduce(function (config, name) {
-    if (userConfig.modules[name]) {
-      config[name] = userConfig.modules[name];
+  userconfig.modules = Object.keys(userconfig.modules).reduce(function (config, name) {
+    if (userconfig.modules[name]) {
+      config[name] = userconfig.modules[name];
     }
     return config;
   }, {});
-  return userConfig;
+  return userconfig;
 }
 
 // Handle selection preservation and TEXT_CHANGE emission
@@ -1740,7 +1740,7 @@ function shiftRange(range, index, length, source) {
   return new _selection.Range(start, end - start);
 }
 
-exports.expandConfig = expandConfig;
+exports.expandconfig = expandconfig;
 exports.overload = overload;
 exports.default = Quill;
 
@@ -7174,7 +7174,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var container_1 = __webpack_require__(17);
 var Registry = __webpack_require__(1);
-var OBSERVER_CONFIG = {
+var OBSERVER_config = {
     attributes: true,
     characterData: true,
     characterDataOldValue: true,
@@ -7190,7 +7190,7 @@ var ScrollBlot = /** @class */ (function (_super) {
         _this.observer = new MutationObserver(function (mutations) {
             _this.update(mutations);
         });
-        _this.observer.observe(_this.domNode, OBSERVER_CONFIG);
+        _this.observer.observe(_this.domNode, OBSERVER_config);
         _this.attach();
         return _this;
     }
@@ -8896,7 +8896,7 @@ var debug = (0, _logger2.default)('quill:clipboard');
 
 var DOM_KEY = '__ql-matcher';
 
-var CLIPBOARD_CONFIG = [[Node.TEXT_NODE, matchText], [Node.TEXT_NODE, matchNewline], ['br', matchBreak], [Node.ELEMENT_NODE, matchNewline], [Node.ELEMENT_NODE, matchBlot], [Node.ELEMENT_NODE, matchSpacing], [Node.ELEMENT_NODE, matchAttributor], [Node.ELEMENT_NODE, matchStyles], ['li', matchIndent], ['b', matchAlias.bind(matchAlias, 'bold')], ['i', matchAlias.bind(matchAlias, 'italic')], ['style', matchIgnore]];
+var CLIPBOARD_config = [[Node.TEXT_NODE, matchText], [Node.TEXT_NODE, matchNewline], ['br', matchBreak], [Node.ELEMENT_NODE, matchNewline], [Node.ELEMENT_NODE, matchBlot], [Node.ELEMENT_NODE, matchSpacing], [Node.ELEMENT_NODE, matchAttributor], [Node.ELEMENT_NODE, matchStyles], ['li', matchIndent], ['b', matchAlias.bind(matchAlias, 'bold')], ['i', matchAlias.bind(matchAlias, 'italic')], ['style', matchIgnore]];
 
 var ATTRIBUTE_ATTRIBUTORS = [_align.AlignAttribute, _direction.DirectionAttribute].reduce(function (memo, attr) {
   memo[attr.keyName] = attr;
@@ -8921,7 +8921,7 @@ var Clipboard = function (_Module) {
     _this.container.setAttribute('contenteditable', true);
     _this.container.setAttribute('tabindex', -1);
     _this.matchers = [];
-    CLIPBOARD_CONFIG.concat(_this.options.matchers).forEach(function (_ref) {
+    CLIPBOARD_config.concat(_this.options.matchers).forEach(function (_ref) {
       var _ref2 = _slicedToArray(_ref, 2),
           selector = _ref2[0],
           matcher = _ref2[1];
@@ -9898,7 +9898,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var TOOLBAR_CONFIG = [[{ header: ['1', '2', '3', false] }], ['bold', 'italic', 'underline', 'link'], [{ list: 'ordered' }, { list: 'bullet' }], ['clean']];
+var TOOLBAR_config = [[{ header: ['1', '2', '3', false] }], ['bold', 'italic', 'underline', 'link'], [{ list: 'ordered' }, { list: 'bullet' }], ['clean']];
 
 var SnowTheme = function (_BaseTheme) {
   _inherits(SnowTheme, _BaseTheme);
@@ -9907,7 +9907,7 @@ var SnowTheme = function (_BaseTheme) {
     _classCallCheck(this, SnowTheme);
 
     if (options.modules.toolbar != null && options.modules.toolbar.container == null) {
-      options.modules.toolbar.container = TOOLBAR_CONFIG;
+      options.modules.toolbar.container = TOOLBAR_config;
     }
 
     var _this = _possibleConstructorReturn(this, (SnowTheme.__proto__ || Object.getPrototypeOf(SnowTheme)).call(this, quill, options));
@@ -11426,7 +11426,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var TOOLBAR_CONFIG = [['bold', 'italic', 'link'], [{ header: 1 }, { header: 2 }, 'blockquote']];
+var TOOLBAR_config = [['bold', 'italic', 'link'], [{ header: 1 }, { header: 2 }, 'blockquote']];
 
 var BubbleTheme = function (_BaseTheme) {
   _inherits(BubbleTheme, _BaseTheme);
@@ -11435,7 +11435,7 @@ var BubbleTheme = function (_BaseTheme) {
     _classCallCheck(this, BubbleTheme);
 
     if (options.modules.toolbar != null && options.modules.toolbar.container == null) {
-      options.modules.toolbar.container = TOOLBAR_CONFIG;
+      options.modules.toolbar.container = TOOLBAR_config;
     }
 
     var _this = _possibleConstructorReturn(this, (BubbleTheme.__proto__ || Object.getPrototypeOf(BubbleTheme)).call(this, quill, options));

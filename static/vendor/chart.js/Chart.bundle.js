@@ -2303,7 +2303,7 @@ var helpers = {
 
 	/**
 	 * The default merger when Chart.helpers.merge is called without merger option.
-	 * Note(SB): also used by mergeConfig and mergeScaleConfig as fallback.
+	 * Note(SB): also used by mergeconfig and mergeScaleconfig as fallback.
 	 * @private
 	 */
 	_merger: function(key, target, source, options) {
@@ -9189,7 +9189,7 @@ core_defaults._set('global', {
  * by incorporating scale defaults in `xAxes` and `yAxes` array items, then
  * returns a deep copy of the result, thus doesn't alter inputs.
  */
-function mergeScaleConfig(/* config objects ... */) {
+function mergeScaleconfig(/* config objects ... */) {
 	return helpers$1.merge(Object.create(null), [].slice.call(arguments), {
 		merger: function(key, target, source, options) {
 			if (key === 'xAxes' || key === 'yAxes') {
@@ -9229,7 +9229,7 @@ function mergeScaleConfig(/* config objects ... */) {
  * default scale options for the `scales` and `scale` properties, then returns
  * a deep copy of the result, thus doesn't alter inputs.
  */
-function mergeConfig(/* config objects ... */) {
+function mergeconfig(/* config objects ... */) {
 	return helpers$1.merge(Object.create(null), [].slice.call(arguments), {
 		merger: function(key, target, source, options) {
 			var tval = target[key] || Object.create(null);
@@ -9237,7 +9237,7 @@ function mergeConfig(/* config objects ... */) {
 
 			if (key === 'scales') {
 				// scale config merging is complex. Add our own function here for that
-				target[key] = mergeScaleConfig(tval, sval);
+				target[key] = mergeScaleconfig(tval, sval);
 			} else if (key === 'scale') {
 				// used in polar area & radar charts since there is only one scale
 				target[key] = helpers$1.merge(tval, [core_scaleService.getScaleDefaults(sval.type), sval]);
@@ -9248,16 +9248,16 @@ function mergeConfig(/* config objects ... */) {
 	});
 }
 
-function initConfig(config) {
+function initconfig(config) {
 	config = config || Object.create(null);
 
-	// Do NOT use mergeConfig for the data object because this method merges arrays
+	// Do NOT use mergeconfig for the data object because this method merges arrays
 	// and so would change references to labels and datasets, preventing data updates.
 	var data = config.data = config.data || {};
 	data.datasets = data.datasets || [];
 	data.labels = data.labels || [];
 
-	config.options = mergeConfig(
+	config.options = mergeconfig(
 		core_defaults.global,
 		core_defaults[config.type],
 		config.options || {});
@@ -9265,14 +9265,14 @@ function initConfig(config) {
 	return config;
 }
 
-function updateConfig(chart) {
+function updateconfig(chart) {
 	var newOptions = chart.options;
 
 	helpers$1.each(chart.scales, function(scale) {
 		core_layouts.removeBox(chart, scale);
 	});
 
-	newOptions = mergeConfig(
+	newOptions = mergeconfig(
 		core_defaults.global,
 		core_defaults[chart.config.type],
 		newOptions);
@@ -9323,7 +9323,7 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 	construct: function(item, config) {
 		var me = this;
 
-		config = initConfig(config);
+		config = initconfig(config);
 
 		var context = platform.acquireContext(item, config);
 		var canvas = context && context.canvas;
@@ -9630,7 +9630,7 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 			};
 		}
 
-		updateConfig(me);
+		updateconfig(me);
 
 		// plugins options references might have change, let's invalidate the cache
 		// https://github.com/chartjs/Chart.js/issues/5111#issuecomment-355934167
@@ -10290,7 +10290,7 @@ Chart.types = {};
  * @todo remove at version 3
  * @private
  */
-helpers$1.configMerge = mergeConfig;
+helpers$1.configMerge = mergeconfig;
 
 /**
  * Provided for backward compatibility, not available anymore.
@@ -10299,7 +10299,7 @@ helpers$1.configMerge = mergeConfig;
  * @todo remove at version 3
  * @private
  */
-helpers$1.scaleMerge = mergeScaleConfig;
+helpers$1.scaleMerge = mergeScaleconfig;
 
 var core_helpers = function() {
 
@@ -12548,7 +12548,7 @@ var core_scale = Scale;
 
 var isNullOrUndef$1 = helpers$1.isNullOrUndef;
 
-var defaultConfig = {
+var defaultconfig = {
 	position: 'bottom'
 };
 
@@ -12671,7 +12671,7 @@ var scale_category = core_scale.extend({
 });
 
 // INTERNAL: static default options, registered in src/index.js
-var _defaults = defaultConfig;
+var _defaults = defaultconfig;
 scale_category._defaults = _defaults;
 
 var noop = helpers$1.noop;
@@ -12924,7 +12924,7 @@ var scale_linearbase = core_scale.extend({
 	}
 });
 
-var defaultConfig$1 = {
+var defaultconfig$1 = {
 	position: 'left',
 	ticks: {
 		callback: core_ticks.formatters.linear
@@ -13084,7 +13084,7 @@ var scale_linear = scale_linearbase.extend({
 });
 
 // INTERNAL: static default options, registered in src/index.js
-var _defaults$1 = defaultConfig$1;
+var _defaults$1 = defaultconfig$1;
 scale_linear._defaults = _defaults$1;
 
 var valueOrDefault$b = helpers$1.valueOrDefault;
@@ -13136,7 +13136,7 @@ function generateTicks$1(generationOptions, dataRange) {
 	return ticks;
 }
 
-var defaultConfig$2 = {
+var defaultconfig$2 = {
 	position: 'left',
 
 	// label settings
@@ -13387,14 +13387,14 @@ var scale_logarithmic = core_scale.extend({
 });
 
 // INTERNAL: static default options, registered in src/index.js
-var _defaults$2 = defaultConfig$2;
+var _defaults$2 = defaultconfig$2;
 scale_logarithmic._defaults = _defaults$2;
 
 var valueOrDefault$c = helpers$1.valueOrDefault;
 var valueAtIndexOrDefault$1 = helpers$1.valueAtIndexOrDefault;
 var resolve$4 = helpers$1.options.resolve;
 
-var defaultConfig$3 = {
+var defaultconfig$3 = {
 	display: true,
 
 	// Boolean - Whether to animate scaling the chart from the centre
@@ -13940,7 +13940,7 @@ var scale_radialLinear = scale_linearbase.extend({
 });
 
 // INTERNAL: static default options, registered in src/index.js
-var _defaults$3 = defaultConfig$3;
+var _defaults$3 = defaultconfig$3;
 scale_radialLinear._defaults = _defaults$3;
 
 var deprecated$1 = helpers$1._deprecated;
@@ -14328,7 +14328,7 @@ function ticksFromTimestamps(scale, values, majorUnit) {
 	return (ilen === 0 || !majorUnit) ? ticks : setMajorTicks(scale, ticks, map, majorUnit);
 }
 
-var defaultConfig$4 = {
+var defaultconfig$4 = {
 	position: 'bottom',
 
 	/**
@@ -14699,7 +14699,7 @@ var scale_time = core_scale.extend({
 });
 
 // INTERNAL: static default options, registered in src/index.js
-var _defaults$4 = defaultConfig$4;
+var _defaults$4 = defaultconfig$4;
 scale_time._defaults = _defaults$4;
 
 var scales = {
@@ -14891,7 +14891,7 @@ var moment = createCommonjsModule(function (module, exports) {
     // so we can properly clone ourselves.
     var momentProperties = hooks.momentProperties = [];
 
-    function copyConfig(to, from) {
+    function copyconfig(to, from) {
         var i, prop, val;
 
         if (!isUndefined(from._isAMomentObject)) {
@@ -14942,7 +14942,7 @@ var moment = createCommonjsModule(function (module, exports) {
 
     // Moment prototype object
     function Moment(config) {
-        copyConfig(this, config);
+        copyconfig(this, config);
         this._d = new Date(config._d != null ? config._d.getTime() : NaN);
         if (!this.isValid()) {
             this._d = new Date(NaN);
@@ -15070,25 +15070,25 @@ var moment = createCommonjsModule(function (module, exports) {
                 '|' + (/\d{1,2}/).source);
     }
 
-    function mergeConfigs(parentConfig, childConfig) {
-        var res = extend({}, parentConfig), prop;
-        for (prop in childConfig) {
-            if (hasOwnProp(childConfig, prop)) {
-                if (isObject(parentConfig[prop]) && isObject(childConfig[prop])) {
+    function mergeconfigs(parentconfig, childconfig) {
+        var res = extend({}, parentconfig), prop;
+        for (prop in childconfig) {
+            if (hasOwnProp(childconfig, prop)) {
+                if (isObject(parentconfig[prop]) && isObject(childconfig[prop])) {
                     res[prop] = {};
-                    extend(res[prop], parentConfig[prop]);
-                    extend(res[prop], childConfig[prop]);
-                } else if (childConfig[prop] != null) {
-                    res[prop] = childConfig[prop];
+                    extend(res[prop], parentconfig[prop]);
+                    extend(res[prop], childconfig[prop]);
+                } else if (childconfig[prop] != null) {
+                    res[prop] = childconfig[prop];
                 } else {
                     delete res[prop];
                 }
             }
         }
-        for (prop in parentConfig) {
-            if (hasOwnProp(parentConfig, prop) &&
-                    !hasOwnProp(childConfig, prop) &&
-                    isObject(parentConfig[prop])) {
+        for (prop in parentconfig) {
+            if (hasOwnProp(parentconfig, prop) &&
+                    !hasOwnProp(childconfig, prop) &&
+                    isObject(parentconfig[prop])) {
                 // make sure changes to properties don't modify parent config
                 res[prop] = extend({}, res[prop]);
             }
@@ -16494,7 +16494,7 @@ var moment = createCommonjsModule(function (module, exports) {
     // this rule.
     var getSetHour = makeGetSet('Hours', true);
 
-    var baseConfig = {
+    var baseconfig = {
         calendar: defaultCalendar,
         longDateFormat: defaultLongDateFormat,
         invalidDate: defaultInvalidDate,
@@ -16595,7 +16595,7 @@ var moment = createCommonjsModule(function (module, exports) {
 
     function defineLocale (name, config) {
         if (config !== null) {
-            var locale, parentConfig = baseConfig;
+            var locale, parentconfig = baseconfig;
             config.abbr = name;
             if (locales[name] != null) {
                 deprecateSimple('defineLocaleOverride',
@@ -16603,14 +16603,14 @@ var moment = createCommonjsModule(function (module, exports) {
                         'an existing locale. moment.defineLocale(localeName, ' +
                         'config) should only be used for creating a new locale ' +
                         'See http://momentjs.com/guides/#/warnings/define-locale/ for more info.');
-                parentConfig = locales[name]._config;
+                parentconfig = locales[name]._config;
             } else if (config.parentLocale != null) {
                 if (locales[config.parentLocale] != null) {
-                    parentConfig = locales[config.parentLocale]._config;
+                    parentconfig = locales[config.parentLocale]._config;
                 } else {
                     locale = loadLocale(config.parentLocale);
                     if (locale != null) {
-                        parentConfig = locale._config;
+                        parentconfig = locale._config;
                     } else {
                         if (!localeFamilies[config.parentLocale]) {
                             localeFamilies[config.parentLocale] = [];
@@ -16623,7 +16623,7 @@ var moment = createCommonjsModule(function (module, exports) {
                     }
                 }
             }
-            locales[name] = new Locale(mergeConfigs(parentConfig, config));
+            locales[name] = new Locale(mergeconfigs(parentconfig, config));
 
             if (localeFamilies[name]) {
                 localeFamilies[name].forEach(function (x) {
@@ -16647,13 +16647,13 @@ var moment = createCommonjsModule(function (module, exports) {
 
     function updateLocale(name, config) {
         if (config != null) {
-            var locale, tmpLocale, parentConfig = baseConfig;
+            var locale, tmpLocale, parentconfig = baseconfig;
             // MERGE
             tmpLocale = loadLocale(name);
             if (tmpLocale != null) {
-                parentConfig = tmpLocale._config;
+                parentconfig = tmpLocale._config;
             }
-            config = mergeConfigs(parentConfig, config);
+            config = mergeconfigs(parentconfig, config);
             locale = new Locale(config);
             locale.parentLocale = locales[name];
             locales[name] = locale;
@@ -17209,7 +17209,7 @@ var moment = createCommonjsModule(function (module, exports) {
 
     // date from string and array of format strings
     function configFromStringAndArray(config) {
-        var tempConfig,
+        var tempconfig,
             bestMoment,
 
             scoreToBeat,
@@ -17224,32 +17224,32 @@ var moment = createCommonjsModule(function (module, exports) {
 
         for (i = 0; i < config._f.length; i++) {
             currentScore = 0;
-            tempConfig = copyConfig({}, config);
+            tempconfig = copyconfig({}, config);
             if (config._useUTC != null) {
-                tempConfig._useUTC = config._useUTC;
+                tempconfig._useUTC = config._useUTC;
             }
-            tempConfig._f = config._f[i];
-            configFromStringAndFormat(tempConfig);
+            tempconfig._f = config._f[i];
+            configFromStringAndFormat(tempconfig);
 
-            if (!isValid(tempConfig)) {
+            if (!isValid(tempconfig)) {
                 continue;
             }
 
             // if there is any input that was not parsed add a penalty for that format
-            currentScore += getParsingFlags(tempConfig).charsLeftOver;
+            currentScore += getParsingFlags(tempconfig).charsLeftOver;
 
             //or tokens
-            currentScore += getParsingFlags(tempConfig).unusedTokens.length * 10;
+            currentScore += getParsingFlags(tempconfig).unusedTokens.length * 10;
 
-            getParsingFlags(tempConfig).score = currentScore;
+            getParsingFlags(tempconfig).score = currentScore;
 
             if (scoreToBeat == null || currentScore < scoreToBeat) {
                 scoreToBeat = currentScore;
-                bestMoment = tempConfig;
+                bestMoment = tempconfig;
             }
         }
 
-        extend(config, bestMoment || tempConfig);
+        extend(config, bestMoment || tempconfig);
     }
 
     function configFromObject(config) {
@@ -17265,8 +17265,8 @@ var moment = createCommonjsModule(function (module, exports) {
         configFromArray(config);
     }
 
-    function createFromConfig (config) {
-        var res = new Moment(checkOverflow(prepareConfig(config)));
+    function createFromconfig (config) {
+        var res = new Moment(checkOverflow(prepareconfig(config)));
         if (res._nextDay) {
             // Adding is smart enough around DST
             res.add(1, 'd');
@@ -17276,7 +17276,7 @@ var moment = createCommonjsModule(function (module, exports) {
         return res;
     }
 
-    function prepareConfig (config) {
+    function prepareconfig (config) {
         var input = config._i,
             format = config._f;
 
@@ -17353,7 +17353,7 @@ var moment = createCommonjsModule(function (module, exports) {
         c._f = format;
         c._strict = strict;
 
-        return createFromConfig(c);
+        return createFromconfig(c);
     }
 
     function createLocal (input, format, locale, strict) {
@@ -17698,8 +17698,8 @@ var moment = createCommonjsModule(function (module, exports) {
 
         var c = {};
 
-        copyConfig(c, this);
-        c = prepareConfig(c);
+        copyconfig(c, this);
+        c = prepareconfig(c);
 
         if (c._a) {
             var other = c._isUTC ? createUTC(c._a) : createLocal(c._a);

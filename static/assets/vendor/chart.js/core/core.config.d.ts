@@ -1,6 +1,6 @@
 export function getIndexAxis(type: any, options: any): any;
 export function determineAxis(id: any, ...scaleOptions: any[]): any;
-export default class Config {
+export default class config {
     constructor(config: any);
     _config: any;
     _scopeCache: Map<any, any>;

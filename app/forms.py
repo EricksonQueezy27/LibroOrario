@@ -188,11 +188,12 @@ class CustomUserChangeForm(UserChangeForm):
 class TurmaForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(TurmaForm, self).__init__(*args, **kwargs)
-        # Filtra os alunos que ainda não estão matriculados em nenhuma turma
-        self.fields['alunos'].queryset = Aluno.objects.filter(turma__isnull=True)
+        # Filtra os alunos que ainda não estão associados a nenhuma turma
+        alunos_sem_turma = Aluno.objects.filter(turma__isnull=True)
+        self.fields['alunos'].queryset = alunos_sem_turma
 
     alunos = forms.ModelMultipleChoiceField(
-        queryset=Aluno.objects.all(), 
+        queryset=Aluno.objects.none(), 
         widget=forms.CheckboxSelectMultiple, 
         required=False
     )
@@ -200,6 +201,8 @@ class TurmaForm(forms.ModelForm):
     class Meta:
         model = Turma
         fields = ['nome', 'imagem', 'classe', 'alunos']
+
+
         
 
 class PublicidadeForm(forms.ModelForm):
@@ -222,10 +225,6 @@ class AlunoForm(forms.ModelForm):
     class Meta:
         model = Aluno
         fields = ['nome', 'profissao_encarregado', 'data_nascimento', 'foto', 'sexo', 'Classe', 'encarregado_nome', 'encarregado_numero']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['nome'].widget.attrs['placeholder'] = 'Digite o nome do aluno'
     
 
 class NotaForm(forms.ModelForm):
@@ -239,3 +238,34 @@ class NotaForm(forms.ModelForm):
             'tipo': 'Tipo',
             'nota': 'Nota',
         }
+
+class ProfessorCreationForm(forms.ModelForm):
+    username = forms.ModelChoiceField(queryset=User.objects.all(), label='Nome de Usuário')
+    email = forms.EmailField(label='Email', max_length=254)
+
+    class Meta:
+        model = Professor
+        fields = ['username', 'email', 'nome', 'conteudos_educacionais', 'departamento', 'titulacao', 'disciplinas_associadas', 'turmas_associadas', 'foto', 'horarios']
+
+class EncarregadoForm(forms.ModelForm):
+    username = forms.ModelChoiceField(queryset=User.objects.all(), label='Nome de Usuário')
+    email = forms.EmailField(label='Email', max_length=254)
+
+    class Meta:
+        model = Encarregado
+        fields = ['username', 'nome', 'email', 'telefone', 'profissao', 'alunos_associados', 'foto']
+
+    def __init__(self, *args, **kwargs):
+        super(EncarregadoForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({'class': 'form-control'})
+        self.fields['nome'].widget.attrs.update({'class': 'form-control'})
+        self.fields['email'].widget.attrs.update({'class': 'form-control'})
+        self.fields['telefone'].widget.attrs.update({'class': 'form-control'})
+        self.fields['profissao'].widget.attrs.update({'class': 'form-control'})
+        self.fields['alunos_associados'].widget.attrs.update({'class': 'form-control'})
+        self.fields['foto'].widget.attrs.update({'class': 'form-control'})
+
+class Encarregado1Form(forms.ModelForm):
+    class Meta:
+        model = Encarregado
+        fields = ['nome', 'email', 'telefone', 'profissao', 'alunos_associados', 'foto']

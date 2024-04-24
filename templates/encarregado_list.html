@@ -1,0 +1,37 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Lista de Encarregados</h1>
+    <div class="row">
+        {% for encarregado in encarregados %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    {% if encarregado.foto %}
+                        <img src="{{ encarregado.foto.url }}" class="card-img-top" alt="Foto do Encarregado">
+                    {% else %}
+                        <div class="text-center py-3">
+                            <i class="bi bi-person-circle fs-1 text-muted"></i>
+                        </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ encarregado.user.first_name }} {{ encarregado.user.last_name }}</h5>
+                        <p class="card-text">Telefone: {{ encarregado.telefone }}</p>
+                        <p class="card-text">Email: {{ encarregado.email }}</p>
+                        <p class="card-text">Alunos Associados:</p>
+                        <ul class="list-unstyled">
+                            {% for aluno in encarregado.alunos_associados.all %}
+                                <li>{{ aluno.nome }}</li>
+                            {% endfor %}
+                        </ul>
+                        <!-- Adicione outros campos relevantes aqui -->
+                        <a href="{% url 'ver_encarregado' encarregado.pk %}" class="btn btn-primary">Ver</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <!-- Botão para adicionar mais encarregados -->
+    <a href="{% url 'enca' %}" class="btn btn-success">Adicionar + Encarregados</a>
+</div>
+{% endblock %}

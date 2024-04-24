@@ -19554,7 +19554,7 @@
       var section = sectionResult.sections();
       return hasSection(sectionResult, name) && section[name].theme === theme;
     };
-    var getSectionConfig = function (sectionResult, name) {
+    var getSectionconfig = function (sectionResult, name) {
       return hasSection(sectionResult, name) ? sectionResult.sections()[name] : {};
     };
     var getToolbarMode = function (settings, defaultVal) {
@@ -19626,8 +19626,8 @@
     var processPlugins = function (isMobileDevice, sectionResult, defaultOverrideSettings, settings) {
       var forcedPlugins = normalizePlugins(defaultOverrideSettings.forced_plugins);
       var desktopPlugins = normalizePlugins(settings.plugins);
-      var mobileConfig = getSectionConfig(sectionResult, 'mobile');
-      var mobilePlugins = mobileConfig.plugins ? normalizePlugins(mobileConfig.plugins) : desktopPlugins;
+      var mobileconfig = getSectionconfig(sectionResult, 'mobile');
+      var mobilePlugins = mobileconfig.plugins ? normalizePlugins(mobileconfig.plugins) : desktopPlugins;
       var platformPlugins = getPlatformPlugins(isMobileDevice, sectionResult, desktopPlugins, mobilePlugins);
       var combinedPlugins = combinePlugins(forcedPlugins, platformPlugins);
       if (Env.browser.isIE() && contains(combinedPlugins, 'rtc')) {

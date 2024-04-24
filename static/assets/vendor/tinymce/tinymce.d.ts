@@ -646,12 +646,12 @@ interface ToolbarGroupSetting {
     name: string;
     items: string[];
 }
-type ToolbarConfig = string | ToolbarGroupSetting[];
+type Toolbarconfig = string | ToolbarGroupSetting[];
 interface GroupToolbarButtonInstanceApi extends BaseToolbarButtonInstanceApi {
 }
 interface GroupToolbarButtonSpec extends BaseToolbarButtonSpec<GroupToolbarButtonInstanceApi> {
     type?: 'grouptoolbarbutton';
-    items?: ToolbarConfig;
+    items?: Toolbarconfig;
 }
 interface CardImageSpec {
     type: 'cardimage';

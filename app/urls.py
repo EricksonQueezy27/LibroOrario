@@ -50,7 +50,7 @@ urlpatterns = [
     path('adicionar_aluno/', adicionar_aluno, name='adicionar_aluno'),
     path('criar_turma/', criar_turma, name='criar_turma'),
     path('editar_turma/<int:turma_id>/', editar_turma, name='editar_turma'),
-     path('ver_professores/', ver_professores, name='ver_professores'),
+    path('ver_professores/', ver_professores, name='ver_professores'),
     path('ver_encarregado/<int:encarregado_id>/', ver_encarregado, name='ver_encarregado'),
     path('ver_alunos/', ver_alunos, name='ver_alunos'),
     path('cadastrar_publicidade_comunicado/', cadastrar_publicidade_comunicado, name='cadastrar_publicidade_comunicado'),
@@ -60,6 +60,18 @@ urlpatterns = [
     path('editar_publicidade/<int:publicidade_id>/', editar_publicidade, name='editar_publicidade'),  
     path('editar_aluno/<int:id>/', editar_aluno, name='editar_aluno'),
     path('avalicao', avalicao, name='avalicao'),
+    path('sigup', sigup, name='sigup'),
+    path('cadastrar-professor/', cadastrar_professor, name='cadastrar_professor'),
+    path('cadastrar-encarregado/', cadastrar_encarregado, name='cadastrar_encarregado'),
+    path('enca', enca, name='enca'),
+    path('encarregados/', encarregado_list_view, name='encarregado_list'),
+    path('editar-encarregado/<int:id>/', editar_encarregado, name='editar_encarregado'),
+    path('eliminar-turma/<int:turma_id>/', eliminar_turma, name='eliminar_turma'),
+     path('eliminar-professor/<int:professor_id>/', eliminar_professor, name='eliminar_professor'),
+    path('eliminar-aluno/<int:id>/', eliminar_aluno, name='eliminar_aluno'),
+
+
+    
     # Outras URLs...
 
 

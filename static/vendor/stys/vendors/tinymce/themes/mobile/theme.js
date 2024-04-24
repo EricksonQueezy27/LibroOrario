@@ -1310,21 +1310,21 @@
       remove$4(element, removeCls);
       add$2(element, addCls);
     };
-    var toAlpha = function (component, swapConfig, _swapState) {
-      swap(component.element, swapConfig.alpha, swapConfig.omega);
+    var toAlpha = function (component, swapconfig, _swapState) {
+      swap(component.element, swapconfig.alpha, swapconfig.omega);
     };
-    var toOmega = function (component, swapConfig, _swapState) {
-      swap(component.element, swapConfig.omega, swapConfig.alpha);
+    var toOmega = function (component, swapconfig, _swapState) {
+      swap(component.element, swapconfig.omega, swapconfig.alpha);
     };
-    var clear = function (component, swapConfig, _swapState) {
-      remove$4(component.element, swapConfig.alpha);
-      remove$4(component.element, swapConfig.omega);
+    var clear = function (component, swapconfig, _swapState) {
+      remove$4(component.element, swapconfig.alpha);
+      remove$4(component.element, swapconfig.omega);
     };
-    var isAlpha = function (component, swapConfig, _swapState) {
-      return has$2(component.element, swapConfig.alpha);
+    var isAlpha = function (component, swapconfig, _swapState) {
+      return has$2(component.element, swapconfig.alpha);
     };
-    var isOmega = function (component, swapConfig, _swapState) {
-      return has$2(component.element, swapConfig.omega);
+    var isOmega = function (component, swapconfig, _swapState) {
+      return has$2(component.element, swapconfig.omega);
     };
 
     var SwapApis = /*#__PURE__*/Object.freeze({
@@ -2339,14 +2339,14 @@
       });
     };
 
-    var executeEvent = function (bConfig, bState, executor) {
+    var executeEvent = function (bconfig, bState, executor) {
       return runOnExecute(function (component) {
-        executor(component, bConfig, bState);
+        executor(component, bconfig, bState);
       });
     };
-    var loadEvent = function (bConfig, bState, f) {
+    var loadEvent = function (bconfig, bState, f) {
       return runOnInit(function (component, _simulatedEvent) {
-        f(component, bConfig, bState);
+        f(component, bconfig, bState);
       });
     };
     var create = function (schema, name, active, apis, extra, state) {
@@ -2386,7 +2386,7 @@
       };
     };
     var doCreate = function (configSchema, schemaSchema, name, active, apis, extra, state) {
-      var getConfig = function (info) {
+      var getconfig = function (info) {
         return hasNonNullableKey(info, name) ? info[name]() : Optional.none();
       };
       var wrappedApis = map$1(apis, function (apiF, apiName) {
@@ -2407,7 +2407,7 @@
               configAsRaw: cached(function () {
                 return asRawOrDie(name + '-config', configSchema, spec);
               }),
-              initialConfig: spec,
+              initialconfig: spec,
               state: state
             }
           };
@@ -2416,7 +2416,7 @@
           return schemaSchema;
         },
         exhibit: function (info, base) {
-          return getConfig(info).bind(function (behaviourInfo) {
+          return getconfig(info).bind(function (behaviourInfo) {
             return get$1(active, 'exhibit').map(function (exhibitor) {
               return exhibitor(base, behaviourInfo.config, behaviourInfo.state);
             });
@@ -2426,7 +2426,7 @@
           return name;
         },
         handlers: function (info) {
-          return getConfig(info).map(function (behaviourInfo) {
+          return getconfig(info).map(function (behaviourInfo) {
             var getEvents = get$1(active, 'events').getOr(function () {
               return {};
             });
@@ -2736,9 +2736,9 @@
         return contains(message.channels, ch);
       });
     };
-    var events = function (receiveConfig) {
+    var events = function (receiveconfig) {
       return derive([run(receive(), function (component, message) {
-          var channelMap = receiveConfig.channels;
+          var channelMap = receiveconfig.channels;
           var channels = keys(channelMap);
           var receivingData = message;
           var targetChannels = chooseChannels(channels, receivingData);
@@ -2757,13 +2757,13 @@
     });
 
     var unknown$3 = 'unknown';
-    var EventConfiguration;
-    (function (EventConfiguration) {
-      EventConfiguration[EventConfiguration['STOP'] = 0] = 'STOP';
-      EventConfiguration[EventConfiguration['NORMAL'] = 1] = 'NORMAL';
-      EventConfiguration[EventConfiguration['LOGGING'] = 2] = 'LOGGING';
-    }(EventConfiguration || (EventConfiguration = {})));
-    var eventConfig = Cell({});
+    var Eventconfiguration;
+    (function (Eventconfiguration) {
+      Eventconfiguration[Eventconfiguration['STOP'] = 0] = 'STOP';
+      Eventconfiguration[Eventconfiguration['NORMAL'] = 1] = 'NORMAL';
+      Eventconfiguration[Eventconfiguration['LOGGING'] = 2] = 'LOGGING';
+    }(Eventconfiguration || (Eventconfiguration = {})));
+    var eventconfig = Cell({});
     var makeEventLogger = function (eventName, initialTarget) {
       var sequence = [];
       var startTime = new Date().getTime();
@@ -2832,22 +2832,22 @@
       };
     };
     var processEvent = function (eventName, initialTarget, f) {
-      var status = get$1(eventConfig.get(), eventName).orThunk(function () {
-        var patterns = keys(eventConfig.get());
+      var status = get$1(eventconfig.get(), eventName).orThunk(function () {
+        var patterns = keys(eventconfig.get());
         return findMap(patterns, function (p) {
-          return eventName.indexOf(p) > -1 ? Optional.some(eventConfig.get()[p]) : Optional.none();
+          return eventName.indexOf(p) > -1 ? Optional.some(eventconfig.get()[p]) : Optional.none();
         });
-      }).getOr(EventConfiguration.NORMAL);
+      }).getOr(Eventconfiguration.NORMAL);
       switch (status) {
-      case EventConfiguration.NORMAL:
+      case Eventconfiguration.NORMAL:
         return f(noLogger());
-      case EventConfiguration.LOGGING: {
+      case Eventconfiguration.LOGGING: {
           var logger = makeEventLogger(eventName, initialTarget);
           var output = f(logger);
           logger.write();
           return output;
         }
-      case EventConfiguration.STOP:
+      case Eventconfiguration.STOP:
         return true;
       }
     };
@@ -2973,12 +2973,12 @@
       return { init: init };
     };
 
-    var updateAriaState = function (component, toggleConfig, toggleState) {
-      var ariaInfo = toggleConfig.aria;
+    var updateAriaState = function (component, toggleconfig, toggleState) {
+      var ariaInfo = toggleconfig.aria;
       ariaInfo.update(component, ariaInfo, toggleState.get());
     };
-    var updateClass = function (component, toggleConfig, toggleState) {
-      toggleConfig.toggleClass.each(function (toggleClass) {
+    var updateClass = function (component, toggleconfig, toggleState) {
+      toggleconfig.toggleClass.each(function (toggleClass) {
         if (toggleState.get()) {
           add$2(component.element, toggleClass);
         } else {
@@ -2986,28 +2986,28 @@
         }
       });
     };
-    var toggle = function (component, toggleConfig, toggleState) {
-      set$2(component, toggleConfig, toggleState, !toggleState.get());
+    var toggle = function (component, toggleconfig, toggleState) {
+      set$2(component, toggleconfig, toggleState, !toggleState.get());
     };
-    var on = function (component, toggleConfig, toggleState) {
+    var on = function (component, toggleconfig, toggleState) {
       toggleState.set(true);
-      updateClass(component, toggleConfig, toggleState);
-      updateAriaState(component, toggleConfig, toggleState);
+      updateClass(component, toggleconfig, toggleState);
+      updateAriaState(component, toggleconfig, toggleState);
     };
-    var off = function (component, toggleConfig, toggleState) {
+    var off = function (component, toggleconfig, toggleState) {
       toggleState.set(false);
-      updateClass(component, toggleConfig, toggleState);
-      updateAriaState(component, toggleConfig, toggleState);
+      updateClass(component, toggleconfig, toggleState);
+      updateAriaState(component, toggleconfig, toggleState);
     };
-    var set$2 = function (component, toggleConfig, toggleState, state) {
+    var set$2 = function (component, toggleconfig, toggleState, state) {
       var action = state ? on : off;
-      action(component, toggleConfig, toggleState);
+      action(component, toggleconfig, toggleState);
     };
-    var isOn = function (component, toggleConfig, toggleState) {
+    var isOn = function (component, toggleconfig, toggleState) {
       return toggleState.get();
     };
-    var onLoad = function (component, toggleConfig, toggleState) {
-      set$2(component, toggleConfig, toggleState, toggleConfig.selected);
+    var onLoad = function (component, toggleconfig, toggleState) {
+      set$2(component, toggleconfig, toggleState, toggleconfig.selected);
     };
 
     var ToggleApis = /*#__PURE__*/Object.freeze({
@@ -3023,11 +3023,11 @@
     var exhibit = function () {
       return nu$5({});
     };
-    var events$1 = function (toggleConfig, toggleState) {
-      var execute = executeEvent(toggleConfig, toggleState, toggle);
-      var load = loadEvent(toggleConfig, toggleState, onLoad);
+    var events$1 = function (toggleconfig, toggleState) {
+      var execute = executeEvent(toggleconfig, toggleState, toggle);
+      var load = loadEvent(toggleconfig, toggleState, onLoad);
       return derive(flatten([
-        toggleConfig.toggleOnExecute ? [execute] : [],
+        toggleconfig.toggleOnExecute ? [execute] : [],
         [load]
       ]));
     };
@@ -3129,14 +3129,14 @@
       ]));
     };
 
-    var focus$2 = function (component, focusConfig) {
-      if (!focusConfig.ignore) {
+    var focus$2 = function (component, focusconfig) {
+      if (!focusconfig.ignore) {
         focus$1(component.element);
-        focusConfig.onFocus(component);
+        focusconfig.onFocus(component);
       }
     };
-    var blur$1 = function (component, focusConfig) {
-      if (!focusConfig.ignore) {
+    var blur$1 = function (component, focusconfig) {
+      if (!focusconfig.ignore) {
         blur(component.element);
       }
     };
@@ -3151,15 +3151,15 @@
         isFocused: isFocused
     });
 
-    var exhibit$1 = function (base, focusConfig) {
-      var mod = focusConfig.ignore ? {} : { attributes: { tabindex: '-1' } };
+    var exhibit$1 = function (base, focusconfig) {
+      var mod = focusconfig.ignore ? {} : { attributes: { tabindex: '-1' } };
       return nu$5(mod);
     };
-    var events$3 = function (focusConfig) {
+    var events$3 = function (focusconfig) {
       return derive([run(focus(), function (component, simulatedEvent) {
-          focus$2(component, focusConfig);
+          focus$2(component, focusconfig);
           simulatedEvent.stop();
-        })].concat(focusConfig.stopMousedown ? [run(mousedown(), function (_, simulatedEvent) {
+        })].concat(focusconfig.stopMousedown ? [run(mousedown(), function (_, simulatedEvent) {
           simulatedEvent.event.prevent();
         })] : []));
     };
@@ -3482,106 +3482,106 @@
       return b ? Optional.some(a) : Optional.none();
     };
 
-    var dehighlightAllExcept = function (component, hConfig, hState, skip) {
-      var highlighted = descendants(component.element, '.' + hConfig.highlightClass);
+    var dehighlightAllExcept = function (component, hconfig, hState, skip) {
+      var highlighted = descendants(component.element, '.' + hconfig.highlightClass);
       each(highlighted, function (h) {
         if (!exists(skip, function (skipComp) {
             return skipComp.element === h;
           })) {
-          remove$4(h, hConfig.highlightClass);
+          remove$4(h, hconfig.highlightClass);
           component.getSystem().getByDom(h).each(function (target) {
-            hConfig.onDehighlight(component, target);
+            hconfig.onDehighlight(component, target);
             emit(target, dehighlight());
           });
         }
       });
     };
-    var dehighlightAll = function (component, hConfig, hState) {
-      return dehighlightAllExcept(component, hConfig, hState, []);
+    var dehighlightAll = function (component, hconfig, hState) {
+      return dehighlightAllExcept(component, hconfig, hState, []);
     };
-    var dehighlight$1 = function (component, hConfig, hState, target) {
-      if (isHighlighted(component, hConfig, hState, target)) {
-        remove$4(target.element, hConfig.highlightClass);
-        hConfig.onDehighlight(component, target);
+    var dehighlight$1 = function (component, hconfig, hState, target) {
+      if (isHighlighted(component, hconfig, hState, target)) {
+        remove$4(target.element, hconfig.highlightClass);
+        hconfig.onDehighlight(component, target);
         emit(target, dehighlight());
       }
     };
-    var highlight$1 = function (component, hConfig, hState, target) {
-      dehighlightAllExcept(component, hConfig, hState, [target]);
-      if (!isHighlighted(component, hConfig, hState, target)) {
-        add$2(target.element, hConfig.highlightClass);
-        hConfig.onHighlight(component, target);
+    var highlight$1 = function (component, hconfig, hState, target) {
+      dehighlightAllExcept(component, hconfig, hState, [target]);
+      if (!isHighlighted(component, hconfig, hState, target)) {
+        add$2(target.element, hconfig.highlightClass);
+        hconfig.onHighlight(component, target);
         emit(target, highlight());
       }
     };
-    var highlightFirst = function (component, hConfig, hState) {
-      getFirst(component, hConfig).each(function (firstComp) {
-        highlight$1(component, hConfig, hState, firstComp);
+    var highlightFirst = function (component, hconfig, hState) {
+      getFirst(component, hconfig).each(function (firstComp) {
+        highlight$1(component, hconfig, hState, firstComp);
       });
     };
-    var highlightLast = function (component, hConfig, hState) {
-      getLast(component, hConfig).each(function (lastComp) {
-        highlight$1(component, hConfig, hState, lastComp);
+    var highlightLast = function (component, hconfig, hState) {
+      getLast(component, hconfig).each(function (lastComp) {
+        highlight$1(component, hconfig, hState, lastComp);
       });
     };
-    var highlightAt = function (component, hConfig, hState, index) {
-      getByIndex(component, hConfig, hState, index).fold(function (err) {
+    var highlightAt = function (component, hconfig, hState, index) {
+      getByIndex(component, hconfig, hState, index).fold(function (err) {
         throw new Error(err);
       }, function (firstComp) {
-        highlight$1(component, hConfig, hState, firstComp);
+        highlight$1(component, hconfig, hState, firstComp);
       });
     };
-    var highlightBy = function (component, hConfig, hState, predicate) {
-      var candidates = getCandidates(component, hConfig);
+    var highlightBy = function (component, hconfig, hState, predicate) {
+      var candidates = getCandidates(component, hconfig);
       var targetComp = find(candidates, predicate);
       targetComp.each(function (c) {
-        highlight$1(component, hConfig, hState, c);
+        highlight$1(component, hconfig, hState, c);
       });
     };
-    var isHighlighted = function (component, hConfig, hState, queryTarget) {
-      return has$2(queryTarget.element, hConfig.highlightClass);
+    var isHighlighted = function (component, hconfig, hState, queryTarget) {
+      return has$2(queryTarget.element, hconfig.highlightClass);
     };
-    var getHighlighted = function (component, hConfig, _hState) {
-      return descendant$1(component.element, '.' + hConfig.highlightClass).bind(function (e) {
+    var getHighlighted = function (component, hconfig, _hState) {
+      return descendant$1(component.element, '.' + hconfig.highlightClass).bind(function (e) {
         return component.getSystem().getByDom(e).toOptional();
       });
     };
-    var getByIndex = function (component, hConfig, hState, index) {
-      var items = descendants(component.element, '.' + hConfig.itemClass);
+    var getByIndex = function (component, hconfig, hState, index) {
+      var items = descendants(component.element, '.' + hconfig.itemClass);
       return Optional.from(items[index]).fold(function () {
         return Result.error('No element found with index ' + index);
       }, component.getSystem().getByDom);
     };
-    var getFirst = function (component, hConfig, _hState) {
-      return descendant$1(component.element, '.' + hConfig.itemClass).bind(function (e) {
+    var getFirst = function (component, hconfig, _hState) {
+      return descendant$1(component.element, '.' + hconfig.itemClass).bind(function (e) {
         return component.getSystem().getByDom(e).toOptional();
       });
     };
-    var getLast = function (component, hConfig, _hState) {
-      var items = descendants(component.element, '.' + hConfig.itemClass);
+    var getLast = function (component, hconfig, _hState) {
+      var items = descendants(component.element, '.' + hconfig.itemClass);
       var last = items.length > 0 ? Optional.some(items[items.length - 1]) : Optional.none();
       return last.bind(function (c) {
         return component.getSystem().getByDom(c).toOptional();
       });
     };
-    var getDelta = function (component, hConfig, hState, delta) {
-      var items = descendants(component.element, '.' + hConfig.itemClass);
+    var getDelta = function (component, hconfig, hState, delta) {
+      var items = descendants(component.element, '.' + hconfig.itemClass);
       var current = findIndex(items, function (item) {
-        return has$2(item, hConfig.highlightClass);
+        return has$2(item, hconfig.highlightClass);
       });
       return current.bind(function (selected) {
         var dest = cycleBy(selected, delta, 0, items.length - 1);
         return component.getSystem().getByDom(items[dest]).toOptional();
       });
     };
-    var getPrevious = function (component, hConfig, hState) {
-      return getDelta(component, hConfig, hState, -1);
+    var getPrevious = function (component, hconfig, hState) {
+      return getDelta(component, hconfig, hState, -1);
     };
-    var getNext = function (component, hConfig, hState) {
-      return getDelta(component, hConfig, hState, +1);
+    var getNext = function (component, hconfig, hState) {
+      return getDelta(component, hconfig, hState, +1);
     };
-    var getCandidates = function (component, hConfig, _hState) {
-      var items = descendants(component.element, '.' + hConfig.itemClass);
+    var getCandidates = function (component, hconfig, _hState) {
+      var items = descendants(component.element, '.' + hconfig.itemClass);
       return cat(map(items, function (i) {
         return component.getSystem().getByDom(i).toOptional();
       }));
@@ -3689,38 +3689,38 @@
           output('sendFocusIn', optFocusIn)
         ]);
       };
-      var processKey = function (component, simulatedEvent, getRules, keyingConfig, keyingState) {
-        var rules = getRules(component, simulatedEvent, keyingConfig, keyingState);
+      var processKey = function (component, simulatedEvent, getRules, keyingconfig, keyingState) {
+        var rules = getRules(component, simulatedEvent, keyingconfig, keyingState);
         return choose$2(rules, simulatedEvent.event).bind(function (rule) {
-          return rule(component, simulatedEvent, keyingConfig, keyingState);
+          return rule(component, simulatedEvent, keyingconfig, keyingState);
         });
       };
-      var toEvents = function (keyingConfig, keyingState) {
-        var onFocusHandler = keyingConfig.focusInside !== FocusInsideModes.OnFocusMode ? Optional.none() : optFocusIn(keyingConfig).map(function (focusIn) {
+      var toEvents = function (keyingconfig, keyingState) {
+        var onFocusHandler = keyingconfig.focusInside !== FocusInsideModes.OnFocusMode ? Optional.none() : optFocusIn(keyingconfig).map(function (focusIn) {
           return run(focus(), function (component, simulatedEvent) {
-            focusIn(component, keyingConfig, keyingState);
+            focusIn(component, keyingconfig, keyingState);
             simulatedEvent.stop();
           });
         });
         var tryGoInsideComponent = function (component, simulatedEvent) {
           var isEnterOrSpace = inSet(SPACE.concat(ENTER))(simulatedEvent.event);
-          if (keyingConfig.focusInside === FocusInsideModes.OnEnterOrSpaceMode && isEnterOrSpace && isSource(component, simulatedEvent)) {
-            optFocusIn(keyingConfig).each(function (focusIn) {
-              focusIn(component, keyingConfig, keyingState);
+          if (keyingconfig.focusInside === FocusInsideModes.OnEnterOrSpaceMode && isEnterOrSpace && isSource(component, simulatedEvent)) {
+            optFocusIn(keyingconfig).each(function (focusIn) {
+              focusIn(component, keyingconfig, keyingState);
               simulatedEvent.stop();
             });
           }
         };
         var keyboardEvents = [
           run(keydown(), function (component, simulatedEvent) {
-            processKey(component, simulatedEvent, getKeydownRules, keyingConfig, keyingState).fold(function () {
+            processKey(component, simulatedEvent, getKeydownRules, keyingconfig, keyingState).fold(function () {
               tryGoInsideComponent(component, simulatedEvent);
             }, function (_) {
               simulatedEvent.stop();
             });
           }),
           run(keyup(), function (component, simulatedEvent) {
-            processKey(component, simulatedEvent, getKeyupRules, keyingConfig, keyingState).each(function (_) {
+            processKey(component, simulatedEvent, getKeyupRules, keyingconfig, keyingState).each(function (_) {
               simulatedEvent.stop();
             });
           })
@@ -3744,66 +3744,66 @@
         defaulted$1('useTabstopAt', always),
         option('visibilitySelector')
       ].concat([cyclicField]);
-      var isVisible = function (tabbingConfig, element) {
-        var target = tabbingConfig.visibilitySelector.bind(function (sel) {
+      var isVisible = function (tabbingconfig, element) {
+        var target = tabbingconfig.visibilitySelector.bind(function (sel) {
           return closest$2(element, sel);
         }).getOr(element);
         return get$6(target) > 0;
       };
-      var findInitial = function (component, tabbingConfig) {
-        var tabstops = descendants(component.element, tabbingConfig.selector);
+      var findInitial = function (component, tabbingconfig) {
+        var tabstops = descendants(component.element, tabbingconfig.selector);
         var visibles = filter(tabstops, function (elem) {
-          return isVisible(tabbingConfig, elem);
+          return isVisible(tabbingconfig, elem);
         });
-        return Optional.from(visibles[tabbingConfig.firstTabstop]);
+        return Optional.from(visibles[tabbingconfig.firstTabstop]);
       };
-      var findCurrent = function (component, tabbingConfig) {
-        return tabbingConfig.focusManager.get(component).bind(function (elem) {
-          return closest$2(elem, tabbingConfig.selector);
-        });
-      };
-      var isTabstop = function (tabbingConfig, element) {
-        return isVisible(tabbingConfig, element) && tabbingConfig.useTabstopAt(element);
-      };
-      var focusIn = function (component, tabbingConfig, _tabbingState) {
-        findInitial(component, tabbingConfig).each(function (target) {
-          tabbingConfig.focusManager.set(component, target);
+      var findCurrent = function (component, tabbingconfig) {
+        return tabbingconfig.focusManager.get(component).bind(function (elem) {
+          return closest$2(elem, tabbingconfig.selector);
         });
       };
-      var goFromTabstop = function (component, tabstops, stopIndex, tabbingConfig, cycle) {
+      var isTabstop = function (tabbingconfig, element) {
+        return isVisible(tabbingconfig, element) && tabbingconfig.useTabstopAt(element);
+      };
+      var focusIn = function (component, tabbingconfig, _tabbingState) {
+        findInitial(component, tabbingconfig).each(function (target) {
+          tabbingconfig.focusManager.set(component, target);
+        });
+      };
+      var goFromTabstop = function (component, tabstops, stopIndex, tabbingconfig, cycle) {
         return cycle(tabstops, stopIndex, function (elem) {
-          return isTabstop(tabbingConfig, elem);
+          return isTabstop(tabbingconfig, elem);
         }).fold(function () {
-          return tabbingConfig.cyclic ? Optional.some(true) : Optional.none();
+          return tabbingconfig.cyclic ? Optional.some(true) : Optional.none();
         }, function (target) {
-          tabbingConfig.focusManager.set(component, target);
+          tabbingconfig.focusManager.set(component, target);
           return Optional.some(true);
         });
       };
-      var go = function (component, _simulatedEvent, tabbingConfig, cycle) {
-        var tabstops = descendants(component.element, tabbingConfig.selector);
-        return findCurrent(component, tabbingConfig).bind(function (tabstop) {
+      var go = function (component, _simulatedEvent, tabbingconfig, cycle) {
+        var tabstops = descendants(component.element, tabbingconfig.selector);
+        return findCurrent(component, tabbingconfig).bind(function (tabstop) {
           var optStopIndex = findIndex(tabstops, curry(eq, tabstop));
           return optStopIndex.bind(function (stopIndex) {
-            return goFromTabstop(component, tabstops, stopIndex, tabbingConfig, cycle);
+            return goFromTabstop(component, tabstops, stopIndex, tabbingconfig, cycle);
           });
         });
       };
-      var goBackwards = function (component, simulatedEvent, tabbingConfig) {
-        var navigate = tabbingConfig.cyclic ? cyclePrev : tryPrev;
-        return go(component, simulatedEvent, tabbingConfig, navigate);
+      var goBackwards = function (component, simulatedEvent, tabbingconfig) {
+        var navigate = tabbingconfig.cyclic ? cyclePrev : tryPrev;
+        return go(component, simulatedEvent, tabbingconfig, navigate);
       };
-      var goForwards = function (component, simulatedEvent, tabbingConfig) {
-        var navigate = tabbingConfig.cyclic ? cycleNext : tryNext;
-        return go(component, simulatedEvent, tabbingConfig, navigate);
+      var goForwards = function (component, simulatedEvent, tabbingconfig) {
+        var navigate = tabbingconfig.cyclic ? cycleNext : tryNext;
+        return go(component, simulatedEvent, tabbingconfig, navigate);
       };
-      var execute = function (component, simulatedEvent, tabbingConfig) {
-        return tabbingConfig.onEnter.bind(function (f) {
+      var execute = function (component, simulatedEvent, tabbingconfig) {
+        return tabbingconfig.onEnter.bind(function (f) {
           return f(component, simulatedEvent);
         });
       };
-      var exit = function (component, simulatedEvent, tabbingConfig) {
-        return tabbingConfig.onEscape.bind(function (f) {
+      var exit = function (component, simulatedEvent, tabbingconfig) {
+        return tabbingconfig.onEscape.bind(function (f) {
           return f(component, simulatedEvent);
         });
       };
@@ -3852,21 +3852,21 @@
       defaulted$1('useControlEnter', false),
       defaulted$1('useDown', false)
     ];
-    var execute$1 = function (component, simulatedEvent, executeConfig) {
-      return executeConfig.execute(component, simulatedEvent, component.element);
+    var execute$1 = function (component, simulatedEvent, executeconfig) {
+      return executeconfig.execute(component, simulatedEvent, component.element);
     };
-    var getKeydownRules = function (component, _simulatedEvent, executeConfig, _executeState) {
-      var spaceExec = executeConfig.useSpace && !inside(component.element) ? SPACE : [];
-      var enterExec = executeConfig.useEnter ? ENTER : [];
-      var downExec = executeConfig.useDown ? DOWN : [];
+    var getKeydownRules = function (component, _simulatedEvent, executeconfig, _executeState) {
+      var spaceExec = executeconfig.useSpace && !inside(component.element) ? SPACE : [];
+      var enterExec = executeconfig.useEnter ? ENTER : [];
+      var downExec = executeconfig.useDown ? DOWN : [];
       var execKeys = spaceExec.concat(enterExec).concat(downExec);
-      return [rule(inSet(execKeys), execute$1)].concat(executeConfig.useControlEnter ? [rule(and([
+      return [rule(inSet(execKeys), execute$1)].concat(executeconfig.useControlEnter ? [rule(and([
           isControl,
           inSet(ENTER)
         ]), execute$1)] : []);
     };
-    var getKeyupRules = function (component, _simulatedEvent, executeConfig, _executeState) {
-      return executeConfig.useSpace && !inside(component.element) ? [rule(inSet(SPACE), stopEventForFirefox)] : [];
+    var getKeyupRules = function (component, _simulatedEvent, executeconfig, _executeState) {
+      return executeconfig.useSpace && !inside(component.element) ? [rule(inSet(SPACE), stopEventForFirefox)] : [];
     };
     var ExecutionType = typical(schema$1, NoState.init, getKeydownRules, getKeyupRules, function () {
       return Optional.none();
@@ -4039,33 +4039,33 @@
       defaulted$1('captureTab', false),
       initSize()
     ];
-    var focusIn = function (component, gridConfig, _gridState) {
-      descendant$1(component.element, gridConfig.selector).each(function (first) {
-        gridConfig.focusManager.set(component, first);
+    var focusIn = function (component, gridconfig, _gridState) {
+      descendant$1(component.element, gridconfig.selector).each(function (first) {
+        gridconfig.focusManager.set(component, first);
       });
     };
-    var findCurrent = function (component, gridConfig) {
-      return gridConfig.focusManager.get(component).bind(function (elem) {
-        return closest$2(elem, gridConfig.selector);
+    var findCurrent = function (component, gridconfig) {
+      return gridconfig.focusManager.get(component).bind(function (elem) {
+        return closest$2(elem, gridconfig.selector);
       });
     };
-    var execute$2 = function (component, simulatedEvent, gridConfig, _gridState) {
-      return findCurrent(component, gridConfig).bind(function (focused) {
-        return gridConfig.execute(component, simulatedEvent, focused);
+    var execute$2 = function (component, simulatedEvent, gridconfig, _gridState) {
+      return findCurrent(component, gridconfig).bind(function (focused) {
+        return gridconfig.execute(component, simulatedEvent, focused);
       });
     };
     var doMove = function (cycle) {
-      return function (element, focused, gridConfig, gridState) {
-        return locateVisible(element, focused, gridConfig.selector).bind(function (identified) {
-          return cycle(identified.candidates, identified.index, gridState.getNumRows().getOr(gridConfig.initSize.numRows), gridState.getNumColumns().getOr(gridConfig.initSize.numColumns));
+      return function (element, focused, gridconfig, gridState) {
+        return locateVisible(element, focused, gridconfig.selector).bind(function (identified) {
+          return cycle(identified.candidates, identified.index, gridState.getNumRows().getOr(gridconfig.initSize.numRows), gridState.getNumColumns().getOr(gridconfig.initSize.numColumns));
         });
       };
     };
-    var handleTab = function (_component, _simulatedEvent, gridConfig) {
-      return gridConfig.captureTab ? Optional.some(true) : Optional.none();
+    var handleTab = function (_component, _simulatedEvent, gridconfig) {
+      return gridconfig.captureTab ? Optional.some(true) : Optional.none();
     };
-    var doEscape = function (component, simulatedEvent, gridConfig) {
-      return gridConfig.onEscape(component, simulatedEvent);
+    var doEscape = function (component, simulatedEvent, gridconfig) {
+      return gridconfig.onEscape(component, simulatedEvent);
     };
     var moveLeft = doMove(cycleLeft);
     var moveRight = doMove(cycleRight);
@@ -4119,21 +4119,21 @@
       defaulted$1('executeOnMove', false),
       defaulted$1('allowVertical', true)
     ];
-    var findCurrent$1 = function (component, flowConfig) {
-      return flowConfig.focusManager.get(component).bind(function (elem) {
-        return closest$2(elem, flowConfig.selector);
+    var findCurrent$1 = function (component, flowconfig) {
+      return flowconfig.focusManager.get(component).bind(function (elem) {
+        return closest$2(elem, flowconfig.selector);
       });
     };
-    var execute$3 = function (component, simulatedEvent, flowConfig) {
-      return findCurrent$1(component, flowConfig).bind(function (focused) {
-        return flowConfig.execute(component, simulatedEvent, focused);
+    var execute$3 = function (component, simulatedEvent, flowconfig) {
+      return findCurrent$1(component, flowconfig).bind(function (focused) {
+        return flowconfig.execute(component, simulatedEvent, focused);
       });
     };
-    var focusIn$1 = function (component, flowConfig, _state) {
-      flowConfig.getInitial(component).orThunk(function () {
-        return descendant$1(component.element, flowConfig.selector);
+    var focusIn$1 = function (component, flowconfig, _state) {
+      flowconfig.getInitial(component).orThunk(function () {
+        return descendant$1(component.element, flowconfig.selector);
       }).each(function (first) {
-        flowConfig.focusManager.set(component, first);
+        flowconfig.focusManager.set(component, first);
       });
     };
     var moveLeft$1 = function (element, focused, info) {
@@ -4143,18 +4143,18 @@
       return horizontal(element, info.selector, focused, +1);
     };
     var doMove$1 = function (movement) {
-      return function (component, simulatedEvent, flowConfig, flowState) {
-        return movement(component, simulatedEvent, flowConfig, flowState).bind(function () {
-          return flowConfig.executeOnMove ? execute$3(component, simulatedEvent, flowConfig) : Optional.some(true);
+      return function (component, simulatedEvent, flowconfig, flowState) {
+        return movement(component, simulatedEvent, flowconfig, flowState).bind(function () {
+          return flowconfig.executeOnMove ? execute$3(component, simulatedEvent, flowconfig) : Optional.some(true);
         });
       };
     };
-    var doEscape$1 = function (component, simulatedEvent, flowConfig) {
-      return flowConfig.onEscape(component, simulatedEvent);
+    var doEscape$1 = function (component, simulatedEvent, flowconfig) {
+      return flowconfig.onEscape(component, simulatedEvent);
     };
-    var getKeydownRules$2 = function (_component, _se, flowConfig, _flowState) {
-      var westMovers = LEFT.concat(flowConfig.allowVertical ? UP : []);
-      var eastMovers = RIGHT.concat(flowConfig.allowVertical ? DOWN : []);
+    var getKeydownRules$2 = function (_component, _se, flowconfig, _flowState) {
+      var westMovers = LEFT.concat(flowconfig.allowVertical ? UP : []);
+      var eastMovers = RIGHT.concat(flowconfig.allowVertical ? DOWN : []);
       return [
         rule(inSet(westMovers), doMove$1(west(moveLeft$1, moveRight$1))),
         rule(inSet(eastMovers), doMove$1(east(moveLeft$1, moveRight$1))),
@@ -4237,34 +4237,34 @@
       defaulted$1('previousSelector', Optional.none),
       defaulted$1('execute', defaultExecute)
     ];
-    var focusIn$2 = function (component, matrixConfig, _state) {
-      var focused = matrixConfig.previousSelector(component).orThunk(function () {
-        var selectors = matrixConfig.selectors;
+    var focusIn$2 = function (component, matrixconfig, _state) {
+      var focused = matrixconfig.previousSelector(component).orThunk(function () {
+        var selectors = matrixconfig.selectors;
         return descendant$1(component.element, selectors.cell);
       });
       focused.each(function (cell) {
-        matrixConfig.focusManager.set(component, cell);
+        matrixconfig.focusManager.set(component, cell);
       });
     };
-    var execute$4 = function (component, simulatedEvent, matrixConfig) {
+    var execute$4 = function (component, simulatedEvent, matrixconfig) {
       return search(component.element).bind(function (focused) {
-        return matrixConfig.execute(component, simulatedEvent, focused);
+        return matrixconfig.execute(component, simulatedEvent, focused);
       });
     };
-    var toMatrix = function (rows, matrixConfig) {
+    var toMatrix = function (rows, matrixconfig) {
       return map(rows, function (row) {
-        return descendants(row, matrixConfig.selectors.cell);
+        return descendants(row, matrixconfig.selectors.cell);
       });
     };
     var doMove$2 = function (ifCycle, ifMove) {
-      return function (element, focused, matrixConfig) {
-        var move = matrixConfig.cycles ? ifCycle : ifMove;
-        return closest$2(focused, matrixConfig.selectors.row).bind(function (inRow) {
-          var cellsInRow = descendants(inRow, matrixConfig.selectors.cell);
+      return function (element, focused, matrixconfig) {
+        var move = matrixconfig.cycles ? ifCycle : ifMove;
+        return closest$2(focused, matrixconfig.selectors.row).bind(function (inRow) {
+          var cellsInRow = descendants(inRow, matrixconfig.selectors.cell);
           return findIndex$1(cellsInRow, focused).bind(function (colIndex) {
-            var allRows = descendants(element, matrixConfig.selectors.row);
+            var allRows = descendants(element, matrixconfig.selectors.row);
             return findIndex$1(allRows, inRow).bind(function (rowIndex) {
-              var matrix = toMatrix(allRows, matrixConfig);
+              var matrix = toMatrix(allRows, matrixconfig);
               return move(matrix, rowIndex, colIndex).map(function (next) {
                 return next.cell;
               });
@@ -4294,14 +4294,14 @@
       defaulted$1('execute', defaultExecute),
       defaulted$1('moveOnTab', false)
     ];
-    var execute$5 = function (component, simulatedEvent, menuConfig) {
-      return menuConfig.focusManager.get(component).bind(function (focused) {
-        return menuConfig.execute(component, simulatedEvent, focused);
+    var execute$5 = function (component, simulatedEvent, menuconfig) {
+      return menuconfig.focusManager.get(component).bind(function (focused) {
+        return menuconfig.execute(component, simulatedEvent, focused);
       });
     };
-    var focusIn$3 = function (component, menuConfig, _state) {
-      descendant$1(component.element, menuConfig.selector).each(function (first) {
-        menuConfig.focusManager.set(component, first);
+    var focusIn$3 = function (component, menuconfig, _state) {
+      descendant$1(component.element, menuconfig.selector).each(function (first) {
+        menuconfig.focusManager.set(component, first);
       });
     };
     var moveUp$1 = function (element, focused, info) {
@@ -4310,11 +4310,11 @@
     var moveDown$1 = function (element, focused, info) {
       return horizontal(element, info.selector, focused, +1);
     };
-    var fireShiftTab = function (component, simulatedEvent, menuConfig, menuState) {
-      return menuConfig.moveOnTab ? move(moveUp$1)(component, simulatedEvent, menuConfig, menuState) : Optional.none();
+    var fireShiftTab = function (component, simulatedEvent, menuconfig, menuState) {
+      return menuconfig.moveOnTab ? move(moveUp$1)(component, simulatedEvent, menuconfig, menuState) : Optional.none();
     };
-    var fireTab = function (component, simulatedEvent, menuConfig, menuState) {
-      return menuConfig.moveOnTab ? move(moveDown$1)(component, simulatedEvent, menuConfig, menuState) : Optional.none();
+    var fireTab = function (component, simulatedEvent, menuconfig, menuState) {
+      return menuconfig.moveOnTab ? move(moveDown$1)(component, simulatedEvent, menuconfig, menuState) : Optional.none();
     };
     var getKeydownRules$4 = constant([
       rule(inSet(UP), move(moveUp$1)),
@@ -4412,20 +4412,20 @@
       branches: KeyboardBranches,
       name: 'keying',
       active: {
-        events: function (keyingConfig, keyingState) {
-          var handler = keyingConfig.handler;
-          return handler.toEvents(keyingConfig, keyingState);
+        events: function (keyingconfig, keyingState) {
+          var handler = keyingconfig.handler;
+          return handler.toEvents(keyingconfig, keyingState);
         }
       },
       apis: {
-        focusIn: function (component, keyConfig, keyState) {
-          keyConfig.sendFocusIn(keyConfig).fold(function () {
+        focusIn: function (component, keyconfig, keyState) {
+          keyconfig.sendFocusIn(keyconfig).fold(function () {
             component.getSystem().triggerFocus(component.element, component.element);
           }, function (sendFocusIn) {
-            sendFocusIn(component, keyConfig, keyState);
+            sendFocusIn(component, keyconfig, keyState);
           });
         },
-        setGridSize: function (component, keyConfig, keyState, numRows, numColumns) {
+        setGridSize: function (component, keyconfig, keyState, numRows, numColumns) {
           if (!isFlatgridState(keyState)) {
             console.error('Layout does not support setGridSize');
           } else {
@@ -4842,8 +4842,8 @@
       defaulted$1('apis', {}),
       defaulted$1('extraApis', {})
     ]);
-    var single$2 = function (rawConfig) {
-      var config = asRawOrDie('Sketcher for ' + rawConfig.name, singleSchema, rawConfig);
+    var single$2 = function (rawconfig) {
+      var config = asRawOrDie('Sketcher for ' + rawconfig.name, singleSchema, rawconfig);
       var sketch = function (spec) {
         return single$1(config.name, config.configFields, config.factory, spec);
       };
@@ -4857,8 +4857,8 @@
         sketch: sketch
       }, apis), extraApis);
     };
-    var composite$1 = function (rawConfig) {
-      var config = asRawOrDie('Sketcher for ' + rawConfig.name, compositeSchema, rawConfig);
+    var composite$1 = function (rawconfig) {
+      var config = asRawOrDie('Sketcher for ' + rawconfig.name, compositeSchema, rawconfig);
       var sketch = function (spec) {
         return composite(config.name, config.configFields, config.partFields, config.factory, spec);
       };
@@ -5151,19 +5151,19 @@
       spectrumPart
     ];
 
-    var onLoad$1 = function (component, repConfig, repState) {
-      repConfig.store.manager.onLoad(component, repConfig, repState);
+    var onLoad$1 = function (component, repconfig, repState) {
+      repconfig.store.manager.onLoad(component, repconfig, repState);
     };
-    var onUnload = function (component, repConfig, repState) {
-      repConfig.store.manager.onUnload(component, repConfig, repState);
+    var onUnload = function (component, repconfig, repState) {
+      repconfig.store.manager.onUnload(component, repconfig, repState);
     };
-    var setValue = function (component, repConfig, repState, data) {
-      repConfig.store.manager.setValue(component, repConfig, repState, data);
+    var setValue = function (component, repconfig, repState, data) {
+      repconfig.store.manager.setValue(component, repconfig, repState, data);
     };
-    var getValue = function (component, repConfig, repState) {
-      return repConfig.store.manager.getValue(component, repConfig, repState);
+    var getValue = function (component, repconfig, repState) {
+      return repconfig.store.manager.getValue(component, repconfig, repState);
     };
-    var getState = function (component, repConfig, repState) {
+    var getState = function (component, repconfig, repState) {
       return repState;
     };
 
@@ -5176,15 +5176,15 @@
         getState: getState
     });
 
-    var events$5 = function (repConfig, repState) {
-      var es = repConfig.resetOnDom ? [
+    var events$5 = function (repconfig, repState) {
+      var es = repconfig.resetOnDom ? [
         runOnAttached(function (comp, _se) {
-          onLoad$1(comp, repConfig, repState);
+          onLoad$1(comp, repconfig, repState);
         }),
         runOnDetached(function (comp, _se) {
-          onUnload(comp, repConfig, repState);
+          onUnload(comp, repconfig, repState);
         })
-      ] : [loadEvent(repConfig, repState, onLoad$1)];
+      ] : [loadEvent(repconfig, repState, onLoad$1)];
       return derive(es);
     };
 
@@ -5274,14 +5274,14 @@
         init: init$1
     });
 
-    var setValue$1 = function (component, repConfig, repState, data) {
-      var store = repConfig.store;
+    var setValue$1 = function (component, repconfig, repState, data) {
+      var store = repconfig.store;
       repState.update([data]);
       store.setValue(component, data);
-      repConfig.onSetValue(component, data);
+      repconfig.onSetValue(component, data);
     };
-    var getValue$1 = function (component, repConfig, repState) {
-      var store = repConfig.store;
+    var getValue$1 = function (component, repconfig, repState) {
+      var store = repconfig.store;
       var key = store.getDataKey(component);
       return repState.lookup(key).fold(function () {
         return store.getFallbackEntry(key);
@@ -5289,13 +5289,13 @@
         return data;
       });
     };
-    var onLoad$2 = function (component, repConfig, repState) {
-      var store = repConfig.store;
+    var onLoad$2 = function (component, repconfig, repState) {
+      var store = repconfig.store;
       store.initialValue.each(function (data) {
-        setValue$1(component, repConfig, repState, data);
+        setValue$1(component, repconfig, repState, data);
       });
     };
-    var onUnload$1 = function (component, repConfig, repState) {
+    var onUnload$1 = function (component, repconfig, repState) {
       repState.clear();
     };
     var DatasetStore = [
@@ -5312,16 +5312,16 @@
       })
     ];
 
-    var getValue$2 = function (component, repConfig, _repState) {
-      return repConfig.store.getValue(component);
+    var getValue$2 = function (component, repconfig, _repState) {
+      return repconfig.store.getValue(component);
     };
-    var setValue$2 = function (component, repConfig, _repState, data) {
-      repConfig.store.setValue(component, data);
-      repConfig.onSetValue(component, data);
+    var setValue$2 = function (component, repconfig, _repState, data) {
+      repconfig.store.setValue(component, data);
+      repconfig.onSetValue(component, data);
     };
-    var onLoad$3 = function (component, repConfig, _repState) {
-      repConfig.store.initialValue.each(function (data) {
-        repConfig.store.setValue(component, data);
+    var onLoad$3 = function (component, repconfig, _repState) {
+      repconfig.store.initialValue.each(function (data) {
+        repconfig.store.setValue(component, data);
       });
     };
     var ManualStore = [
@@ -5337,21 +5337,21 @@
       })
     ];
 
-    var setValue$3 = function (component, repConfig, repState, data) {
+    var setValue$3 = function (component, repconfig, repState, data) {
       repState.set(data);
-      repConfig.onSetValue(component, data);
+      repconfig.onSetValue(component, data);
     };
-    var getValue$3 = function (component, repConfig, repState) {
+    var getValue$3 = function (component, repconfig, repState) {
       return repState.get();
     };
-    var onLoad$4 = function (component, repConfig, repState) {
-      repConfig.store.initialValue.each(function (initVal) {
+    var onLoad$4 = function (component, repconfig, repState) {
+      repconfig.store.initialValue.each(function (initVal) {
         if (repState.isNotSet()) {
           repState.set(initVal);
         }
       });
     };
-    var onUnload$2 = function (component, repConfig, repState) {
+    var onUnload$2 = function (component, repconfig, repState) {
       repState.clear();
     };
     var MemoryStore = [
@@ -6815,14 +6815,14 @@
           config: {},
           me: me,
           configAsRaw: constant({}),
-          initialConfig: {},
+          initialconfig: {},
           state: NoState
         }
       };
     };
 
-    var getCurrent = function (component, composeConfig, _composeState) {
-      return composeConfig.find(component);
+    var getCurrent = function (component, composeconfig, _composeState) {
+      return composeconfig.find(component);
     };
 
     var ComposeApis = /*#__PURE__*/Object.freeze({
@@ -6973,10 +6973,10 @@
       factory: factory$3
     });
 
-    var exhibit$3 = function (base, tabConfig) {
+    var exhibit$3 = function (base, tabconfig) {
       return nu$5({
         attributes: wrapAll$1([{
-            key: tabConfig.tabAttr,
+            key: tabconfig.tabAttr,
             value: 'true'
           }])
       });
@@ -7064,9 +7064,9 @@
       'textarea',
       'select'
     ];
-    var onLoad$5 = function (component, disableConfig, disableState) {
-      var f = disableConfig.disabled() ? disable : enable;
-      f(component, disableConfig);
+    var onLoad$5 = function (component, disableconfig, disableState) {
+      var f = disableconfig.disabled() ? disable : enable;
+      f(component, disableconfig);
     };
     var hasNative = function (component, config) {
       return config.useNative === true && contains(nativeDisabled, name(component.element));
@@ -7089,28 +7089,28 @@
     var ariaEnable = function (component) {
       set(component.element, 'aria-disabled', 'false');
     };
-    var disable = function (component, disableConfig, _disableState) {
-      disableConfig.disableClass.each(function (disableClass) {
+    var disable = function (component, disableconfig, _disableState) {
+      disableconfig.disableClass.each(function (disableClass) {
         add$2(component.element, disableClass);
       });
-      var f = hasNative(component, disableConfig) ? nativeDisable : ariaDisable;
+      var f = hasNative(component, disableconfig) ? nativeDisable : ariaDisable;
       f(component);
-      disableConfig.onDisabled(component);
+      disableconfig.onDisabled(component);
     };
-    var enable = function (component, disableConfig, _disableState) {
-      disableConfig.disableClass.each(function (disableClass) {
+    var enable = function (component, disableconfig, _disableState) {
+      disableconfig.disableClass.each(function (disableClass) {
         remove$4(component.element, disableClass);
       });
-      var f = hasNative(component, disableConfig) ? nativeEnable : ariaEnable;
+      var f = hasNative(component, disableconfig) ? nativeEnable : ariaEnable;
       f(component);
-      disableConfig.onEnabled(component);
+      disableconfig.onEnabled(component);
     };
-    var isDisabled = function (component, disableConfig) {
-      return hasNative(component, disableConfig) ? nativeIsDisabled(component) : ariaIsDisabled(component);
+    var isDisabled = function (component, disableconfig) {
+      return hasNative(component, disableconfig) ? nativeIsDisabled(component) : ariaIsDisabled(component);
     };
-    var set$7 = function (component, disableConfig, disableState, disabled) {
+    var set$7 = function (component, disableconfig, disableState, disabled) {
       var f = disabled ? disable : enable;
-      f(component, disableConfig);
+      f(component, disableconfig);
     };
 
     var DisableApis = /*#__PURE__*/Object.freeze({
@@ -7122,15 +7122,15 @@
         set: set$7
     });
 
-    var exhibit$4 = function (base, disableConfig) {
-      return nu$5({ classes: disableConfig.disabled() ? disableConfig.disableClass.toArray() : [] });
+    var exhibit$4 = function (base, disableconfig) {
+      return nu$5({ classes: disableconfig.disabled() ? disableconfig.disableClass.toArray() : [] });
     };
-    var events$7 = function (disableConfig, disableState) {
+    var events$7 = function (disableconfig, disableState) {
       return derive([
         abort(execute(), function (component, _simulatedEvent) {
-          return isDisabled(component, disableConfig);
+          return isDisabled(component, disableconfig);
         }),
-        loadEvent(disableConfig, disableState, onLoad$5)
+        loadEvent(disableconfig, disableState, onLoad$5)
       ]);
     };
 
@@ -7947,7 +7947,7 @@
         };
         return f();
       };
-      var hasConfigured = function (behaviour) {
+      var hasconfigured = function (behaviour) {
         return isFunction(bData[behaviour.name()]);
       };
       var getApis = function () {
@@ -7961,7 +7961,7 @@
       var me = {
         getSystem: systemApi.get,
         config: config,
-        hasConfigured: hasConfigured,
+        hasconfigured: hasconfigured,
         spec: spec,
         readState: readState,
         getApis: getApis,
@@ -8012,7 +8012,7 @@
       var me = {
         getSystem: systemApi.get,
         config: Optional.none,
-        hasConfigured: never,
+        hasconfigured: never,
         connect: connect,
         disconnect: disconnect,
         getApis: function () {
@@ -8059,8 +8059,8 @@
         dom: detail.dom,
         domModification: __assign(__assign({}, detail.domModification), { attributes: __assign(__assign(__assign({ 'role': detail.toggling.isSome() ? 'menuitemcheckbox' : 'menuitem' }, detail.domModification.attributes), { 'aria-haspopup': detail.hasSubmenu }), detail.hasSubmenu ? { 'aria-expanded': false } : {}) }),
         behaviours: SketchBehaviours.augment(detail.itemBehaviours, [
-          detail.toggling.fold(Toggling.revoke, function (tConfig) {
-            return Toggling.config(__assign({ aria: { mode: 'checked' } }, tConfig));
+          detail.toggling.fold(Toggling.revoke, function (tconfig) {
+            return Toggling.config(__assign({ aria: { mode: 'checked' } }, tconfig));
           }),
           Focusing.config({
             ignore: detail.ignoreFocus,
@@ -8387,48 +8387,48 @@
       return result;
     };
 
-    var set$8 = function (component, replaceConfig, replaceState, data) {
+    var set$8 = function (component, replaceconfig, replaceState, data) {
       preserve$1(function () {
         var newChildren = map(data, component.getSystem().build);
         replaceChildren(component, newChildren);
       }, component.element);
     };
-    var insert = function (component, replaceConfig, insertion, childSpec) {
+    var insert = function (component, replaceconfig, insertion, childSpec) {
       var child = component.getSystem().build(childSpec);
       attachWith(component, child, insertion);
     };
-    var append$2 = function (component, replaceConfig, replaceState, appendee) {
-      insert(component, replaceConfig, append, appendee);
+    var append$2 = function (component, replaceconfig, replaceState, appendee) {
+      insert(component, replaceconfig, append, appendee);
     };
-    var prepend$1 = function (component, replaceConfig, replaceState, prependee) {
-      insert(component, replaceConfig, prepend, prependee);
+    var prepend$1 = function (component, replaceconfig, replaceState, prependee) {
+      insert(component, replaceconfig, prepend, prependee);
     };
-    var remove$7 = function (component, replaceConfig, replaceState, removee) {
+    var remove$7 = function (component, replaceconfig, replaceState, removee) {
       var children = contents(component);
       var foundChild = find(children, function (child) {
         return eq(removee.element, child.element);
       });
       foundChild.each(detach);
     };
-    var contents = function (component, _replaceConfig) {
+    var contents = function (component, _replaceconfig) {
       return component.components();
     };
-    var replaceAt = function (component, replaceConfig, replaceState, replaceeIndex, replacer) {
+    var replaceAt = function (component, replaceconfig, replaceState, replaceeIndex, replacer) {
       var children = contents(component);
       return Optional.from(children[replaceeIndex]).map(function (replacee) {
-        remove$7(component, replaceConfig, replaceState, replacee);
+        remove$7(component, replaceconfig, replaceState, replacee);
         replacer.each(function (r) {
-          insert(component, replaceConfig, function (p, c) {
+          insert(component, replaceconfig, function (p, c) {
             appendAt(p, c, replaceeIndex);
           }, r);
         });
         return replacee;
       });
     };
-    var replaceBy = function (component, replaceConfig, replaceState, replaceePred, replacer) {
+    var replaceBy = function (component, replaceconfig, replaceState, replaceePred, replacer) {
       var children = contents(component);
       return findIndex(children, replaceePred).bind(function (replaceeIndex) {
-        return replaceAt(component, replaceConfig, replaceState, replaceeIndex, replacer);
+        return replaceAt(component, replaceconfig, replaceState, replaceeIndex, replacer);
       });
     };
 
@@ -8994,19 +8994,19 @@
       }
     });
 
-    var findRoute = function (component, transConfig, transState, route) {
-      return get$1(transConfig.routes, route.start).bind(function (sConfig) {
-        return get$1(sConfig, route.destination);
+    var findRoute = function (component, transconfig, transState, route) {
+      return get$1(transconfig.routes, route.start).bind(function (sconfig) {
+        return get$1(sconfig, route.destination);
       });
     };
-    var getTransition = function (comp, transConfig, transState) {
-      var route = getCurrentRoute(comp, transConfig);
+    var getTransition = function (comp, transconfig, transState) {
+      var route = getCurrentRoute(comp, transconfig);
       return route.bind(function (r) {
-        return getTransitionOf(comp, transConfig, transState, r);
+        return getTransitionOf(comp, transconfig, transState, r);
       });
     };
-    var getTransitionOf = function (comp, transConfig, transState, route) {
-      return findRoute(comp, transConfig, transState, route).bind(function (r) {
+    var getTransitionOf = function (comp, transconfig, transState, route) {
+      return findRoute(comp, transconfig, transState, route).bind(function (r) {
         return r.transition.map(function (t) {
           return {
             transition: t,
@@ -9015,57 +9015,57 @@
         });
       });
     };
-    var disableTransition = function (comp, transConfig, transState) {
-      getTransition(comp, transConfig, transState).each(function (routeTransition) {
+    var disableTransition = function (comp, transconfig, transState) {
+      getTransition(comp, transconfig, transState).each(function (routeTransition) {
         var t = routeTransition.transition;
         remove$4(comp.element, t.transitionClass);
-        remove$1(comp.element, transConfig.destinationAttr);
+        remove$1(comp.element, transconfig.destinationAttr);
       });
     };
-    var getNewRoute = function (comp, transConfig, transState, destination) {
+    var getNewRoute = function (comp, transconfig, transState, destination) {
       return {
-        start: get$2(comp.element, transConfig.stateAttr),
+        start: get$2(comp.element, transconfig.stateAttr),
         destination: destination
       };
     };
-    var getCurrentRoute = function (comp, transConfig, _transState) {
+    var getCurrentRoute = function (comp, transconfig, _transState) {
       var el = comp.element;
-      return getOpt(el, transConfig.destinationAttr).map(function (destination) {
+      return getOpt(el, transconfig.destinationAttr).map(function (destination) {
         return {
-          start: get$2(comp.element, transConfig.stateAttr),
+          start: get$2(comp.element, transconfig.stateAttr),
           destination: destination
         };
       });
     };
-    var jumpTo = function (comp, transConfig, transState, destination) {
-      disableTransition(comp, transConfig, transState);
-      if (has$1(comp.element, transConfig.stateAttr) && get$2(comp.element, transConfig.stateAttr) !== destination) {
-        transConfig.onFinish(comp, destination);
+    var jumpTo = function (comp, transconfig, transState, destination) {
+      disableTransition(comp, transconfig, transState);
+      if (has$1(comp.element, transconfig.stateAttr) && get$2(comp.element, transconfig.stateAttr) !== destination) {
+        transconfig.onFinish(comp, destination);
       }
-      set(comp.element, transConfig.stateAttr, destination);
+      set(comp.element, transconfig.stateAttr, destination);
     };
-    var fasttrack = function (comp, transConfig, _transState, _destination) {
-      if (has$1(comp.element, transConfig.destinationAttr)) {
-        getOpt(comp.element, transConfig.destinationAttr).each(function (destination) {
-          set(comp.element, transConfig.stateAttr, destination);
+    var fasttrack = function (comp, transconfig, _transState, _destination) {
+      if (has$1(comp.element, transconfig.destinationAttr)) {
+        getOpt(comp.element, transconfig.destinationAttr).each(function (destination) {
+          set(comp.element, transconfig.stateAttr, destination);
         });
-        remove$1(comp.element, transConfig.destinationAttr);
+        remove$1(comp.element, transconfig.destinationAttr);
       }
     };
-    var progressTo = function (comp, transConfig, transState, destination) {
-      fasttrack(comp, transConfig);
-      var route = getNewRoute(comp, transConfig, transState, destination);
-      getTransitionOf(comp, transConfig, transState, route).fold(function () {
-        jumpTo(comp, transConfig, transState, destination);
+    var progressTo = function (comp, transconfig, transState, destination) {
+      fasttrack(comp, transconfig);
+      var route = getNewRoute(comp, transconfig, transState, destination);
+      getTransitionOf(comp, transconfig, transState, route).fold(function () {
+        jumpTo(comp, transconfig, transState, destination);
       }, function (routeTransition) {
-        disableTransition(comp, transConfig, transState);
+        disableTransition(comp, transconfig, transState);
         var t = routeTransition.transition;
         add$2(comp.element, t.transitionClass);
-        set(comp.element, transConfig.destinationAttr, destination);
+        set(comp.element, transconfig.destinationAttr, destination);
       });
     };
-    var getState$1 = function (comp, transConfig, _transState) {
-      return getOpt(comp.element, transConfig.stateAttr);
+    var getState$1 = function (comp, transconfig, _transState) {
+      return getOpt(comp.element, transconfig.stateAttr);
     };
 
     var TransitionApis = /*#__PURE__*/Object.freeze({
@@ -9078,23 +9078,23 @@
         getState: getState$1
     });
 
-    var events$9 = function (transConfig, transState) {
+    var events$9 = function (transconfig, transState) {
       return derive([
         run(transitionend(), function (component, simulatedEvent) {
           var raw = simulatedEvent.event.raw;
-          getCurrentRoute(component, transConfig).each(function (route) {
-            findRoute(component, transConfig, transState, route).each(function (rInfo) {
+          getCurrentRoute(component, transconfig).each(function (route) {
+            findRoute(component, transconfig, transState, route).each(function (rInfo) {
               rInfo.transition.each(function (rTransition) {
                 if (raw.propertyName === rTransition.property) {
-                  jumpTo(component, transConfig, transState, route.destination);
-                  transConfig.onTransition(component, route);
+                  jumpTo(component, transconfig, transState, route.destination);
+                  transconfig.onTransition(component, route);
                 }
               });
             });
           });
         }),
         runOnAttached(function (comp, _se) {
-          jumpTo(comp, transConfig, transState, transConfig.initialState);
+          jumpTo(comp, transconfig, transState, transconfig.initialState);
         })
       ]);
     };
@@ -10931,129 +10931,129 @@
       f(socket, switchToEdit);
     };
 
-    var getAnimationRoot = function (component, slideConfig) {
-      return slideConfig.getAnimationRoot.fold(function () {
+    var getAnimationRoot = function (component, slideconfig) {
+      return slideconfig.getAnimationRoot.fold(function () {
         return component.element;
       }, function (get) {
         return get(component);
       });
     };
 
-    var getDimensionProperty = function (slideConfig) {
-      return slideConfig.dimension.property;
+    var getDimensionProperty = function (slideconfig) {
+      return slideconfig.dimension.property;
     };
-    var getDimension = function (slideConfig, elem) {
-      return slideConfig.dimension.getDimension(elem);
+    var getDimension = function (slideconfig, elem) {
+      return slideconfig.dimension.getDimension(elem);
     };
-    var disableTransitions = function (component, slideConfig) {
-      var root = getAnimationRoot(component, slideConfig);
+    var disableTransitions = function (component, slideconfig) {
+      var root = getAnimationRoot(component, slideconfig);
       remove$6(root, [
-        slideConfig.shrinkingClass,
-        slideConfig.growingClass
+        slideconfig.shrinkingClass,
+        slideconfig.growingClass
       ]);
     };
-    var setShrunk = function (component, slideConfig) {
-      remove$4(component.element, slideConfig.openClass);
-      add$2(component.element, slideConfig.closedClass);
-      set$3(component.element, getDimensionProperty(slideConfig), '0px');
+    var setShrunk = function (component, slideconfig) {
+      remove$4(component.element, slideconfig.openClass);
+      add$2(component.element, slideconfig.closedClass);
+      set$3(component.element, getDimensionProperty(slideconfig), '0px');
       reflow(component.element);
     };
-    var setGrown = function (component, slideConfig) {
-      remove$4(component.element, slideConfig.closedClass);
-      add$2(component.element, slideConfig.openClass);
-      remove$5(component.element, getDimensionProperty(slideConfig));
+    var setGrown = function (component, slideconfig) {
+      remove$4(component.element, slideconfig.closedClass);
+      add$2(component.element, slideconfig.openClass);
+      remove$5(component.element, getDimensionProperty(slideconfig));
     };
-    var doImmediateShrink = function (component, slideConfig, slideState, _calculatedSize) {
+    var doImmediateShrink = function (component, slideconfig, slideState, _calculatedSize) {
       slideState.setCollapsed();
-      set$3(component.element, getDimensionProperty(slideConfig), getDimension(slideConfig, component.element));
+      set$3(component.element, getDimensionProperty(slideconfig), getDimension(slideconfig, component.element));
       reflow(component.element);
-      disableTransitions(component, slideConfig);
-      setShrunk(component, slideConfig);
-      slideConfig.onStartShrink(component);
-      slideConfig.onShrunk(component);
+      disableTransitions(component, slideconfig);
+      setShrunk(component, slideconfig);
+      slideconfig.onStartShrink(component);
+      slideconfig.onShrunk(component);
     };
-    var doStartShrink = function (component, slideConfig, slideState, calculatedSize) {
+    var doStartShrink = function (component, slideconfig, slideState, calculatedSize) {
       var size = calculatedSize.getOrThunk(function () {
-        return getDimension(slideConfig, component.element);
+        return getDimension(slideconfig, component.element);
       });
       slideState.setCollapsed();
-      set$3(component.element, getDimensionProperty(slideConfig), size);
+      set$3(component.element, getDimensionProperty(slideconfig), size);
       reflow(component.element);
-      var root = getAnimationRoot(component, slideConfig);
-      remove$4(root, slideConfig.growingClass);
-      add$2(root, slideConfig.shrinkingClass);
-      setShrunk(component, slideConfig);
-      slideConfig.onStartShrink(component);
+      var root = getAnimationRoot(component, slideconfig);
+      remove$4(root, slideconfig.growingClass);
+      add$2(root, slideconfig.shrinkingClass);
+      setShrunk(component, slideconfig);
+      slideconfig.onStartShrink(component);
     };
-    var doStartSmartShrink = function (component, slideConfig, slideState) {
-      var size = getDimension(slideConfig, component.element);
+    var doStartSmartShrink = function (component, slideconfig, slideState) {
+      var size = getDimension(slideconfig, component.element);
       var shrinker = size === '0px' ? doImmediateShrink : doStartShrink;
-      shrinker(component, slideConfig, slideState, Optional.some(size));
+      shrinker(component, slideconfig, slideState, Optional.some(size));
     };
-    var doStartGrow = function (component, slideConfig, slideState) {
-      var root = getAnimationRoot(component, slideConfig);
-      var wasShrinking = has$2(root, slideConfig.shrinkingClass);
-      var beforeSize = getDimension(slideConfig, component.element);
-      setGrown(component, slideConfig);
-      var fullSize = getDimension(slideConfig, component.element);
+    var doStartGrow = function (component, slideconfig, slideState) {
+      var root = getAnimationRoot(component, slideconfig);
+      var wasShrinking = has$2(root, slideconfig.shrinkingClass);
+      var beforeSize = getDimension(slideconfig, component.element);
+      setGrown(component, slideconfig);
+      var fullSize = getDimension(slideconfig, component.element);
       var startPartialGrow = function () {
-        set$3(component.element, getDimensionProperty(slideConfig), beforeSize);
+        set$3(component.element, getDimensionProperty(slideconfig), beforeSize);
         reflow(component.element);
       };
       var startCompleteGrow = function () {
-        setShrunk(component, slideConfig);
+        setShrunk(component, slideconfig);
       };
       var setStartSize = wasShrinking ? startPartialGrow : startCompleteGrow;
       setStartSize();
-      remove$4(root, slideConfig.shrinkingClass);
-      add$2(root, slideConfig.growingClass);
-      setGrown(component, slideConfig);
-      set$3(component.element, getDimensionProperty(slideConfig), fullSize);
+      remove$4(root, slideconfig.shrinkingClass);
+      add$2(root, slideconfig.growingClass);
+      setGrown(component, slideconfig);
+      set$3(component.element, getDimensionProperty(slideconfig), fullSize);
       slideState.setExpanded();
-      slideConfig.onStartGrow(component);
+      slideconfig.onStartGrow(component);
     };
-    var refresh = function (component, slideConfig, slideState) {
+    var refresh = function (component, slideconfig, slideState) {
       if (slideState.isExpanded()) {
-        remove$5(component.element, getDimensionProperty(slideConfig));
-        var fullSize = getDimension(slideConfig, component.element);
-        set$3(component.element, getDimensionProperty(slideConfig), fullSize);
+        remove$5(component.element, getDimensionProperty(slideconfig));
+        var fullSize = getDimension(slideconfig, component.element);
+        set$3(component.element, getDimensionProperty(slideconfig), fullSize);
       }
     };
-    var grow = function (component, slideConfig, slideState) {
+    var grow = function (component, slideconfig, slideState) {
       if (!slideState.isExpanded()) {
-        doStartGrow(component, slideConfig, slideState);
+        doStartGrow(component, slideconfig, slideState);
       }
     };
-    var shrink = function (component, slideConfig, slideState) {
+    var shrink = function (component, slideconfig, slideState) {
       if (slideState.isExpanded()) {
-        doStartSmartShrink(component, slideConfig, slideState);
+        doStartSmartShrink(component, slideconfig, slideState);
       }
     };
-    var immediateShrink = function (component, slideConfig, slideState) {
+    var immediateShrink = function (component, slideconfig, slideState) {
       if (slideState.isExpanded()) {
-        doImmediateShrink(component, slideConfig, slideState, Optional.none());
+        doImmediateShrink(component, slideconfig, slideState, Optional.none());
       }
     };
-    var hasGrown = function (component, slideConfig, slideState) {
+    var hasGrown = function (component, slideconfig, slideState) {
       return slideState.isExpanded();
     };
-    var hasShrunk = function (component, slideConfig, slideState) {
+    var hasShrunk = function (component, slideconfig, slideState) {
       return slideState.isCollapsed();
     };
-    var isGrowing = function (component, slideConfig, _slideState) {
-      var root = getAnimationRoot(component, slideConfig);
-      return has$2(root, slideConfig.growingClass) === true;
+    var isGrowing = function (component, slideconfig, _slideState) {
+      var root = getAnimationRoot(component, slideconfig);
+      return has$2(root, slideconfig.growingClass) === true;
     };
-    var isShrinking = function (component, slideConfig, _slideState) {
-      var root = getAnimationRoot(component, slideConfig);
-      return has$2(root, slideConfig.shrinkingClass) === true;
+    var isShrinking = function (component, slideconfig, _slideState) {
+      var root = getAnimationRoot(component, slideconfig);
+      return has$2(root, slideconfig.shrinkingClass) === true;
     };
-    var isTransitioning = function (component, slideConfig, slideState) {
-      return isGrowing(component, slideConfig) === true || isShrinking(component, slideConfig) === true;
+    var isTransitioning = function (component, slideconfig, slideState) {
+      return isGrowing(component, slideconfig) === true || isShrinking(component, slideconfig) === true;
     };
-    var toggleGrow = function (component, slideConfig, slideState) {
+    var toggleGrow = function (component, slideconfig, slideState) {
       var f = slideState.isExpanded() ? doStartSmartShrink : doStartGrow;
-      f(component, slideConfig, slideState);
+      f(component, slideconfig, slideState);
     };
 
     var SlidingApis = /*#__PURE__*/Object.freeze({
@@ -11071,25 +11071,25 @@
         disableTransitions: disableTransitions
     });
 
-    var exhibit$5 = function (base, slideConfig, _slideState) {
-      var expanded = slideConfig.expanded;
+    var exhibit$5 = function (base, slideconfig, _slideState) {
+      var expanded = slideconfig.expanded;
       return expanded ? nu$5({
-        classes: [slideConfig.openClass],
+        classes: [slideconfig.openClass],
         styles: {}
       }) : nu$5({
-        classes: [slideConfig.closedClass],
-        styles: wrap$1(slideConfig.dimension.property, '0px')
+        classes: [slideconfig.closedClass],
+        styles: wrap$1(slideconfig.dimension.property, '0px')
       });
     };
-    var events$a = function (slideConfig, slideState) {
+    var events$a = function (slideconfig, slideState) {
       return derive([runOnSource(transitionend(), function (component, simulatedEvent) {
           var raw = simulatedEvent.event.raw;
-          if (raw.propertyName === slideConfig.dimension.property) {
-            disableTransitions(component, slideConfig);
+          if (raw.propertyName === slideconfig.dimension.property) {
+            disableTransitions(component, slideconfig);
             if (slideState.isExpanded()) {
-              remove$5(component.element, slideConfig.dimension.property);
+              remove$5(component.element, slideconfig.dimension.property);
             }
-            var notify = slideState.isExpanded() ? slideConfig.onGrown : slideConfig.onShrunk;
+            var notify = slideState.isExpanded() ? slideconfig.onGrown : slideconfig.onShrunk;
             notify(component);
           }
         })]);

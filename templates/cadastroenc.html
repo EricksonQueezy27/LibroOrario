@@ -1,0 +1,79 @@
+<!-- cadastrar_publicidade_comunicado.html -->
+{% extends 'base_admin.html' %}
+
+{% block content %}
+<!-- Cards de Publicidades -->
+<section class="section">
+    <div class="container">
+        <div class="container-xxl">
+            <div class="authentication-wrapper authentication-basic container-p-y">
+              <div class="authentication-inner">
+                <!-- Register Card -->
+                <div class="card">
+                  <div class="card-body">
+                    <!-- Logo -->
+                    <div class="app-brand justify-content-center">
+                      <a href="index.html" class="app-brand-link gap-2">
+                        <span class="app-brand-logo demo">
+                         
+                        </span>
+                        <span class="app-brand-text demo text-body fw-bolder">--</span>
+                      </a>
+                    </div>
+                    <!-- /Logo -->
+                    <h4 class="mb-2">Cadastre mais encarregados🚀</h4>
+                    <p class="mb-4">LibroOrario</p>
+                    {% if error %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                    {% endif %}
+                    <form id="formAuthentication" class="mb-3"  method="POST">
+                       
+                        {% csrf_token %}
+                                              <div class="mb-3">
+                        <label for="username" class="form-label">Nome de Usuario</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Coloque o nome de Usuario" />
+                      </div>
+                      <div class="mb-3 form-password-toggle">
+                        <label class="form-label" for="password1">Senha</label>
+                        <div class="input-group input-group-merge">
+                          <input
+                            type="password"
+                            id="password1"
+                            class="form-control"
+                            name="password1"
+                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                            aria-describedby="password1"
+                          />
+                          <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                        </div>
+                      </div>
+                      <div class="mb-3 form-password-toggle">
+                        <label class="form-label" for="password2">Confirmar Senha</label>
+                        <div class="input-group input-group-merge">
+                          <input
+                            type="password"
+                            id="password2"
+                            class="form-control"
+                            name="password2"
+                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                            aria-describedby="password2"
+                          />
+                          <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                        </div>
+                      </div>
+                
+                      <button class="btn btn-primary d-grid w-100">Cadastrar</button>
+                    </form>
+      
+                  </div>
+                </div>
+                <!-- Register Card -->
+              </div>
+            </div>
+          </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -448,7 +448,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New `search` field in the `MenuButton` that shows a search field at the top of the menu, and refetches items when the search field updates. #TINY-8952
 
 ### Improved
-- The formatter can now apply a format to a `contenteditable="false"` element by wrapping it. Configurable using the `format_noneditable_selector` option. #TINY-8905
+- The formatter can now apply a format to a `contenteditable="false"` element by wrapping it. configurable using the `format_noneditable_selector` option. #TINY-8905
 - The autocompleter now supports a multiple character trigger using the new `trigger` configuration. #TINY-8887
 - The formatter now applies some inline formats, such as color and font size, to list item elements when the entire item content is selected. #TINY-8961
 - The installed and available plugin lists in the Help dialog are now sorted alphabetically. #TINY-9019

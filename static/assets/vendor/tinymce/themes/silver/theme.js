@@ -3077,14 +3077,14 @@
         };
         return f();
       };
-      const hasConfigured = behaviour => isFunction(bData[behaviour.name()]);
+      const hasconfigured = behaviour => isFunction(bData[behaviour.name()]);
       const getApis = () => info.apis;
       const readState = behaviourName => bData[behaviourName]().map(b => b.state.readState()).getOr('not enabled');
       const me = {
         uid: spec.uid,
         getSystem: systemApi.get,
         config,
-        hasConfigured,
+        hasconfigured,
         spec,
         readState,
         getApis,
@@ -3142,7 +3142,7 @@
         uid,
         getSystem: systemApi.get,
         config: Optional.none,
-        hasConfigured: never,
+        hasconfigured: never,
         connect,
         disconnect,
         getApis: () => ({}),
@@ -3261,13 +3261,13 @@
     const isPartOf$1 = (component, queryElem) => closest$2(queryElem, el => eq(el, component.element), never) || isAriaPartOf(component, queryElem);
 
     const unknown = 'unknown';
-    var EventConfiguration;
-    (function (EventConfiguration) {
-      EventConfiguration[EventConfiguration['STOP'] = 0] = 'STOP';
-      EventConfiguration[EventConfiguration['NORMAL'] = 1] = 'NORMAL';
-      EventConfiguration[EventConfiguration['LOGGING'] = 2] = 'LOGGING';
-    }(EventConfiguration || (EventConfiguration = {})));
-    const eventConfig = Cell({});
+    var Eventconfiguration;
+    (function (Eventconfiguration) {
+      Eventconfiguration[Eventconfiguration['STOP'] = 0] = 'STOP';
+      Eventconfiguration[Eventconfiguration['NORMAL'] = 1] = 'NORMAL';
+      Eventconfiguration[Eventconfiguration['LOGGING'] = 2] = 'LOGGING';
+    }(Eventconfiguration || (Eventconfiguration = {})));
+    const eventconfig = Cell({});
     const makeEventLogger = (eventName, initialTarget) => {
       const sequence = [];
       const startTime = new Date().getTime();
@@ -3336,20 +3336,20 @@
       };
     };
     const processEvent = (eventName, initialTarget, f) => {
-      const status = get$g(eventConfig.get(), eventName).orThunk(() => {
-        const patterns = keys(eventConfig.get());
-        return findMap(patterns, p => eventName.indexOf(p) > -1 ? Optional.some(eventConfig.get()[p]) : Optional.none());
-      }).getOr(EventConfiguration.NORMAL);
+      const status = get$g(eventconfig.get(), eventName).orThunk(() => {
+        const patterns = keys(eventconfig.get());
+        return findMap(patterns, p => eventName.indexOf(p) > -1 ? Optional.some(eventconfig.get()[p]) : Optional.none());
+      }).getOr(Eventconfiguration.NORMAL);
       switch (status) {
-      case EventConfiguration.NORMAL:
+      case Eventconfiguration.NORMAL:
         return f(noLogger());
-      case EventConfiguration.LOGGING: {
+      case Eventconfiguration.LOGGING: {
           const logger = makeEventLogger(eventName, initialTarget);
           const output = f(logger);
           logger.write();
           return output;
         }
-      case EventConfiguration.STOP:
+      case Eventconfiguration.STOP:
         return true;
       }
     };
@@ -3570,8 +3570,8 @@
     ];
 
     const chooseChannels = (channels, message) => message.universal ? channels : filter$2(channels, ch => contains$2(message.channels, ch));
-    const events$h = receiveConfig => derive$2([run$1(receive(), (component, message) => {
-        const channelMap = receiveConfig.channels;
+    const events$h = receiveconfig => derive$2([run$1(receive(), (component, message) => {
+        const channelMap = receiveconfig.channels;
         const channels = keys(channelMap);
         const receivingData = message;
         const targetChannels = chooseChannels(channels, receivingData);
@@ -3593,11 +3593,11 @@
         defaulted('schema', anyValue())
       ])))];
 
-    const executeEvent = (bConfig, bState, executor) => runOnExecute$1(component => {
-      executor(component, bConfig, bState);
+    const executeEvent = (bconfig, bState, executor) => runOnExecute$1(component => {
+      executor(component, bconfig, bState);
     });
-    const loadEvent = (bConfig, bState, f) => runOnInit((component, _simulatedEvent) => {
-      f(component, bConfig, bState);
+    const loadEvent = (bconfig, bState, f) => runOnInit((component, _simulatedEvent) => {
+      f(component, bconfig, bState);
     });
     const create$5 = (schema, name, active, apis, extra, state) => {
       const configSchema = objOfOnly(schema);
@@ -3630,7 +3630,7 @@
       value: undefined
     });
     const doCreate = (configSchema, schemaSchema, name, active, apis, extra, state) => {
-      const getConfig = info => hasNonNullableKey(info, name) ? info[name]() : Optional.none();
+      const getconfig = info => hasNonNullableKey(info, name) ? info[name]() : Optional.none();
       const wrappedApis = map$1(apis, (apiF, apiName) => wrapApi(name, apiF, apiName));
       const wrappedExtra = map$1(extra, (extraF, extraName) => markAsExtraApi(extraF, extraName));
       const me = {
@@ -3645,20 +3645,20 @@
               config: prepared,
               me,
               configAsRaw: cached(() => asRawOrDie$1(name + '-config', configSchema, spec)),
-              initialConfig: spec,
+              initialconfig: spec,
               state
             }
           };
         },
         schema: constant$1(schemaSchema),
         exhibit: (info, base) => {
-          return lift2(getConfig(info), get$g(active, 'exhibit'), (behaviourInfo, exhibitor) => {
+          return lift2(getconfig(info), get$g(active, 'exhibit'), (behaviourInfo, exhibitor) => {
             return exhibitor(base, behaviourInfo.config, behaviourInfo.state);
           }).getOrThunk(() => nu$7({}));
         },
         name: constant$1(name),
         handlers: info => {
-          return getConfig(info).map(behaviourInfo => {
+          return getconfig(info).map(behaviourInfo => {
             const getEvents = get$g(active, 'events').getOr(() => ({}));
             return getEvents(behaviourInfo.config, behaviourInfo.state);
           }).getOr({});
@@ -3701,9 +3701,9 @@
       active: ActiveReceiving
     });
 
-    const exhibit$6 = (base, posConfig) => nu$7({
+    const exhibit$6 = (base, posconfig) => nu$7({
       classes: [],
-      styles: posConfig.useFixed() ? {} : { position: 'relative' }
+      styles: posconfig.useFixed() ? {} : { position: 'relative' }
     });
 
     var ActivePosition = /*#__PURE__*/Object.freeze({
@@ -4856,11 +4856,11 @@
       const anchor = box(anchoring.anchorBox, origin);
       return simple(anchor, placee.element, anchoring.bubble, anchoring.layouts, lastPlace, optBounds, anchoring.overrides, transition);
     };
-    const position$1 = (component, posConfig, posState, placee, placementSpec) => {
+    const position$1 = (component, posconfig, posState, placee, placementSpec) => {
       const optWithinBounds = Optional.none();
-      positionWithinBounds(component, posConfig, posState, placee, placementSpec, optWithinBounds);
+      positionWithinBounds(component, posconfig, posState, placee, placementSpec, optWithinBounds);
     };
-    const positionWithinBounds = (component, posConfig, posState, placee, placementSpec, optWithinBounds) => {
+    const positionWithinBounds = (component, posconfig, posState, placee, placementSpec, optWithinBounds) => {
       const placeeDetail = asRawOrDie$1('placement.info', objOf(PlacementSchema), placementSpec);
       const anchorage = placeeDetail.anchor;
       const element = placee.element;
@@ -4869,9 +4869,9 @@
         set$8(element, 'position', 'fixed');
         const oldVisibility = getRaw(element, 'visibility');
         set$8(element, 'visibility', 'hidden');
-        const origin = posConfig.useFixed() ? getFixedOrigin() : getRelativeOrigin(component);
+        const origin = posconfig.useFixed() ? getFixedOrigin() : getRelativeOrigin(component);
         anchorage.placement(component, anchorage, origin).each(anchoring => {
-          const optBounds = optWithinBounds.orThunk(() => posConfig.getBounds.map(apply$1));
+          const optBounds = optWithinBounds.orThunk(() => posconfig.getBounds.map(apply$1));
           const newState = place(origin, anchoring, optBounds, placee, placeeState, placeeDetail.transition);
           posState.set(placee.uid, newState);
         });
@@ -4885,8 +4885,8 @@
         }
       }, element);
     };
-    const getMode = (component, pConfig, _pState) => pConfig.useFixed() ? 'fixed' : 'absolute';
-    const reset$1 = (component, pConfig, posState, placee) => {
+    const getMode = (component, pconfig, _pState) => pconfig.useFixed() ? 'fixed' : 'absolute';
+    const reset$1 = (component, pconfig, posState, placee) => {
       const element = placee.element;
       each$1([
         'position',
@@ -5065,40 +5065,40 @@
       remove$5(guiSystem.element);
     };
 
-    const rebuild = (sandbox, sConfig, sState, data) => {
+    const rebuild = (sandbox, sconfig, sState, data) => {
       sState.get().each(_data => {
         detachChildren(sandbox);
       });
-      const point = sConfig.getAttachPoint(sandbox);
+      const point = sconfig.getAttachPoint(sandbox);
       attach(point, sandbox);
       const built = sandbox.getSystem().build(data);
       attach(sandbox, built);
       sState.set(built);
       return built;
     };
-    const open$1 = (sandbox, sConfig, sState, data) => {
-      const newState = rebuild(sandbox, sConfig, sState, data);
-      sConfig.onOpen(sandbox, newState);
+    const open$1 = (sandbox, sconfig, sState, data) => {
+      const newState = rebuild(sandbox, sconfig, sState, data);
+      sconfig.onOpen(sandbox, newState);
       return newState;
     };
-    const setContent = (sandbox, sConfig, sState, data) => sState.get().map(() => rebuild(sandbox, sConfig, sState, data));
-    const openWhileCloaked = (sandbox, sConfig, sState, data, transaction) => {
-      cloak(sandbox, sConfig);
-      open$1(sandbox, sConfig, sState, data);
+    const setContent = (sandbox, sconfig, sState, data) => sState.get().map(() => rebuild(sandbox, sconfig, sState, data));
+    const openWhileCloaked = (sandbox, sconfig, sState, data, transaction) => {
+      cloak(sandbox, sconfig);
+      open$1(sandbox, sconfig, sState, data);
       transaction();
-      decloak(sandbox, sConfig);
+      decloak(sandbox, sconfig);
     };
-    const close$1 = (sandbox, sConfig, sState) => {
+    const close$1 = (sandbox, sconfig, sState) => {
       sState.get().each(data => {
         detachChildren(sandbox);
         detach(sandbox);
-        sConfig.onClose(sandbox, data);
+        sconfig.onClose(sandbox, data);
         sState.clear();
       });
     };
-    const isOpen$1 = (_sandbox, _sConfig, sState) => sState.isOpen();
-    const isPartOf = (sandbox, sConfig, sState, queryElem) => isOpen$1(sandbox, sConfig, sState) && sState.get().exists(data => sConfig.isPartOf(sandbox, data, queryElem));
-    const getState$2 = (_sandbox, _sConfig, sState) => sState.get();
+    const isOpen$1 = (_sandbox, _sconfig, sState) => sState.isOpen();
+    const isPartOf = (sandbox, sconfig, sState, queryElem) => isOpen$1(sandbox, sconfig, sState) && sState.get().exists(data => sconfig.isPartOf(sandbox, data, queryElem));
+    const getState$2 = (_sandbox, _sconfig, sState) => sState.get();
     const store = (sandbox, cssKey, attr, newValue) => {
       getRaw(sandbox.element, cssKey).fold(() => {
         remove$7(sandbox.element, attr);
@@ -5110,10 +5110,10 @@
     const restore = (sandbox, cssKey, attr) => {
       getOpt(sandbox.element, attr).fold(() => remove$6(sandbox.element, cssKey), oldValue => set$8(sandbox.element, cssKey, oldValue));
     };
-    const cloak = (sandbox, sConfig, _sState) => {
-      const sink = sConfig.getAttachPoint(sandbox);
+    const cloak = (sandbox, sconfig, _sState) => {
+      const sink = sconfig.getAttachPoint(sandbox);
       set$8(sandbox.element, 'position', Positioning.getMode(sink));
-      store(sandbox, 'visibility', sConfig.cloakVisibilityAttr, 'hidden');
+      store(sandbox, 'visibility', sconfig.cloakVisibilityAttr, 'hidden');
     };
     const hasPosition = element => exists([
       'top',
@@ -5121,11 +5121,11 @@
       'right',
       'bottom'
     ], pos => getRaw(element, pos).isSome());
-    const decloak = (sandbox, sConfig, _sState) => {
+    const decloak = (sandbox, sconfig, _sState) => {
       if (!hasPosition(sandbox.element)) {
         remove$6(sandbox.element, 'position');
       }
-      restore(sandbox, 'visibility', sConfig.cloakVisibilityAttr);
+      restore(sandbox, 'visibility', sconfig.cloakVisibilityAttr);
     };
 
     var SandboxApis = /*#__PURE__*/Object.freeze({
@@ -5141,8 +5141,8 @@
         setContent: setContent
     });
 
-    const events$g = (sandboxConfig, sandboxState) => derive$2([run$1(sandboxClose(), (sandbox, _simulatedEvent) => {
-        close$1(sandbox, sandboxConfig, sandboxState);
+    const events$g = (sandboxconfig, sandboxState) => derive$2([run$1(sandboxClose(), (sandbox, _simulatedEvent) => {
+        close$1(sandbox, sandboxconfig, sandboxState);
       })]);
 
     var ActiveSandbox = /*#__PURE__*/Object.freeze({
@@ -5225,17 +5225,17 @@
       };
     };
 
-    const onLoad$5 = (component, repConfig, repState) => {
-      repConfig.store.manager.onLoad(component, repConfig, repState);
+    const onLoad$5 = (component, repconfig, repState) => {
+      repconfig.store.manager.onLoad(component, repconfig, repState);
     };
-    const onUnload$2 = (component, repConfig, repState) => {
-      repConfig.store.manager.onUnload(component, repConfig, repState);
+    const onUnload$2 = (component, repconfig, repState) => {
+      repconfig.store.manager.onUnload(component, repconfig, repState);
     };
-    const setValue$3 = (component, repConfig, repState, data) => {
-      repConfig.store.manager.setValue(component, repConfig, repState, data);
+    const setValue$3 = (component, repconfig, repState, data) => {
+      repconfig.store.manager.setValue(component, repconfig, repState, data);
     };
-    const getValue$3 = (component, repConfig, repState) => repConfig.store.manager.getValue(component, repConfig, repState);
-    const getState$1 = (component, repConfig, repState) => repState;
+    const getValue$3 = (component, repconfig, repState) => repconfig.store.manager.getValue(component, repconfig, repState);
+    const getState$1 = (component, repconfig, repState) => repState;
 
     var RepresentApis = /*#__PURE__*/Object.freeze({
         __proto__: null,
@@ -5246,15 +5246,15 @@
         getState: getState$1
     });
 
-    const events$f = (repConfig, repState) => {
-      const es = repConfig.resetOnDom ? [
+    const events$f = (repconfig, repState) => {
+      const es = repconfig.resetOnDom ? [
         runOnAttached((comp, _se) => {
-          onLoad$5(comp, repConfig, repState);
+          onLoad$5(comp, repconfig, repState);
         }),
         runOnDetached((comp, _se) => {
-          onUnload$2(comp, repConfig, repState);
+          onUnload$2(comp, repconfig, repState);
         })
-      ] : [loadEvent(repConfig, repState, onLoad$5)];
+      ] : [loadEvent(repconfig, repState, onLoad$5)];
       return derive$2(es);
     };
 
@@ -5337,24 +5337,24 @@
         init: init$e
     });
 
-    const setValue$2 = (component, repConfig, repState, data) => {
-      const store = repConfig.store;
+    const setValue$2 = (component, repconfig, repState, data) => {
+      const store = repconfig.store;
       repState.update([data]);
       store.setValue(component, data);
-      repConfig.onSetValue(component, data);
+      repconfig.onSetValue(component, data);
     };
-    const getValue$2 = (component, repConfig, repState) => {
-      const store = repConfig.store;
+    const getValue$2 = (component, repconfig, repState) => {
+      const store = repconfig.store;
       const key = store.getDataKey(component);
       return repState.lookup(key).getOrThunk(() => store.getFallbackEntry(key));
     };
-    const onLoad$4 = (component, repConfig, repState) => {
-      const store = repConfig.store;
+    const onLoad$4 = (component, repconfig, repState) => {
+      const store = repconfig.store;
       store.initialValue.each(data => {
-        setValue$2(component, repConfig, repState, data);
+        setValue$2(component, repconfig, repState, data);
       });
     };
-    const onUnload$1 = (component, repConfig, repState) => {
+    const onUnload$1 = (component, repconfig, repState) => {
       repState.clear();
     };
     var DatasetStore = [
@@ -5371,14 +5371,14 @@
       })
     ];
 
-    const getValue$1 = (component, repConfig, _repState) => repConfig.store.getValue(component);
-    const setValue$1 = (component, repConfig, _repState, data) => {
-      repConfig.store.setValue(component, data);
-      repConfig.onSetValue(component, data);
+    const getValue$1 = (component, repconfig, _repState) => repconfig.store.getValue(component);
+    const setValue$1 = (component, repconfig, _repState, data) => {
+      repconfig.store.setValue(component, data);
+      repconfig.onSetValue(component, data);
     };
-    const onLoad$3 = (component, repConfig, _repState) => {
-      repConfig.store.initialValue.each(data => {
-        repConfig.store.setValue(component, data);
+    const onLoad$3 = (component, repconfig, _repState) => {
+      repconfig.store.initialValue.each(data => {
+        repconfig.store.setValue(component, data);
       });
     };
     var ManualStore = [
@@ -5394,19 +5394,19 @@
       })
     ];
 
-    const setValue = (component, repConfig, repState, data) => {
+    const setValue = (component, repconfig, repState, data) => {
       repState.set(data);
-      repConfig.onSetValue(component, data);
+      repconfig.onSetValue(component, data);
     };
-    const getValue = (component, repConfig, repState) => repState.get();
-    const onLoad$2 = (component, repConfig, repState) => {
-      repConfig.store.initialValue.each(initVal => {
+    const getValue = (component, repconfig, repState) => repState.get();
+    const onLoad$2 = (component, repconfig, repState) => {
+      repconfig.store.initialValue.each(initVal => {
         if (repState.isNotSet()) {
           repState.set(initVal);
         }
       });
     };
-    const onUnload = (component, repConfig, repState) => {
+    const onUnload = (component, repconfig, repState) => {
       repState.clear();
     };
     var MemoryStore = [
@@ -5785,8 +5785,8 @@
       defaulted('apis', {}),
       defaulted('extraApis', {})
     ]);
-    const single = rawConfig => {
-      const config = asRawOrDie$1('Sketcher for ' + rawConfig.name, singleSchema, rawConfig);
+    const single = rawconfig => {
+      const config = asRawOrDie$1('Sketcher for ' + rawconfig.name, singleSchema, rawconfig);
       const sketch = spec => single$1(config.name, config.configFields, config.factory, spec);
       const apis = map$1(config.apis, makeApi);
       const extraApis = map$1(config.extraApis, (f, k) => markAsExtraApi(f, k));
@@ -5798,8 +5798,8 @@
         ...extraApis
       };
     };
-    const composite = rawConfig => {
-      const config = asRawOrDie$1('Sketcher for ' + rawConfig.name, compositeSchema, rawConfig);
+    const composite = rawconfig => {
+      const config = asRawOrDie$1('Sketcher for ' + rawconfig.name, compositeSchema, rawconfig);
       const sketch = spec => composite$1(config.name, config.configFields, config.partFields, config.factory, spec);
       const parts = generate$3(config.name, config.partFields);
       const apis = map$1(config.apis, makeApi);
@@ -5817,7 +5817,7 @@
 
     const inside = target => isTag('input')(target) && get$f(target, 'type') !== 'radio' || isTag('textarea')(target);
 
-    const getCurrent = (component, composeConfig, _composeState) => composeConfig.find(component);
+    const getCurrent = (component, composeconfig, _composeState) => composeconfig.find(component);
 
     var ComposeApis = /*#__PURE__*/Object.freeze({
         __proto__: null,
@@ -5838,9 +5838,9 @@
       'textarea',
       'select'
     ];
-    const onLoad$1 = (component, disableConfig, disableState) => {
-      const f = disableConfig.disabled() ? disable : enable;
-      f(component, disableConfig);
+    const onLoad$1 = (component, disableconfig, disableState) => {
+      const f = disableconfig.disabled() ? disable : enable;
+      f(component, disableconfig);
     };
     const hasNative = (component, config) => config.useNative === true && contains$2(nativeDisabled, name$3(component.element));
     const nativeIsDisabled = component => has$1(component.element, 'disabled');
@@ -5857,26 +5857,26 @@
     const ariaEnable = component => {
       set$9(component.element, 'aria-disabled', 'false');
     };
-    const disable = (component, disableConfig, _disableState) => {
-      disableConfig.disableClass.each(disableClass => {
+    const disable = (component, disableconfig, _disableState) => {
+      disableconfig.disableClass.each(disableClass => {
         add$2(component.element, disableClass);
       });
-      const f = hasNative(component, disableConfig) ? nativeDisable : ariaDisable;
+      const f = hasNative(component, disableconfig) ? nativeDisable : ariaDisable;
       f(component);
-      disableConfig.onDisabled(component);
+      disableconfig.onDisabled(component);
     };
-    const enable = (component, disableConfig, _disableState) => {
-      disableConfig.disableClass.each(disableClass => {
+    const enable = (component, disableconfig, _disableState) => {
+      disableconfig.disableClass.each(disableClass => {
         remove$2(component.element, disableClass);
       });
-      const f = hasNative(component, disableConfig) ? nativeEnable : ariaEnable;
+      const f = hasNative(component, disableconfig) ? nativeEnable : ariaEnable;
       f(component);
-      disableConfig.onEnabled(component);
+      disableconfig.onEnabled(component);
     };
-    const isDisabled = (component, disableConfig) => hasNative(component, disableConfig) ? nativeIsDisabled(component) : ariaIsDisabled(component);
-    const set$4 = (component, disableConfig, disableState, disabled) => {
+    const isDisabled = (component, disableconfig) => hasNative(component, disableconfig) ? nativeIsDisabled(component) : ariaIsDisabled(component);
+    const set$4 = (component, disableconfig, disableState, disabled) => {
       const f = disabled ? disable : enable;
-      f(component, disableConfig);
+      f(component, disableconfig);
     };
 
     var DisableApis = /*#__PURE__*/Object.freeze({
@@ -5888,10 +5888,10 @@
         set: set$4
     });
 
-    const exhibit$5 = (base, disableConfig) => nu$7({ classes: disableConfig.disabled() ? disableConfig.disableClass.toArray() : [] });
-    const events$e = (disableConfig, disableState) => derive$2([
-      abort(execute$5(), (component, _simulatedEvent) => isDisabled(component, disableConfig)),
-      loadEvent(disableConfig, disableState, onLoad$1)
+    const exhibit$5 = (base, disableconfig) => nu$7({ classes: disableconfig.disabled() ? disableconfig.disableClass.toArray() : [] });
+    const events$e = (disableconfig, disableState) => derive$2([
+      abort(execute$5(), (component, _simulatedEvent) => isDisabled(component, disableconfig)),
+      loadEvent(disableconfig, disableState, onLoad$1)
     ]);
 
     var ActiveDisable = /*#__PURE__*/Object.freeze({
@@ -5915,83 +5915,83 @@
       apis: DisableApis
     });
 
-    const dehighlightAllExcept = (component, hConfig, hState, skip) => {
-      const highlighted = descendants(component.element, '.' + hConfig.highlightClass);
+    const dehighlightAllExcept = (component, hconfig, hState, skip) => {
+      const highlighted = descendants(component.element, '.' + hconfig.highlightClass);
       each$1(highlighted, h => {
         const shouldSkip = exists(skip, skipComp => eq(skipComp.element, h));
         if (!shouldSkip) {
-          remove$2(h, hConfig.highlightClass);
+          remove$2(h, hconfig.highlightClass);
           component.getSystem().getByDom(h).each(target => {
-            hConfig.onDehighlight(component, target);
+            hconfig.onDehighlight(component, target);
             emit(target, dehighlight$1());
           });
         }
       });
     };
-    const dehighlightAll = (component, hConfig, hState) => dehighlightAllExcept(component, hConfig, hState, []);
-    const dehighlight = (component, hConfig, hState, target) => {
-      if (isHighlighted(component, hConfig, hState, target)) {
-        remove$2(target.element, hConfig.highlightClass);
-        hConfig.onDehighlight(component, target);
+    const dehighlightAll = (component, hconfig, hState) => dehighlightAllExcept(component, hconfig, hState, []);
+    const dehighlight = (component, hconfig, hState, target) => {
+      if (isHighlighted(component, hconfig, hState, target)) {
+        remove$2(target.element, hconfig.highlightClass);
+        hconfig.onDehighlight(component, target);
         emit(target, dehighlight$1());
       }
     };
-    const highlight = (component, hConfig, hState, target) => {
-      dehighlightAllExcept(component, hConfig, hState, [target]);
-      if (!isHighlighted(component, hConfig, hState, target)) {
-        add$2(target.element, hConfig.highlightClass);
-        hConfig.onHighlight(component, target);
+    const highlight = (component, hconfig, hState, target) => {
+      dehighlightAllExcept(component, hconfig, hState, [target]);
+      if (!isHighlighted(component, hconfig, hState, target)) {
+        add$2(target.element, hconfig.highlightClass);
+        hconfig.onHighlight(component, target);
         emit(target, highlight$1());
       }
     };
-    const highlightFirst = (component, hConfig, hState) => {
-      getFirst(component, hConfig).each(firstComp => {
-        highlight(component, hConfig, hState, firstComp);
+    const highlightFirst = (component, hconfig, hState) => {
+      getFirst(component, hconfig).each(firstComp => {
+        highlight(component, hconfig, hState, firstComp);
       });
     };
-    const highlightLast = (component, hConfig, hState) => {
-      getLast(component, hConfig).each(lastComp => {
-        highlight(component, hConfig, hState, lastComp);
+    const highlightLast = (component, hconfig, hState) => {
+      getLast(component, hconfig).each(lastComp => {
+        highlight(component, hconfig, hState, lastComp);
       });
     };
-    const highlightAt = (component, hConfig, hState, index) => {
-      getByIndex(component, hConfig, hState, index).fold(err => {
+    const highlightAt = (component, hconfig, hState, index) => {
+      getByIndex(component, hconfig, hState, index).fold(err => {
         throw err;
       }, firstComp => {
-        highlight(component, hConfig, hState, firstComp);
+        highlight(component, hconfig, hState, firstComp);
       });
     };
-    const highlightBy = (component, hConfig, hState, predicate) => {
-      const candidates = getCandidates(component, hConfig);
+    const highlightBy = (component, hconfig, hState, predicate) => {
+      const candidates = getCandidates(component, hconfig);
       const targetComp = find$5(candidates, predicate);
       targetComp.each(c => {
-        highlight(component, hConfig, hState, c);
+        highlight(component, hconfig, hState, c);
       });
     };
-    const isHighlighted = (component, hConfig, hState, queryTarget) => has(queryTarget.element, hConfig.highlightClass);
-    const getHighlighted = (component, hConfig, _hState) => descendant(component.element, '.' + hConfig.highlightClass).bind(e => component.getSystem().getByDom(e).toOptional());
-    const getByIndex = (component, hConfig, hState, index) => {
-      const items = descendants(component.element, '.' + hConfig.itemClass);
+    const isHighlighted = (component, hconfig, hState, queryTarget) => has(queryTarget.element, hconfig.highlightClass);
+    const getHighlighted = (component, hconfig, _hState) => descendant(component.element, '.' + hconfig.highlightClass).bind(e => component.getSystem().getByDom(e).toOptional());
+    const getByIndex = (component, hconfig, hState, index) => {
+      const items = descendants(component.element, '.' + hconfig.itemClass);
       return Optional.from(items[index]).fold(() => Result.error(new Error('No element found with index ' + index)), component.getSystem().getByDom);
     };
-    const getFirst = (component, hConfig, _hState) => descendant(component.element, '.' + hConfig.itemClass).bind(e => component.getSystem().getByDom(e).toOptional());
-    const getLast = (component, hConfig, _hState) => {
-      const items = descendants(component.element, '.' + hConfig.itemClass);
+    const getFirst = (component, hconfig, _hState) => descendant(component.element, '.' + hconfig.itemClass).bind(e => component.getSystem().getByDom(e).toOptional());
+    const getLast = (component, hconfig, _hState) => {
+      const items = descendants(component.element, '.' + hconfig.itemClass);
       const last = items.length > 0 ? Optional.some(items[items.length - 1]) : Optional.none();
       return last.bind(c => component.getSystem().getByDom(c).toOptional());
     };
-    const getDelta$2 = (component, hConfig, hState, delta) => {
-      const items = descendants(component.element, '.' + hConfig.itemClass);
-      const current = findIndex$1(items, item => has(item, hConfig.highlightClass));
+    const getDelta$2 = (component, hconfig, hState, delta) => {
+      const items = descendants(component.element, '.' + hconfig.itemClass);
+      const current = findIndex$1(items, item => has(item, hconfig.highlightClass));
       return current.bind(selected => {
         const dest = cycleBy(selected, delta, 0, items.length - 1);
         return component.getSystem().getByDom(items[dest]).toOptional();
       });
     };
-    const getPrevious = (component, hConfig, hState) => getDelta$2(component, hConfig, hState, -1);
-    const getNext = (component, hConfig, hState) => getDelta$2(component, hConfig, hState, +1);
-    const getCandidates = (component, hConfig, _hState) => {
-      const items = descendants(component.element, '.' + hConfig.itemClass);
+    const getPrevious = (component, hconfig, hState) => getDelta$2(component, hconfig, hState, -1);
+    const getNext = (component, hconfig, hState) => getDelta$2(component, hconfig, hState, +1);
+    const getCandidates = (component, hconfig, _hState) => {
+      const items = descendants(component.element, '.' + hconfig.itemClass);
       return cat(map$2(items, i => component.getSystem().getByDom(i).toOptional()));
     };
 
@@ -6136,34 +6136,34 @@
         output$1('state', stateInit),
         output$1('sendFocusIn', optFocusIn)
       ]);
-      const processKey = (component, simulatedEvent, getRules, keyingConfig, keyingState) => {
-        const rules = getRules(component, simulatedEvent, keyingConfig, keyingState);
-        return choose(rules, simulatedEvent.event).bind(rule => rule(component, simulatedEvent, keyingConfig, keyingState));
+      const processKey = (component, simulatedEvent, getRules, keyingconfig, keyingState) => {
+        const rules = getRules(component, simulatedEvent, keyingconfig, keyingState);
+        return choose(rules, simulatedEvent.event).bind(rule => rule(component, simulatedEvent, keyingconfig, keyingState));
       };
-      const toEvents = (keyingConfig, keyingState) => {
-        const onFocusHandler = keyingConfig.focusInside !== FocusInsideModes.OnFocusMode ? Optional.none() : optFocusIn(keyingConfig).map(focusIn => run$1(focus$4(), (component, simulatedEvent) => {
-          focusIn(component, keyingConfig, keyingState);
+      const toEvents = (keyingconfig, keyingState) => {
+        const onFocusHandler = keyingconfig.focusInside !== FocusInsideModes.OnFocusMode ? Optional.none() : optFocusIn(keyingconfig).map(focusIn => run$1(focus$4(), (component, simulatedEvent) => {
+          focusIn(component, keyingconfig, keyingState);
           simulatedEvent.stop();
         }));
         const tryGoInsideComponent = (component, simulatedEvent) => {
           const isEnterOrSpace = inSet(SPACE.concat(ENTER))(simulatedEvent.event);
-          if (keyingConfig.focusInside === FocusInsideModes.OnEnterOrSpaceMode && isEnterOrSpace && isSource(component, simulatedEvent)) {
-            optFocusIn(keyingConfig).each(focusIn => {
-              focusIn(component, keyingConfig, keyingState);
+          if (keyingconfig.focusInside === FocusInsideModes.OnEnterOrSpaceMode && isEnterOrSpace && isSource(component, simulatedEvent)) {
+            optFocusIn(keyingconfig).each(focusIn => {
+              focusIn(component, keyingconfig, keyingState);
               simulatedEvent.stop();
             });
           }
         };
         const keyboardEvents = [
           run$1(keydown(), (component, simulatedEvent) => {
-            processKey(component, simulatedEvent, getKeydownRules, keyingConfig, keyingState).fold(() => {
+            processKey(component, simulatedEvent, getKeydownRules, keyingconfig, keyingState).fold(() => {
               tryGoInsideComponent(component, simulatedEvent);
             }, _ => {
               simulatedEvent.stop();
             });
           }),
           run$1(keyup(), (component, simulatedEvent) => {
-            processKey(component, simulatedEvent, getKeyupRules, keyingConfig, keyingState).each(_ => {
+            processKey(component, simulatedEvent, getKeyupRules, keyingconfig, keyingState).each(_ => {
               simulatedEvent.stop();
             });
           })
@@ -6187,45 +6187,45 @@
         defaulted('useTabstopAt', always),
         option$3('visibilitySelector')
       ].concat([cyclicField]);
-      const isVisible = (tabbingConfig, element) => {
-        const target = tabbingConfig.visibilitySelector.bind(sel => closest$1(element, sel)).getOr(element);
+      const isVisible = (tabbingconfig, element) => {
+        const target = tabbingconfig.visibilitySelector.bind(sel => closest$1(element, sel)).getOr(element);
         return get$d(target) > 0;
       };
-      const findInitial = (component, tabbingConfig) => {
-        const tabstops = descendants(component.element, tabbingConfig.selector);
-        const visibles = filter$2(tabstops, elem => isVisible(tabbingConfig, elem));
-        return Optional.from(visibles[tabbingConfig.firstTabstop]);
+      const findInitial = (component, tabbingconfig) => {
+        const tabstops = descendants(component.element, tabbingconfig.selector);
+        const visibles = filter$2(tabstops, elem => isVisible(tabbingconfig, elem));
+        return Optional.from(visibles[tabbingconfig.firstTabstop]);
       };
-      const findCurrent = (component, tabbingConfig) => tabbingConfig.focusManager.get(component).bind(elem => closest$1(elem, tabbingConfig.selector));
-      const isTabstop = (tabbingConfig, element) => isVisible(tabbingConfig, element) && tabbingConfig.useTabstopAt(element);
-      const focusIn = (component, tabbingConfig, _tabbingState) => {
-        findInitial(component, tabbingConfig).each(target => {
-          tabbingConfig.focusManager.set(component, target);
+      const findCurrent = (component, tabbingconfig) => tabbingconfig.focusManager.get(component).bind(elem => closest$1(elem, tabbingconfig.selector));
+      const isTabstop = (tabbingconfig, element) => isVisible(tabbingconfig, element) && tabbingconfig.useTabstopAt(element);
+      const focusIn = (component, tabbingconfig, _tabbingState) => {
+        findInitial(component, tabbingconfig).each(target => {
+          tabbingconfig.focusManager.set(component, target);
         });
       };
-      const goFromTabstop = (component, tabstops, stopIndex, tabbingConfig, cycle) => cycle(tabstops, stopIndex, elem => isTabstop(tabbingConfig, elem)).fold(() => tabbingConfig.cyclic ? Optional.some(true) : Optional.none(), target => {
-        tabbingConfig.focusManager.set(component, target);
+      const goFromTabstop = (component, tabstops, stopIndex, tabbingconfig, cycle) => cycle(tabstops, stopIndex, elem => isTabstop(tabbingconfig, elem)).fold(() => tabbingconfig.cyclic ? Optional.some(true) : Optional.none(), target => {
+        tabbingconfig.focusManager.set(component, target);
         return Optional.some(true);
       });
-      const go = (component, _simulatedEvent, tabbingConfig, cycle) => {
-        const tabstops = descendants(component.element, tabbingConfig.selector);
-        return findCurrent(component, tabbingConfig).bind(tabstop => {
+      const go = (component, _simulatedEvent, tabbingconfig, cycle) => {
+        const tabstops = descendants(component.element, tabbingconfig.selector);
+        return findCurrent(component, tabbingconfig).bind(tabstop => {
           const optStopIndex = findIndex$1(tabstops, curry(eq, tabstop));
-          return optStopIndex.bind(stopIndex => goFromTabstop(component, tabstops, stopIndex, tabbingConfig, cycle));
+          return optStopIndex.bind(stopIndex => goFromTabstop(component, tabstops, stopIndex, tabbingconfig, cycle));
         });
       };
-      const goBackwards = (component, simulatedEvent, tabbingConfig) => {
-        const navigate = tabbingConfig.cyclic ? cyclePrev : tryPrev;
-        return go(component, simulatedEvent, tabbingConfig, navigate);
+      const goBackwards = (component, simulatedEvent, tabbingconfig) => {
+        const navigate = tabbingconfig.cyclic ? cyclePrev : tryPrev;
+        return go(component, simulatedEvent, tabbingconfig, navigate);
       };
-      const goForwards = (component, simulatedEvent, tabbingConfig) => {
-        const navigate = tabbingConfig.cyclic ? cycleNext : tryNext;
-        return go(component, simulatedEvent, tabbingConfig, navigate);
+      const goForwards = (component, simulatedEvent, tabbingconfig) => {
+        const navigate = tabbingconfig.cyclic ? cycleNext : tryNext;
+        return go(component, simulatedEvent, tabbingconfig, navigate);
       };
       const isFirstChild = elem => parentNode(elem).bind(firstChild).exists(child => eq(child, elem));
-      const goFromPseudoTabstop = (component, simulatedEvent, tabbingConfig) => findCurrent(component, tabbingConfig).filter(elem => !tabbingConfig.useTabstopAt(elem)).bind(elem => (isFirstChild(elem) ? goBackwards : goForwards)(component, simulatedEvent, tabbingConfig));
-      const execute = (component, simulatedEvent, tabbingConfig) => tabbingConfig.onEnter.bind(f => f(component, simulatedEvent));
-      const exit = (component, simulatedEvent, tabbingConfig) => tabbingConfig.onEscape.bind(f => f(component, simulatedEvent));
+      const goFromPseudoTabstop = (component, simulatedEvent, tabbingconfig) => findCurrent(component, tabbingconfig).filter(elem => !tabbingconfig.useTabstopAt(elem)).bind(elem => (isFirstChild(elem) ? goBackwards : goForwards)(component, simulatedEvent, tabbingconfig));
+      const execute = (component, simulatedEvent, tabbingconfig) => tabbingconfig.onEnter.bind(f => f(component, simulatedEvent));
+      const exit = (component, simulatedEvent, tabbingconfig) => tabbingconfig.onEscape.bind(f => f(component, simulatedEvent));
       const getKeydownRules = constant$1([
         rule(and([
           isShift$1,
@@ -6265,18 +6265,18 @@
       defaulted('useControlEnter', false),
       defaulted('useDown', false)
     ];
-    const execute$4 = (component, simulatedEvent, executeConfig) => executeConfig.execute(component, simulatedEvent, component.element);
-    const getKeydownRules$5 = (component, _simulatedEvent, executeConfig, _executeState) => {
-      const spaceExec = executeConfig.useSpace && !inside(component.element) ? SPACE : [];
-      const enterExec = executeConfig.useEnter ? ENTER : [];
-      const downExec = executeConfig.useDown ? DOWN : [];
+    const execute$4 = (component, simulatedEvent, executeconfig) => executeconfig.execute(component, simulatedEvent, component.element);
+    const getKeydownRules$5 = (component, _simulatedEvent, executeconfig, _executeState) => {
+      const spaceExec = executeconfig.useSpace && !inside(component.element) ? SPACE : [];
+      const enterExec = executeconfig.useEnter ? ENTER : [];
+      const downExec = executeconfig.useDown ? DOWN : [];
       const execKeys = spaceExec.concat(enterExec).concat(downExec);
-      return [rule(inSet(execKeys), execute$4)].concat(executeConfig.useControlEnter ? [rule(and([
+      return [rule(inSet(execKeys), execute$4)].concat(executeconfig.useControlEnter ? [rule(and([
           isControl,
           inSet(ENTER)
         ]), execute$4)] : []);
     };
-    const getKeyupRules$5 = (component, _simulatedEvent, executeConfig, _executeState) => executeConfig.useSpace && !inside(component.element) ? [rule(inSet(SPACE), stopEventForFirefox)] : [];
+    const getKeyupRules$5 = (component, _simulatedEvent, executeconfig, _executeState) => executeconfig.useSpace && !inside(component.element) ? [rule(inSet(SPACE), stopEventForFirefox)] : [];
     var ExecutionType = typical(schema$v, NoState.init, getKeydownRules$5, getKeyupRules$5, () => Optional.none());
 
     const flatgrid$1 = () => {
@@ -6389,16 +6389,16 @@
       defaulted('captureTab', false),
       initSize()
     ];
-    const focusIn$3 = (component, gridConfig, _gridState) => {
-      descendant(component.element, gridConfig.selector).each(first => {
-        gridConfig.focusManager.set(component, first);
+    const focusIn$3 = (component, gridconfig, _gridState) => {
+      descendant(component.element, gridconfig.selector).each(first => {
+        gridconfig.focusManager.set(component, first);
       });
     };
-    const findCurrent$1 = (component, gridConfig) => gridConfig.focusManager.get(component).bind(elem => closest$1(elem, gridConfig.selector));
-    const execute$3 = (component, simulatedEvent, gridConfig, _gridState) => findCurrent$1(component, gridConfig).bind(focused => gridConfig.execute(component, simulatedEvent, focused));
-    const doMove$2 = cycle => (element, focused, gridConfig, gridState) => locateVisible(element, focused, gridConfig.selector).bind(identified => cycle(identified.candidates, identified.index, gridState.getNumRows().getOr(gridConfig.initSize.numRows), gridState.getNumColumns().getOr(gridConfig.initSize.numColumns)));
-    const handleTab = (_component, _simulatedEvent, gridConfig) => gridConfig.captureTab ? Optional.some(true) : Optional.none();
-    const doEscape$1 = (component, simulatedEvent, gridConfig) => gridConfig.onEscape(component, simulatedEvent);
+    const findCurrent$1 = (component, gridconfig) => gridconfig.focusManager.get(component).bind(elem => closest$1(elem, gridconfig.selector));
+    const execute$3 = (component, simulatedEvent, gridconfig, _gridState) => findCurrent$1(component, gridconfig).bind(focused => gridconfig.execute(component, simulatedEvent, focused));
+    const doMove$2 = cycle => (element, focused, gridconfig, gridState) => locateVisible(element, focused, gridconfig.selector).bind(identified => cycle(identified.candidates, identified.index, gridState.getNumRows().getOr(gridconfig.initSize.numRows), gridState.getNumColumns().getOr(gridconfig.initSize.numColumns)));
+    const handleTab = (_component, _simulatedEvent, gridconfig) => gridconfig.captureTab ? Optional.some(true) : Optional.none();
+    const doEscape$1 = (component, simulatedEvent, gridconfig) => gridconfig.onEscape(component, simulatedEvent);
     const moveLeft$3 = doMove$2(cycleLeft$1);
     const moveRight$3 = doMove$2(cycleRight$1);
     const moveNorth$1 = doMove$2(cycleUp$1);
@@ -6452,20 +6452,20 @@
       defaulted('allowHorizontal', true),
       defaulted('cycles', true)
     ];
-    const findCurrent = (component, flowConfig) => flowConfig.focusManager.get(component).bind(elem => closest$1(elem, flowConfig.selector));
-    const execute$2 = (component, simulatedEvent, flowConfig) => findCurrent(component, flowConfig).bind(focused => flowConfig.execute(component, simulatedEvent, focused));
-    const focusIn$2 = (component, flowConfig, _state) => {
-      flowConfig.getInitial(component).orThunk(() => descendant(component.element, flowConfig.selector)).each(first => {
-        flowConfig.focusManager.set(component, first);
+    const findCurrent = (component, flowconfig) => flowconfig.focusManager.get(component).bind(elem => closest$1(elem, flowconfig.selector));
+    const execute$2 = (component, simulatedEvent, flowconfig) => findCurrent(component, flowconfig).bind(focused => flowconfig.execute(component, simulatedEvent, focused));
+    const focusIn$2 = (component, flowconfig, _state) => {
+      flowconfig.getInitial(component).orThunk(() => descendant(component.element, flowconfig.selector)).each(first => {
+        flowconfig.focusManager.set(component, first);
       });
     };
     const moveLeft$2 = (element, focused, info) => (info.cycles ? horizontal : horizontalWithoutCycles)(element, info.selector, focused, -1);
     const moveRight$2 = (element, focused, info) => (info.cycles ? horizontal : horizontalWithoutCycles)(element, info.selector, focused, +1);
-    const doMove$1 = movement => (component, simulatedEvent, flowConfig, flowState) => movement(component, simulatedEvent, flowConfig, flowState).bind(() => flowConfig.executeOnMove ? execute$2(component, simulatedEvent, flowConfig) : Optional.some(true));
-    const doEscape = (component, simulatedEvent, flowConfig) => flowConfig.onEscape(component, simulatedEvent);
-    const getKeydownRules$3 = (_component, _se, flowConfig, _flowState) => {
-      const westMovers = [...flowConfig.allowHorizontal ? LEFT : []].concat(flowConfig.allowVertical ? UP : []);
-      const eastMovers = [...flowConfig.allowHorizontal ? RIGHT : []].concat(flowConfig.allowVertical ? DOWN : []);
+    const doMove$1 = movement => (component, simulatedEvent, flowconfig, flowState) => movement(component, simulatedEvent, flowconfig, flowState).bind(() => flowconfig.executeOnMove ? execute$2(component, simulatedEvent, flowconfig) : Optional.some(true));
+    const doEscape = (component, simulatedEvent, flowconfig) => flowconfig.onEscape(component, simulatedEvent);
+    const getKeydownRules$3 = (_component, _se, flowconfig, _flowState) => {
+      const westMovers = [...flowconfig.allowHorizontal ? LEFT : []].concat(flowconfig.allowVertical ? UP : []);
+      const eastMovers = [...flowconfig.allowHorizontal ? RIGHT : []].concat(flowconfig.allowVertical ? DOWN : []);
       return [
         rule(inSet(westMovers), doMove$1(west$1(moveLeft$2, moveRight$2))),
         rule(inSet(eastMovers), doMove$1(east$1(moveLeft$2, moveRight$2))),
@@ -6526,25 +6526,25 @@
       defaulted('previousSelector', Optional.none),
       defaulted('execute', defaultExecute)
     ];
-    const focusIn$1 = (component, matrixConfig, _state) => {
-      const focused = matrixConfig.previousSelector(component).orThunk(() => {
-        const selectors = matrixConfig.selectors;
+    const focusIn$1 = (component, matrixconfig, _state) => {
+      const focused = matrixconfig.previousSelector(component).orThunk(() => {
+        const selectors = matrixconfig.selectors;
         return descendant(component.element, selectors.cell);
       });
       focused.each(cell => {
-        matrixConfig.focusManager.set(component, cell);
+        matrixconfig.focusManager.set(component, cell);
       });
     };
-    const execute$1 = (component, simulatedEvent, matrixConfig) => search(component.element).bind(focused => matrixConfig.execute(component, simulatedEvent, focused));
-    const toMatrix = (rows, matrixConfig) => map$2(rows, row => descendants(row, matrixConfig.selectors.cell));
-    const doMove = (ifCycle, ifMove) => (element, focused, matrixConfig) => {
-      const move = matrixConfig.cycles ? ifCycle : ifMove;
-      return closest$1(focused, matrixConfig.selectors.row).bind(inRow => {
-        const cellsInRow = descendants(inRow, matrixConfig.selectors.cell);
+    const execute$1 = (component, simulatedEvent, matrixconfig) => search(component.element).bind(focused => matrixconfig.execute(component, simulatedEvent, focused));
+    const toMatrix = (rows, matrixconfig) => map$2(rows, row => descendants(row, matrixconfig.selectors.cell));
+    const doMove = (ifCycle, ifMove) => (element, focused, matrixconfig) => {
+      const move = matrixconfig.cycles ? ifCycle : ifMove;
+      return closest$1(focused, matrixconfig.selectors.row).bind(inRow => {
+        const cellsInRow = descendants(inRow, matrixconfig.selectors.cell);
         return findIndex(cellsInRow, focused).bind(colIndex => {
-          const allRows = descendants(element, matrixConfig.selectors.row);
+          const allRows = descendants(element, matrixconfig.selectors.row);
           return findIndex(allRows, inRow).bind(rowIndex => {
-            const matrix = toMatrix(allRows, matrixConfig);
+            const matrix = toMatrix(allRows, matrixconfig);
             return move(matrix, rowIndex, colIndex).map(next => next.cell);
           });
         });
@@ -6569,16 +6569,16 @@
       defaulted('execute', defaultExecute),
       defaulted('moveOnTab', false)
     ];
-    const execute = (component, simulatedEvent, menuConfig) => menuConfig.focusManager.get(component).bind(focused => menuConfig.execute(component, simulatedEvent, focused));
-    const focusIn = (component, menuConfig, _state) => {
-      descendant(component.element, menuConfig.selector).each(first => {
-        menuConfig.focusManager.set(component, first);
+    const execute = (component, simulatedEvent, menuconfig) => menuconfig.focusManager.get(component).bind(focused => menuconfig.execute(component, simulatedEvent, focused));
+    const focusIn = (component, menuconfig, _state) => {
+      descendant(component.element, menuconfig.selector).each(first => {
+        menuconfig.focusManager.set(component, first);
       });
     };
     const moveUp = (element, focused, info) => horizontal(element, info.selector, focused, -1);
     const moveDown = (element, focused, info) => horizontal(element, info.selector, focused, +1);
-    const fireShiftTab = (component, simulatedEvent, menuConfig, menuState) => menuConfig.moveOnTab ? move$1(moveUp)(component, simulatedEvent, menuConfig, menuState) : Optional.none();
-    const fireTab = (component, simulatedEvent, menuConfig, menuState) => menuConfig.moveOnTab ? move$1(moveDown)(component, simulatedEvent, menuConfig, menuState) : Optional.none();
+    const fireShiftTab = (component, simulatedEvent, menuconfig, menuState) => menuconfig.moveOnTab ? move$1(moveUp)(component, simulatedEvent, menuconfig, menuState) : Optional.none();
+    const fireTab = (component, simulatedEvent, menuconfig, menuState) => menuconfig.moveOnTab ? move$1(moveDown)(component, simulatedEvent, menuconfig, menuState) : Optional.none();
     const getKeydownRules$1 = constant$1([
       rule(inSet(UP), move$1(moveUp)),
       rule(inSet(DOWN), move$1(moveDown)),
@@ -6667,20 +6667,20 @@
       branches: KeyboardBranches,
       name: 'keying',
       active: {
-        events: (keyingConfig, keyingState) => {
-          const handler = keyingConfig.handler;
-          return handler.toEvents(keyingConfig, keyingState);
+        events: (keyingconfig, keyingState) => {
+          const handler = keyingconfig.handler;
+          return handler.toEvents(keyingconfig, keyingState);
         }
       },
       apis: {
-        focusIn: (component, keyConfig, keyState) => {
-          keyConfig.sendFocusIn(keyConfig).fold(() => {
+        focusIn: (component, keyconfig, keyState) => {
+          keyconfig.sendFocusIn(keyconfig).fold(() => {
             component.getSystem().triggerFocus(component.element, component.element);
           }, sendFocusIn => {
-            sendFocusIn(component, keyConfig, keyState);
+            sendFocusIn(component, keyconfig, keyState);
           });
         },
-        setGridSize: (component, keyConfig, keyState, numRows, numColumns) => {
+        setGridSize: (component, keyconfig, keyState, numRows, numColumns) => {
           if (!isFlatgridState(keyState)) {
             console.error('Layout does not support setGridSize');
           } else {
@@ -6718,35 +6718,35 @@
       detach(replacee);
       insert(component, (p, c) => appendAt(p, c, replaceeIndex), childSpec);
     };
-    const set$3 = (component, replaceConfig, replaceState, data) => {
-      const replacer = replaceConfig.reuseDom ? withReuse : withoutReuse;
+    const set$3 = (component, replaceconfig, replaceState, data) => {
+      const replacer = replaceconfig.reuseDom ? withReuse : withoutReuse;
       return replacer(component, data);
     };
-    const append = (component, replaceConfig, replaceState, appendee) => {
+    const append = (component, replaceconfig, replaceState, appendee) => {
       insert(component, append$2, appendee);
     };
-    const prepend = (component, replaceConfig, replaceState, prependee) => {
+    const prepend = (component, replaceconfig, replaceState, prependee) => {
       insert(component, prepend$1, prependee);
     };
-    const remove = (component, replaceConfig, replaceState, removee) => {
+    const remove = (component, replaceconfig, replaceState, removee) => {
       const children = contents(component);
       const foundChild = find$5(children, child => eq(removee.element, child.element));
       foundChild.each(detach);
     };
-    const contents = (component, _replaceConfig) => component.components();
-    const replaceAt = (component, replaceConfig, replaceState, replaceeIndex, replacer) => {
+    const contents = (component, _replaceconfig) => component.components();
+    const replaceAt = (component, replaceconfig, replaceState, replaceeIndex, replacer) => {
       const children = contents(component);
       return Optional.from(children[replaceeIndex]).map(replacee => {
         replacer.fold(() => detach(replacee), r => {
-          const replacer = replaceConfig.reuseDom ? virtualReplace : replace;
+          const replacer = replaceconfig.reuseDom ? virtualReplace : replace;
           replacer(component, replacee, replaceeIndex, r);
         });
         return replacee;
       });
     };
-    const replaceBy = (component, replaceConfig, replaceState, replaceePred, replacer) => {
+    const replaceBy = (component, replaceconfig, replaceState, replaceePred, replacer) => {
       const children = contents(component);
-      return findIndex$1(children, replaceePred).bind(replaceeIndex => replaceAt(component, replaceConfig, replaceState, replaceeIndex, replacer));
+      return findIndex$1(children, replaceePred).bind(replaceeIndex => replaceAt(component, replaceconfig, replaceState, replaceeIndex, replacer));
     };
 
     var ReplaceApis = /*#__PURE__*/Object.freeze({
@@ -6782,20 +6782,20 @@
           config: {},
           me,
           configAsRaw: constant$1({}),
-          initialConfig: {},
+          initialconfig: {},
           state: NoState
         }
       };
     };
 
-    const focus$2 = (component, focusConfig) => {
-      if (!focusConfig.ignore) {
+    const focus$2 = (component, focusconfig) => {
+      if (!focusconfig.ignore) {
         focus$3(component.element);
-        focusConfig.onFocus(component);
+        focusconfig.onFocus(component);
       }
     };
-    const blur = (component, focusConfig) => {
-      if (!focusConfig.ignore) {
+    const blur = (component, focusconfig) => {
+      if (!focusconfig.ignore) {
         blur$1(component.element);
       }
     };
@@ -6808,14 +6808,14 @@
         isFocused: isFocused
     });
 
-    const exhibit$4 = (base, focusConfig) => {
-      const mod = focusConfig.ignore ? {} : { attributes: { tabindex: '-1' } };
+    const exhibit$4 = (base, focusconfig) => {
+      const mod = focusconfig.ignore ? {} : { attributes: { tabindex: '-1' } };
       return nu$7(mod);
     };
-    const events$c = focusConfig => derive$2([run$1(focus$4(), (component, simulatedEvent) => {
-        focus$2(component, focusConfig);
+    const events$c = focusconfig => derive$2([run$1(focus$4(), (component, simulatedEvent) => {
+        focus$2(component, focusconfig);
         simulatedEvent.stop();
-      })].concat(focusConfig.stopMousedown ? [run$1(mousedown(), (_, simulatedEvent) => {
+      })].concat(focusconfig.stopMousedown ? [run$1(mousedown(), (_, simulatedEvent) => {
         simulatedEvent.event.prevent();
       })] : []));
 
@@ -6855,12 +6855,12 @@
       return { init };
     };
 
-    const updateAriaState = (component, toggleConfig, toggleState) => {
-      const ariaInfo = toggleConfig.aria;
+    const updateAriaState = (component, toggleconfig, toggleState) => {
+      const ariaInfo = toggleconfig.aria;
       ariaInfo.update(component, ariaInfo, toggleState.get());
     };
-    const updateClass = (component, toggleConfig, toggleState) => {
-      toggleConfig.toggleClass.each(toggleClass => {
+    const updateClass = (component, toggleconfig, toggleState) => {
+      toggleconfig.toggleClass.each(toggleClass => {
         if (toggleState.get()) {
           add$2(component.element, toggleClass);
         } else {
@@ -6868,27 +6868,27 @@
         }
       });
     };
-    const set$2 = (component, toggleConfig, toggleState, state) => {
+    const set$2 = (component, toggleconfig, toggleState, state) => {
       const initialState = toggleState.get();
       toggleState.set(state);
-      updateClass(component, toggleConfig, toggleState);
-      updateAriaState(component, toggleConfig, toggleState);
+      updateClass(component, toggleconfig, toggleState);
+      updateAriaState(component, toggleconfig, toggleState);
       if (initialState !== state) {
-        toggleConfig.onToggled(component, state);
+        toggleconfig.onToggled(component, state);
       }
     };
-    const toggle$2 = (component, toggleConfig, toggleState) => {
-      set$2(component, toggleConfig, toggleState, !toggleState.get());
+    const toggle$2 = (component, toggleconfig, toggleState) => {
+      set$2(component, toggleconfig, toggleState, !toggleState.get());
     };
-    const on = (component, toggleConfig, toggleState) => {
-      set$2(component, toggleConfig, toggleState, true);
+    const on = (component, toggleconfig, toggleState) => {
+      set$2(component, toggleconfig, toggleState, true);
     };
-    const off = (component, toggleConfig, toggleState) => {
-      set$2(component, toggleConfig, toggleState, false);
+    const off = (component, toggleconfig, toggleState) => {
+      set$2(component, toggleconfig, toggleState, false);
     };
-    const isOn = (component, toggleConfig, toggleState) => toggleState.get();
-    const onLoad = (component, toggleConfig, toggleState) => {
-      set$2(component, toggleConfig, toggleState, toggleConfig.selected);
+    const isOn = (component, toggleconfig, toggleState) => toggleState.get();
+    const onLoad = (component, toggleconfig, toggleState) => {
+      set$2(component, toggleconfig, toggleState, toggleconfig.selected);
     };
 
     var ToggleApis = /*#__PURE__*/Object.freeze({
@@ -6902,11 +6902,11 @@
     });
 
     const exhibit$3 = () => nu$7({});
-    const events$b = (toggleConfig, toggleState) => {
-      const execute = executeEvent(toggleConfig, toggleState, toggle$2);
-      const load = loadEvent(toggleConfig, toggleState, onLoad);
+    const events$b = (toggleconfig, toggleState) => {
+      const execute = executeEvent(toggleconfig, toggleState, toggle$2);
+      const load = loadEvent(toggleconfig, toggleState, onLoad);
       return derive$2(flatten([
-        toggleConfig.toggleOnExecute ? [execute] : [],
+        toggleconfig.toggleOnExecute ? [execute] : [],
         [load]
       ]));
     };
@@ -7006,12 +7006,12 @@
     const toggled = constant$1(toggledEvent);
 
     const getItemRole = detail => detail.toggling.map(toggling => toggling.exclusive ? 'menuitemradio' : 'menuitemcheckbox').getOr('menuitem');
-    const getTogglingSpec = tConfig => ({
+    const getTogglingSpec = tconfig => ({
       aria: { mode: 'checked' },
-      ...filter$1(tConfig, (_value, name) => name !== 'exclusive'),
+      ...filter$1(tconfig, (_value, name) => name !== 'exclusive'),
       onToggled: (component, state) => {
-        if (isFunction(tConfig.onToggled)) {
-          tConfig.onToggled(component, state);
+        if (isFunction(tconfig.onToggled)) {
+          tconfig.onToggled(component, state);
         }
         onToggled(component, state);
       }
@@ -7028,7 +7028,7 @@
         }
       },
       behaviours: SketchBehaviours.augment(detail.itemBehaviours, [
-        detail.toggling.fold(Toggling.revoke, tConfig => Toggling.config(getTogglingSpec(tConfig))),
+        detail.toggling.fold(Toggling.revoke, tconfig => Toggling.config(getTogglingSpec(tconfig))),
         Focusing.config({
           ignore: detail.ignoreFocus,
           stopMousedown: detail.ignoreFocus,
@@ -7575,7 +7575,7 @@
         }
       };
       const expandRight = (container, item, decision = ExpandHighlightDecision.HighlightSubmenu) => {
-        if (item.hasConfigured(Disabling) && Disabling.isDisabled(item)) {
+        if (item.hasconfigured(Disabling) && Disabling.isDisabled(item)) {
           return Optional.some(item);
         } else {
           const value = getItemValue(item);
@@ -8942,7 +8942,7 @@
       let ALLOW_SELF_CLOSE_IN_ATTR = true;
       let SAFE_FOR_TEMPLATES = false;
       let WHOLE_DOCUMENT = false;
-      let SET_CONFIG = false;
+      let SET_config = false;
       let FORCE_BODY = false;
       let RETURN_DOM = false;
       let RETURN_DOM_FRAGMENT = false;
@@ -9025,13 +9025,13 @@
       ];
       const DEFAULT_PARSER_MEDIA_TYPE = 'text/html';
       let transformCaseFunc;
-      let CONFIG = null;
+      let config = null;
       const formElement = document.createElement('form');
       const isRegexOrFunction = function isRegexOrFunction(testValue) {
         return testValue instanceof RegExp || testValue instanceof Function;
       };
-      const _parseConfig = function _parseConfig(cfg) {
-        if (CONFIG && CONFIG === cfg) {
+      const _parseconfig = function _parseconfig(cfg) {
+        if (config && config === cfg) {
           return;
         }
         if (!cfg || typeof cfg !== 'object') {
@@ -9159,7 +9159,7 @@
         if (freeze) {
           freeze(cfg);
         }
-        CONFIG = cfg;
+        config = cfg;
       };
       const MATHML_TEXT_INTEGRATION_POINTS = addToSet({}, [
         'mi',
@@ -9315,7 +9315,7 @@
           return;
         }
         arrayForEach(hooks[entryPoint], hook => {
-          hook.call(DOMPurify, currentNode, data, CONFIG);
+          hook.call(DOMPurify, currentNode, data, config);
         });
       };
       const _sanitizeElements = function _sanitizeElements(currentNode) {
@@ -9520,8 +9520,8 @@
         if (!DOMPurify.isSupported) {
           return dirty;
         }
-        if (!SET_CONFIG) {
-          _parseConfig(cfg);
+        if (!SET_config) {
+          _parseconfig(cfg);
         }
         DOMPurify.removed = [];
         if (typeof dirty === 'string') {
@@ -9594,17 +9594,17 @@
         }
         return trustedTypesPolicy && RETURN_TRUSTED_TYPE ? trustedTypesPolicy.createHTML(serializedHTML) : serializedHTML;
       };
-      DOMPurify.setConfig = function (cfg) {
-        _parseConfig(cfg);
-        SET_CONFIG = true;
+      DOMPurify.setconfig = function (cfg) {
+        _parseconfig(cfg);
+        SET_config = true;
       };
-      DOMPurify.clearConfig = function () {
-        CONFIG = null;
-        SET_CONFIG = false;
+      DOMPurify.clearconfig = function () {
+        config = null;
+        SET_config = false;
       };
       DOMPurify.isValidAttribute = function (tag, attr, value) {
-        if (!CONFIG) {
-          _parseConfig({});
+        if (!config) {
+          _parseconfig({});
         }
         const lcTag = transformCaseFunc(tag);
         const lcName = transformCaseFunc(attr);
@@ -11076,10 +11076,10 @@
     const ShowTooltipEvent = generate$6('tooltip.show');
     const HideTooltipEvent = generate$6('tooltip.hide');
 
-    const hideAllExclusive = (component, _tConfig, _tState) => {
+    const hideAllExclusive = (component, _tconfig, _tState) => {
       component.getSystem().broadcastOn([ExclusivityChannel], {});
     };
-    const setComponents = (component, tConfig, tState, specs) => {
+    const setComponents = (component, tconfig, tState, specs) => {
       tState.getTooltip().each(tooltip => {
         if (tooltip.getSystem().isConnected()) {
           Replacing.set(tooltip, specs);
@@ -11093,11 +11093,11 @@
         setComponents: setComponents
     });
 
-    const events$9 = (tooltipConfig, state) => {
+    const events$9 = (tooltipconfig, state) => {
       const hide = comp => {
         state.getTooltip().each(p => {
           detach(p);
-          tooltipConfig.onHide(comp, p);
+          tooltipconfig.onHide(comp, p);
           state.clearTooltip();
         });
         state.clearTimer();
@@ -11105,11 +11105,11 @@
       const show = comp => {
         if (!state.isShowing()) {
           hideAllExclusive(comp);
-          const sink = tooltipConfig.lazySink(comp).getOrDie();
+          const sink = tooltipconfig.lazySink(comp).getOrDie();
           const popup = comp.getSystem().build({
-            dom: tooltipConfig.tooltipDom,
-            components: tooltipConfig.tooltipComponents,
-            events: derive$2(tooltipConfig.mode === 'normal' ? [
+            dom: tooltipconfig.tooltipDom,
+            components: tooltipconfig.tooltipComponents,
+            events: derive$2(tooltipconfig.mode === 'normal' ? [
               run$1(mouseover(), _ => {
                 emit(comp, ShowTooltipEvent);
               }),
@@ -11121,8 +11121,8 @@
           });
           state.setTooltip(popup);
           attach(sink, popup);
-          tooltipConfig.onShow(comp, popup);
-          Positioning.position(sink, popup, { anchor: tooltipConfig.anchor(comp) });
+          tooltipconfig.onShow(comp, popup);
+          Positioning.position(sink, popup, { anchor: tooltipconfig.anchor(comp) });
         }
       };
       return derive$2(flatten([
@@ -11130,12 +11130,12 @@
           run$1(ShowTooltipEvent, comp => {
             state.resetTimer(() => {
               show(comp);
-            }, tooltipConfig.delay);
+            }, tooltipconfig.delay);
           }),
           run$1(HideTooltipEvent, comp => {
             state.resetTimer(() => {
               hide(comp);
-            }, tooltipConfig.delay);
+            }, tooltipconfig.delay);
           }),
           run$1(receive(), (comp, message) => {
             const receivingData = message;
@@ -11149,7 +11149,7 @@
             hide(comp);
           })
         ],
-        tooltipConfig.mode === 'normal' ? [
+        tooltipconfig.mode === 'normal' ? [
           run$1(focusin(), comp => {
             emit(comp, ShowTooltipEvent);
           }),
@@ -11280,7 +11280,7 @@
         editor.mode.set('readonly');
       }
     };
-    const receivingConfig = () => Receiving.config({
+    const receivingconfig = () => Receiving.config({
       channels: {
         [ReadOnlyChannel]: {
           schema: ReadOnlyDataSchema,
@@ -11305,7 +11305,7 @@
       disableClass: 'tox-tbtn--disabled',
       useNative: false
     });
-    const DisablingConfigs = {
+    const Disablingconfigs = {
       item,
       button,
       splitButton,
@@ -11363,8 +11363,8 @@
             onControlAttached(spec, editorOffCell),
             onControlDetached(spec, editorOffCell)
           ]),
-          DisablingConfigs.item(() => !spec.enabled || providersBackstage.isDisabled()),
-          receivingConfig(),
+          Disablingconfigs.item(() => !spec.enabled || providersBackstage.isDisabled()),
+          receivingconfig(),
           Replacing.config({})
         ].concat(spec.itemBehaviours))
       };
@@ -11649,7 +11649,7 @@
           Disabling.set(component, !state);
           each$1(descendants(component.element, '*'), elm => {
             component.getSystem().getByDom(elm).each(comp => {
-              if (comp.hasConfigured(Disabling)) {
+              if (comp.hasconfigured(Disabling)) {
                 Disabling.set(comp, !state);
               }
             });
@@ -12781,8 +12781,8 @@
     const fancy = renderFancyMenuItem;
     const card = renderCardMenuItem;
 
-    const getCoupled = (component, coupleConfig, coupleState, name) => coupleState.getOrCreate(component, coupleConfig, name);
-    const getExistingCoupled = (component, coupleConfig, coupleState, name) => coupleState.getExisting(component, coupleConfig, name);
+    const getCoupled = (component, coupleconfig, coupleState, name) => coupleState.getOrCreate(component, coupleconfig, name);
+    const getExistingCoupled = (component, coupleconfig, coupleState, name) => coupleState.getExisting(component, coupleconfig, name);
 
     var CouplingApis = /*#__PURE__*/Object.freeze({
         __proto__: null,
@@ -12794,26 +12794,26 @@
 
     const init$a = () => {
       const coupled = {};
-      const lookupCoupled = (coupleConfig, coupledName) => {
-        const available = keys(coupleConfig.others);
+      const lookupCoupled = (coupleconfig, coupledName) => {
+        const available = keys(coupleconfig.others);
         if (available.length === 0) {
           throw new Error('Cannot find any known coupled components');
         } else {
           return get$g(coupled, coupledName);
         }
       };
-      const getOrCreate = (component, coupleConfig, name) => {
-        return lookupCoupled(coupleConfig, name).getOrThunk(() => {
-          const builder = get$g(coupleConfig.others, name).getOrDie('No information found for coupled component: ' + name);
+      const getOrCreate = (component, coupleconfig, name) => {
+        return lookupCoupled(coupleconfig, name).getOrThunk(() => {
+          const builder = get$g(coupleconfig.others, name).getOrDie('No information found for coupled component: ' + name);
           const spec = builder(component);
           const built = component.getSystem().build(spec);
           coupled[name] = built;
           return built;
         });
       };
-      const getExisting = (component, coupleConfig, name) => {
-        return lookupCoupled(coupleConfig, name).orThunk(() => {
-          get$g(coupleConfig.others, name).getOrDie('No information found for coupled component: ' + name);
+      const getExisting = (component, coupleconfig, name) => {
+        return lookupCoupled(coupleconfig, name).orThunk(() => {
+          get$g(coupleconfig.others, name).getOrDie('No information found for coupled component: ' + name);
           return Optional.none();
         });
       };
@@ -14260,9 +14260,9 @@
       }
     });
 
-    const exhibit$2 = (base, tabConfig) => nu$7({
+    const exhibit$2 = (base, tabconfig) => nu$7({
       attributes: wrapAll([{
-          key: tabConfig.tabAttr,
+          key: tabconfig.tabAttr,
           value: 'true'
         }])
     });
@@ -14402,7 +14402,7 @@
               });
             }
           }),
-          receivingConfig(),
+          receivingconfig(),
           Replacing.config({}),
           Representing.config({
             store: {
@@ -14443,10 +14443,10 @@
       const name = name$3(elem);
       return contains$2(ariaElements, name);
     };
-    const markValid = (component, invalidConfig) => {
-      const elem = invalidConfig.getRoot(component).getOr(component.element);
-      remove$2(elem, invalidConfig.invalidClass);
-      invalidConfig.notify.each(notifyInfo => {
+    const markValid = (component, invalidconfig) => {
+      const elem = invalidconfig.getRoot(component).getOr(component.element);
+      remove$2(elem, invalidconfig.invalidClass);
+      invalidconfig.notify.each(notifyInfo => {
         if (isAriaElement(component.element)) {
           set$9(component.element, 'aria-invalid', false);
         }
@@ -14456,10 +14456,10 @@
         notifyInfo.onValid(component);
       });
     };
-    const markInvalid = (component, invalidConfig, invalidState, text) => {
-      const elem = invalidConfig.getRoot(component).getOr(component.element);
-      add$2(elem, invalidConfig.invalidClass);
-      invalidConfig.notify.each(notifyInfo => {
+    const markInvalid = (component, invalidconfig, invalidState, text) => {
+      const elem = invalidconfig.getRoot(component).getOr(component.element);
+      add$2(elem, invalidconfig.invalidClass);
+      invalidconfig.notify.each(notifyInfo => {
         if (isAriaElement(component.element)) {
           set$9(component.element, 'aria-invalid', true);
         }
@@ -14469,18 +14469,18 @@
         notifyInfo.onInvalid(component, text);
       });
     };
-    const query = (component, invalidConfig, _invalidState) => invalidConfig.validator.fold(() => Future.pure(Result.value(true)), validatorInfo => validatorInfo.validate(component));
-    const run = (component, invalidConfig, invalidState) => {
-      invalidConfig.notify.each(notifyInfo => {
+    const query = (component, invalidconfig, _invalidState) => invalidconfig.validator.fold(() => Future.pure(Result.value(true)), validatorInfo => validatorInfo.validate(component));
+    const run = (component, invalidconfig, invalidState) => {
+      invalidconfig.notify.each(notifyInfo => {
         notifyInfo.onValidate(component);
       });
-      return query(component, invalidConfig).map(valid => {
+      return query(component, invalidconfig).map(valid => {
         if (component.getSystem().isConnected()) {
           return valid.fold(err => {
-            markInvalid(component, invalidConfig, invalidState, err);
+            markInvalid(component, invalidconfig, invalidState, err);
             return Result.error(err);
           }, v => {
-            markValid(component, invalidConfig);
+            markValid(component, invalidconfig);
             return Result.value(v);
           });
         } else {
@@ -14488,9 +14488,9 @@
         }
       });
     };
-    const isInvalid = (component, invalidConfig) => {
-      const elem = invalidConfig.getRoot(component).getOr(component.element);
-      return has(elem, invalidConfig.invalidClass);
+    const isInvalid = (component, invalidconfig) => {
+      const elem = invalidconfig.getRoot(component).getOr(component.element);
+      return has(elem, invalidconfig.invalidClass);
     };
 
     var InvalidateApis = /*#__PURE__*/Object.freeze({
@@ -14502,10 +14502,10 @@
         isInvalid: isInvalid
     });
 
-    const events$8 = (invalidConfig, invalidState) => invalidConfig.validator.map(validatorInfo => derive$2([run$1(validatorInfo.onEvent, component => {
-        run(component, invalidConfig, invalidState).get(identity);
+    const events$8 = (invalidconfig, invalidState) => invalidconfig.validator.map(validatorInfo => derive$2([run$1(validatorInfo.onEvent, component => {
+        run(component, invalidconfig, invalidState).get(identity);
       })].concat(validatorInfo.validateOnLoad ? [runOnAttached(component => {
-        run(component, invalidConfig, invalidState).get(noop);
+        run(component, invalidconfig, invalidState).get(noop);
       })] : []))).getOr({});
 
     var ActiveInvalidate = /*#__PURE__*/Object.freeze({
@@ -14574,8 +14574,8 @@
       components: spec.components,
       toggleClass: 'mce-active',
       dropdownBehaviours: derive$1([
-        DisablingConfigs.button(sharedBackstage.providers.isDisabled),
-        receivingConfig(),
+        Disablingconfigs.button(sharedBackstage.providers.isDisabled),
+        receivingconfig(),
         Unselecting.config({}),
         Tabstopping.config({})
       ]),
@@ -14599,7 +14599,7 @@
         onSetValue: c => Invalidating.run(c).get(noop),
         inputBehaviours: derive$1([
           Disabling.config({ disabled: sharedBackstage.providers.isDisabled }),
-          receivingConfig(),
+          receivingconfig(),
           Tabstopping.config({}),
           Invalidating.config({
             invalidClass: 'tox-textbox-field-invalid',
@@ -16024,7 +16024,7 @@
     const self = () => Composing.config({ find: Optional.some });
     const memento$1 = mem => Composing.config({ find: mem.getOpt });
     const childAt = index => Composing.config({ find: comp => child$2(comp.element, index).bind(element => comp.getSystem().getByDom(element).toOptional()) });
-    const ComposingConfigs = {
+    const Composingconfigs = {
       self,
       memento: memento$1,
       childAt
@@ -16035,7 +16035,7 @@
       defaulted('postprocess', identity)
     ]);
     const memento = (mem, rawProcessors) => {
-      const ps = asRawOrDie$1('RepresentingConfigs.memento processors', processors, rawProcessors);
+      const ps = asRawOrDie$1('Representingconfigs.memento processors', processors, rawProcessors);
       return Representing.config({
         store: {
           mode: 'manual',
@@ -16139,7 +16139,7 @@
               });
             });
           }),
-          ComposingConfigs.self()
+          Composingconfigs.self()
         ])
       };
     };
@@ -16171,7 +16171,7 @@
           withComp(Optional.none(), () => editorApi.get().fold(() => initialValue.get().getOr(''), ed => ed.getValue()), (component, value) => {
             editorApi.get().fold(() => initialValue.set(value), ed => ed.setValue(value));
           }),
-          ComposingConfigs.self()
+          Composingconfigs.self()
         ]),
         components: [memReplaced.asSpec()]
       };
@@ -16232,7 +16232,7 @@
         },
         behaviours: derive$1([
           memory(initialData.getOr([])),
-          ComposingConfigs.self(),
+          Composingconfigs.self(),
           Disabling.config({}),
           Toggling.config({
             toggleClass: 'dragenter',
@@ -16285,8 +16285,8 @@
                 },
                 buttonBehaviours: derive$1([
                   Tabstopping.config({}),
-                  DisablingConfigs.button(providersBackstage.isDisabled),
-                  receivingConfig()
+                  Disablingconfigs.button(providersBackstage.isDisabled),
+                  receivingconfig()
                 ])
               })
             ]
@@ -16410,7 +16410,7 @@
           spec,
           craftWithClasses([afterObject])
         ],
-        behaviours: derive$1([ComposingConfigs.childAt(1)])
+        behaviours: derive$1([Composingconfigs.childAt(1)])
       };
     };
     const triggerTab = (placeholder, shiftKey) => {
@@ -16653,7 +16653,7 @@
         },
         components: [memContainer.asSpec()],
         behaviours: derive$1([
-          ComposingConfigs.self(),
+          Composingconfigs.self(),
           withComp(fakeValidatedData, () => cachedData.get(), setValue)
         ])
       };
@@ -16685,7 +16685,7 @@
           ...comps
         ],
         behaviours: derive$1([
-          ComposingConfigs.self(),
+          Composingconfigs.self(),
           Replacing.config({}),
           domHtml(Optional.none()),
           Keying.config({ mode: 'acyclic' })
@@ -16791,8 +16791,8 @@
         },
         dropdownBehaviours: derive$1([
           ...spec.dropdownBehaviours,
-          DisablingConfigs.button(() => spec.disabled || sharedBackstage.providers.isDisabled()),
-          receivingConfig(),
+          Disablingconfigs.button(() => spec.disabled || sharedBackstage.providers.isDisabled()),
+          receivingconfig(),
           Unselecting.config({}),
           Replacing.config({}),
           config('dropdown-events', [
@@ -17174,7 +17174,7 @@
               FormField.getField(comp).each(Disabling.enable);
             }
           }),
-          receivingConfig()
+          receivingconfig()
         ])
       });
     };
@@ -17376,7 +17376,7 @@
         ],
         buttonBehaviours: derive$1([
           Disabling.config({ disabled: () => !spec.enabled || providersBackstage.isDisabled() }),
-          receivingConfig(),
+          receivingconfig(),
           Tabstopping.config({})
         ])
       });
@@ -17392,7 +17392,7 @@
         inputClasses: ['tox-textfield'],
         inputBehaviours: derive$1([
           Disabling.config({ disabled: () => !spec.enabled || providersBackstage.isDisabled() }),
-          receivingConfig(),
+          receivingconfig(),
           Tabstopping.config({}),
           config('size-input-events', [
             run$1(focusin(), (component, _simulatedEvent) => {
@@ -17464,7 +17464,7 @@
               FormCoupledInputs.getLock(comp).each(Disabling.enable);
             }
           }),
-          receivingConfig(),
+          receivingconfig(),
           config('size-input-events2', [run$1(ratioEvent, (component, simulatedEvent) => {
               const isField1 = simulatedEvent.event.isField1;
               const optCurrent = isField1 ? FormCoupledInputs.getField1(component) : FormCoupledInputs.getField2(component);
@@ -17517,7 +17517,7 @@
           thumb
         ],
         sliderBehaviours: derive$1([
-          ComposingConfigs.self(),
+          Composingconfigs.self(),
           Focusing.config({})
         ]),
         onChoose: (component, thumb, value) => {
@@ -17577,7 +17577,7 @@
       const pLabel = spec.label.map(label => renderLabel$3(label, providersBackstage));
       const baseInputBehaviours = [
         Disabling.config({ disabled: () => spec.disabled || providersBackstage.isDisabled() }),
-        receivingConfig(),
+        receivingconfig(),
         Keying.config({
           mode: 'execution',
           useEnter: spec.multiline !== true,
@@ -17648,7 +17648,7 @@
             FormField.getField(comp).each(Disabling.enable);
           }
         }),
-        receivingConfig()
+        receivingconfig()
       ];
       return renderFormFieldWith(pLabel, pTextField, extraClasses2, extraBehaviours);
     };
@@ -17679,119 +17679,119 @@
       data: initialData
     }, providersBackstage);
 
-    const getAnimationRoot = (component, slideConfig) => slideConfig.getAnimationRoot.fold(() => component.element, get => get(component));
+    const getAnimationRoot = (component, slideconfig) => slideconfig.getAnimationRoot.fold(() => component.element, get => get(component));
 
-    const getDimensionProperty = slideConfig => slideConfig.dimension.property;
-    const getDimension = (slideConfig, elem) => slideConfig.dimension.getDimension(elem);
-    const disableTransitions = (component, slideConfig) => {
-      const root = getAnimationRoot(component, slideConfig);
+    const getDimensionProperty = slideconfig => slideconfig.dimension.property;
+    const getDimension = (slideconfig, elem) => slideconfig.dimension.getDimension(elem);
+    const disableTransitions = (component, slideconfig) => {
+      const root = getAnimationRoot(component, slideconfig);
       remove$1(root, [
-        slideConfig.shrinkingClass,
-        slideConfig.growingClass
+        slideconfig.shrinkingClass,
+        slideconfig.growingClass
       ]);
     };
-    const setShrunk = (component, slideConfig) => {
-      remove$2(component.element, slideConfig.openClass);
-      add$2(component.element, slideConfig.closedClass);
-      set$8(component.element, getDimensionProperty(slideConfig), '0px');
+    const setShrunk = (component, slideconfig) => {
+      remove$2(component.element, slideconfig.openClass);
+      add$2(component.element, slideconfig.closedClass);
+      set$8(component.element, getDimensionProperty(slideconfig), '0px');
       reflow(component.element);
     };
-    const setGrown = (component, slideConfig) => {
-      remove$2(component.element, slideConfig.closedClass);
-      add$2(component.element, slideConfig.openClass);
-      remove$6(component.element, getDimensionProperty(slideConfig));
+    const setGrown = (component, slideconfig) => {
+      remove$2(component.element, slideconfig.closedClass);
+      add$2(component.element, slideconfig.openClass);
+      remove$6(component.element, getDimensionProperty(slideconfig));
     };
-    const doImmediateShrink = (component, slideConfig, slideState, _calculatedSize) => {
+    const doImmediateShrink = (component, slideconfig, slideState, _calculatedSize) => {
       slideState.setCollapsed();
-      set$8(component.element, getDimensionProperty(slideConfig), getDimension(slideConfig, component.element));
-      disableTransitions(component, slideConfig);
-      setShrunk(component, slideConfig);
-      slideConfig.onStartShrink(component);
-      slideConfig.onShrunk(component);
+      set$8(component.element, getDimensionProperty(slideconfig), getDimension(slideconfig, component.element));
+      disableTransitions(component, slideconfig);
+      setShrunk(component, slideconfig);
+      slideconfig.onStartShrink(component);
+      slideconfig.onShrunk(component);
     };
-    const doStartShrink = (component, slideConfig, slideState, calculatedSize) => {
-      const size = calculatedSize.getOrThunk(() => getDimension(slideConfig, component.element));
+    const doStartShrink = (component, slideconfig, slideState, calculatedSize) => {
+      const size = calculatedSize.getOrThunk(() => getDimension(slideconfig, component.element));
       slideState.setCollapsed();
-      set$8(component.element, getDimensionProperty(slideConfig), size);
+      set$8(component.element, getDimensionProperty(slideconfig), size);
       reflow(component.element);
-      const root = getAnimationRoot(component, slideConfig);
-      remove$2(root, slideConfig.growingClass);
-      add$2(root, slideConfig.shrinkingClass);
-      setShrunk(component, slideConfig);
-      slideConfig.onStartShrink(component);
+      const root = getAnimationRoot(component, slideconfig);
+      remove$2(root, slideconfig.growingClass);
+      add$2(root, slideconfig.shrinkingClass);
+      setShrunk(component, slideconfig);
+      slideconfig.onStartShrink(component);
     };
-    const doStartSmartShrink = (component, slideConfig, slideState) => {
-      const size = getDimension(slideConfig, component.element);
+    const doStartSmartShrink = (component, slideconfig, slideState) => {
+      const size = getDimension(slideconfig, component.element);
       const shrinker = size === '0px' ? doImmediateShrink : doStartShrink;
-      shrinker(component, slideConfig, slideState, Optional.some(size));
+      shrinker(component, slideconfig, slideState, Optional.some(size));
     };
-    const doStartGrow = (component, slideConfig, slideState) => {
-      const root = getAnimationRoot(component, slideConfig);
-      const wasShrinking = has(root, slideConfig.shrinkingClass);
-      const beforeSize = getDimension(slideConfig, component.element);
-      setGrown(component, slideConfig);
-      const fullSize = getDimension(slideConfig, component.element);
+    const doStartGrow = (component, slideconfig, slideState) => {
+      const root = getAnimationRoot(component, slideconfig);
+      const wasShrinking = has(root, slideconfig.shrinkingClass);
+      const beforeSize = getDimension(slideconfig, component.element);
+      setGrown(component, slideconfig);
+      const fullSize = getDimension(slideconfig, component.element);
       const startPartialGrow = () => {
-        set$8(component.element, getDimensionProperty(slideConfig), beforeSize);
+        set$8(component.element, getDimensionProperty(slideconfig), beforeSize);
         reflow(component.element);
       };
       const startCompleteGrow = () => {
-        setShrunk(component, slideConfig);
+        setShrunk(component, slideconfig);
       };
       const setStartSize = wasShrinking ? startPartialGrow : startCompleteGrow;
       setStartSize();
-      remove$2(root, slideConfig.shrinkingClass);
-      add$2(root, slideConfig.growingClass);
-      setGrown(component, slideConfig);
-      set$8(component.element, getDimensionProperty(slideConfig), fullSize);
+      remove$2(root, slideconfig.shrinkingClass);
+      add$2(root, slideconfig.growingClass);
+      setGrown(component, slideconfig);
+      set$8(component.element, getDimensionProperty(slideconfig), fullSize);
       slideState.setExpanded();
-      slideConfig.onStartGrow(component);
+      slideconfig.onStartGrow(component);
     };
-    const refresh$4 = (component, slideConfig, slideState) => {
+    const refresh$4 = (component, slideconfig, slideState) => {
       if (slideState.isExpanded()) {
-        remove$6(component.element, getDimensionProperty(slideConfig));
-        const fullSize = getDimension(slideConfig, component.element);
-        set$8(component.element, getDimensionProperty(slideConfig), fullSize);
+        remove$6(component.element, getDimensionProperty(slideconfig));
+        const fullSize = getDimension(slideconfig, component.element);
+        set$8(component.element, getDimensionProperty(slideconfig), fullSize);
       }
     };
-    const grow = (component, slideConfig, slideState) => {
+    const grow = (component, slideconfig, slideState) => {
       if (!slideState.isExpanded()) {
-        doStartGrow(component, slideConfig, slideState);
+        doStartGrow(component, slideconfig, slideState);
       }
     };
-    const shrink = (component, slideConfig, slideState) => {
+    const shrink = (component, slideconfig, slideState) => {
       if (slideState.isExpanded()) {
-        doStartSmartShrink(component, slideConfig, slideState);
+        doStartSmartShrink(component, slideconfig, slideState);
       }
     };
-    const immediateShrink = (component, slideConfig, slideState) => {
+    const immediateShrink = (component, slideconfig, slideState) => {
       if (slideState.isExpanded()) {
-        doImmediateShrink(component, slideConfig, slideState);
+        doImmediateShrink(component, slideconfig, slideState);
       }
     };
-    const hasGrown = (component, slideConfig, slideState) => slideState.isExpanded();
-    const hasShrunk = (component, slideConfig, slideState) => slideState.isCollapsed();
-    const isGrowing = (component, slideConfig, _slideState) => {
-      const root = getAnimationRoot(component, slideConfig);
-      return has(root, slideConfig.growingClass) === true;
+    const hasGrown = (component, slideconfig, slideState) => slideState.isExpanded();
+    const hasShrunk = (component, slideconfig, slideState) => slideState.isCollapsed();
+    const isGrowing = (component, slideconfig, _slideState) => {
+      const root = getAnimationRoot(component, slideconfig);
+      return has(root, slideconfig.growingClass) === true;
     };
-    const isShrinking = (component, slideConfig, _slideState) => {
-      const root = getAnimationRoot(component, slideConfig);
-      return has(root, slideConfig.shrinkingClass) === true;
+    const isShrinking = (component, slideconfig, _slideState) => {
+      const root = getAnimationRoot(component, slideconfig);
+      return has(root, slideconfig.shrinkingClass) === true;
     };
-    const isTransitioning = (component, slideConfig, slideState) => isGrowing(component, slideConfig) || isShrinking(component, slideConfig);
-    const toggleGrow = (component, slideConfig, slideState) => {
+    const isTransitioning = (component, slideconfig, slideState) => isGrowing(component, slideconfig) || isShrinking(component, slideconfig);
+    const toggleGrow = (component, slideconfig, slideState) => {
       const f = slideState.isExpanded() ? doStartSmartShrink : doStartGrow;
-      f(component, slideConfig, slideState);
+      f(component, slideconfig, slideState);
     };
-    const immediateGrow = (component, slideConfig, slideState) => {
+    const immediateGrow = (component, slideconfig, slideState) => {
       if (!slideState.isExpanded()) {
-        setGrown(component, slideConfig);
-        set$8(component.element, getDimensionProperty(slideConfig), getDimension(slideConfig, component.element));
-        disableTransitions(component, slideConfig);
+        setGrown(component, slideconfig);
+        set$8(component.element, getDimensionProperty(slideconfig), getDimension(slideconfig, component.element));
+        disableTransitions(component, slideconfig);
         slideState.setExpanded();
-        slideConfig.onStartGrow(component);
-        slideConfig.onGrown(component);
+        slideconfig.onStartGrow(component);
+        slideconfig.onGrown(component);
       }
     };
 
@@ -17811,24 +17811,24 @@
         immediateGrow: immediateGrow
     });
 
-    const exhibit = (base, slideConfig, _slideState) => {
-      const expanded = slideConfig.expanded;
+    const exhibit = (base, slideconfig, _slideState) => {
+      const expanded = slideconfig.expanded;
       return expanded ? nu$7({
-        classes: [slideConfig.openClass],
+        classes: [slideconfig.openClass],
         styles: {}
       }) : nu$7({
-        classes: [slideConfig.closedClass],
-        styles: wrap$1(slideConfig.dimension.property, '0px')
+        classes: [slideconfig.closedClass],
+        styles: wrap$1(slideconfig.dimension.property, '0px')
       });
     };
-    const events$6 = (slideConfig, slideState) => derive$2([runOnSource(transitionend(), (component, simulatedEvent) => {
+    const events$6 = (slideconfig, slideState) => derive$2([runOnSource(transitionend(), (component, simulatedEvent) => {
         const raw = simulatedEvent.event.raw;
-        if (raw.propertyName === slideConfig.dimension.property) {
-          disableTransitions(component, slideConfig);
+        if (raw.propertyName === slideconfig.dimension.property) {
+          disableTransitions(component, slideconfig);
           if (slideState.isExpanded()) {
-            remove$6(component.element, slideConfig.dimension.property);
+            remove$6(component.element, slideconfig.dimension.property);
           }
-          const notify = slideState.isExpanded() ? slideConfig.onGrown : slideConfig.onShrunk;
+          const notify = slideState.isExpanded() ? slideconfig.onGrown : slideconfig.onShrunk;
           notify(component);
         }
       })]);
@@ -18301,13 +18301,13 @@
       };
     };
 
-    const events$5 = (streamConfig, streamState) => {
-      const streams = streamConfig.stream.streams;
-      const processor = streams.setup(streamConfig, streamState);
+    const events$5 = (streamconfig, streamState) => {
+      const streams = streamconfig.stream.streams;
+      const processor = streams.setup(streamconfig, streamState);
       return derive$2([
-        run$1(streamConfig.event, processor),
+        run$1(streamconfig.event, processor),
         runOnDetached(() => streamState.cancel())
-      ].concat(streamConfig.cancelEvent.map(e => [run$1(e, () => streamState.cancel())]).getOr([])));
+      ].concat(streamconfig.cancelEvent.map(e => [run$1(e, () => streamState.cancel())]).getOr([])));
     };
 
     var ActiveStreaming = /*#__PURE__*/Object.freeze({
@@ -18775,8 +18775,8 @@
       const action = actionOpt.fold(() => ({}), action => ({ action }));
       const common = {
         buttonBehaviours: derive$1([
-          DisablingConfigs.button(() => !spec.enabled || providersBackstage.isDisabled()),
-          receivingConfig(),
+          Disablingconfigs.button(() => !spec.enabled || providersBackstage.isDisabled()),
+          receivingconfig(),
           Tabstopping.config({}),
           config('button press', [
             preventDefault('click'),
@@ -18952,7 +18952,7 @@
         factory: Button,
         ...renderButtonSpec(spec, Optional.some(action), providersBackstage, [
           memory(''),
-          ComposingConfigs.self()
+          Composingconfigs.self()
         ])
       }));
     };
@@ -19042,7 +19042,7 @@
         },
         getHotspot: comp => memUrlBox.getOpt(comp),
         onSetValue: (comp, _newValue) => {
-          if (comp.hasConfigured(Invalidating)) {
+          if (comp.hasconfigured(Invalidating)) {
             Invalidating.run(comp).get(noop);
           }
         },
@@ -19211,7 +19211,7 @@
               memUrlPickerButton.getOpt(comp).each(Disabling.enable);
             }
           }),
-          receivingConfig(),
+          receivingconfig(),
           config('url-input-events', [run$1(browseUrlEvent, openUrlPicker)])
         ])
       });
@@ -19283,7 +19283,7 @@
           attributes: { type: 'checkbox' }
         },
         behaviours: derive$1([
-          ComposingConfigs.self(),
+          Composingconfigs.self(),
           Disabling.config({
             disabled: () => !spec.enabled || providerBackstage.isDisabled(),
             onDisabled: component => {
@@ -19347,7 +19347,7 @@
         ],
         fieldBehaviours: derive$1([
           Disabling.config({ disabled: () => !spec.enabled || providerBackstage.isDisabled() }),
-          receivingConfig()
+          receivingconfig()
         ])
       });
     };
@@ -21295,9 +21295,9 @@
       });
     };
     const getApi = comp => ({ element: () => comp.element.dom });
-    const makePanels = (parts, panelConfigs) => {
-      const specs = map$2(keys(panelConfigs), name => {
-        const spec = panelConfigs[name];
+    const makePanels = (parts, panelconfigs) => {
+      const specs = map$2(keys(panelconfigs), name => {
+        const spec = panelconfigs[name];
         const bridged = getOrDie(createSidebar(spec));
         return {
           name,
@@ -21329,20 +21329,20 @@
         });
       });
     };
-    const makeSidebar = panelConfigs => SlotContainer.sketch(parts => ({
+    const makeSidebar = panelconfigs => SlotContainer.sketch(parts => ({
       dom: {
         tag: 'div',
         classes: ['tox-sidebar__pane-container']
       },
-      components: makePanels(parts, panelConfigs),
+      components: makePanels(parts, panelconfigs),
       slotBehaviours: SimpleBehaviours.unnamedEvents([runOnAttached(slotContainer => SlotContainer.hideAllSlots(slotContainer))])
     }));
-    const setSidebar = (sidebar, panelConfigs, showSidebar) => {
+    const setSidebar = (sidebar, panelconfigs, showSidebar) => {
       const optSlider = Composing.getCurrent(sidebar);
       optSlider.each(slider => {
-        Replacing.set(slider, [makeSidebar(panelConfigs)]);
+        Replacing.set(slider, [makeSidebar(panelconfigs)]);
         const configKey = showSidebar === null || showSidebar === void 0 ? void 0 : showSidebar.toLowerCase();
-        if (isString(configKey) && has$2(panelConfigs, configKey)) {
+        if (isString(configKey) && has$2(panelconfigs, configKey)) {
           Composing.getCurrent(slider).each(slotContainer => {
             SlotContainer.showSlot(slotContainer, configKey);
             Sliding.immediateGrow(slider);
@@ -21439,7 +21439,7 @@
           ])
         }],
       behaviours: derive$1([
-        ComposingConfigs.childAt(0),
+        Composingconfigs.childAt(0),
         config('sidebar-sliding-events', [
           run$1(fixSize, (comp, se) => {
             set$8(comp.element, 'width', se.event.width);
@@ -21465,7 +21465,7 @@
       const blockSpec = getBusySpec(root, blockerBehaviours);
       const blocker = root.getSystem().build(blockSpec);
       Replacing.append(root, premade(blocker));
-      if (blocker.hasConfigured(Keying) && config.focus) {
+      if (blocker.hasconfigured(Keying) && config.focus) {
         Keying.focusIn(blocker);
       }
       if (!state.isBlocked()) {
@@ -21480,7 +21480,7 @@
       }
       state.clear();
     };
-    const isBlocked = (component, blockingConfig, blockingState) => blockingState.isBlocked();
+    const isBlocked = (component, blockingconfig, blockingState) => blockingState.isBlocked();
 
     var BlockingApis = /*#__PURE__*/Object.freeze({
         __proto__: null,
@@ -22263,8 +22263,8 @@
         Toolbar.setGroups(component, groups);
       });
       return derive$1([
-        DisablingConfigs.toolbarButton(toolbarSpec.providers.isDisabled),
-        receivingConfig(),
+        Disablingconfigs.toolbarButton(toolbarSpec.providers.isDisabled),
+        receivingconfig(),
         Keying.config({
           mode: modeName,
           onEscape: toolbarSpec.onEscape,
@@ -22565,8 +22565,8 @@
     const factory$8 = (detail, components, _spec, _externals) => {
       const apis = {
         getPane: comp => parts$a.getPart(comp, detail, 'pane'),
-        getOnShow: _comp => detail.viewConfig.onShow,
-        getOnHide: _comp => detail.viewConfig.onHide
+        getOnShow: _comp => detail.viewconfig.onShow,
+        getOnHide: _comp => detail.viewconfig.onHide
       };
       return {
         uid: detail.uid,
@@ -22577,7 +22577,7 @@
     };
     var View = composite({
       name: 'silver.View',
-      configFields: [required$1('viewConfig')],
+      configFields: [required$1('viewconfig')],
       partFields: [
         optional({
           factory: { sketch: renderViewHeader },
@@ -22601,18 +22601,18 @@
       }
     });
 
-    const makeViews = (parts, viewConfigs, providers) => {
-      return mapToArray(viewConfigs, (config, name) => {
-        const internalViewConfig = getOrDie(createView(config));
+    const makeViews = (parts, viewconfigs, providers) => {
+      return mapToArray(viewconfigs, (config, name) => {
+        const internalViewconfig = getOrDie(createView(config));
         return parts.slot(name, View.sketch({
           dom: {
             tag: 'div',
             classes: ['tox-view']
           },
-          viewConfig: internalViewConfig,
+          viewconfig: internalViewconfig,
           components: [
-            ...internalViewConfig.buttons.length > 0 ? [View.parts.header({
-                buttons: internalViewConfig.buttons,
+            ...internalViewconfig.buttons.length > 0 ? [View.parts.header({
+                buttons: internalViewconfig.buttons,
                 providers
               })] : [],
             View.parts.pane({})
@@ -22620,12 +22620,12 @@
         }));
       });
     };
-    const makeSlotContainer = (viewConfigs, providers) => SlotContainer.sketch(parts => ({
+    const makeSlotContainer = (viewconfigs, providers) => SlotContainer.sketch(parts => ({
       dom: {
         tag: 'div',
         classes: ['tox-view-wrap__slot-container']
       },
-      components: makeViews(parts, viewConfigs, providers),
+      components: makeViews(parts, viewconfigs, providers),
       slotBehaviours: SimpleBehaviours.unnamedEvents([runOnAttached(slotContainer => SlotContainer.hideAllSlots(slotContainer))])
     }));
     const getCurrentName = slotContainer => {
@@ -22653,8 +22653,8 @@
     const runOnShow = (slotContainer, name) => runOnPaneWithInstanceApi(slotContainer, name, View.getOnShow);
     const runOnHide = (slotContainer, name) => runOnPaneWithInstanceApi(slotContainer, name, View.getOnHide);
     const factory$7 = (detail, spec) => {
-      const setViews = (comp, viewConfigs) => {
-        Replacing.set(comp, [makeSlotContainer(viewConfigs, spec.backstage.shared.providers)]);
+      const setViews = (comp, viewconfigs) => {
+        Replacing.set(comp, [makeSlotContainer(viewconfigs, spec.backstage.shared.providers)]);
       };
       const whichView = comp => {
         return Composing.getCurrent(comp).bind(getCurrentName);
@@ -22723,8 +22723,8 @@
         getSocket: comp => {
           return parts$a.getPart(comp, detail, 'socket');
         },
-        setSidebar: (comp, panelConfigs, showSidebar) => {
-          parts$a.getPart(comp, detail, 'sidebar').each(sidebar => setSidebar(sidebar, panelConfigs, showSidebar));
+        setSidebar: (comp, panelconfigs, showSidebar) => {
+          parts$a.getPart(comp, detail, 'sidebar').each(sidebar => setSidebar(sidebar, panelconfigs, showSidebar));
         },
         toggleSidebar: (comp, name) => {
           parts$a.getPart(comp, detail, 'sidebar').each(sidebar => toggleSidebar(sidebar, name));
@@ -22786,9 +22786,9 @@
             SilverMenubar.focus(menubar);
           });
         },
-        setViews: (comp, viewConfigs) => {
+        setViews: (comp, viewconfigs) => {
           parts$a.getPart(comp, detail, 'viewWrapper').each(wrapper => {
-            ViewWrapper.setViews(wrapper, viewConfigs);
+            ViewWrapper.setViews(wrapper, viewconfigs);
           });
         },
         toggleView: (comp, name) => {
@@ -22971,8 +22971,8 @@
         getSocket: (apis, comp) => {
           return apis.getSocket(comp);
         },
-        setSidebar: (apis, comp, panelConfigs, showSidebar) => {
-          apis.setSidebar(comp, panelConfigs, showSidebar);
+        setSidebar: (apis, comp, panelconfigs, showSidebar) => {
+          apis.setSidebar(comp, panelconfigs, showSidebar);
         },
         toggleSidebar: (apis, comp, name) => {
           apis.toggleSidebar(comp, name);
@@ -23918,9 +23918,9 @@
       };
     };
     const createFontSizeButton = (editor, backstage) => createSelectButton(editor, backstage, getSpec$1(editor), btnTooltip$1, 'FontSizeTextUpdate');
-    const getConfigFromUnit = unit => {
+    const getconfigFromUnit = unit => {
       var _a;
-      const baseConfig = { step: 1 };
+      const baseconfig = { step: 1 };
       const configs = {
         em: { step: 0.1 },
         cm: { step: 0.1 },
@@ -23929,7 +23929,7 @@
         ch: { step: 0.1 },
         rem: { step: 0.1 }
       };
-      return (_a = configs[unit]) !== null && _a !== void 0 ? _a : baseConfig;
+      return (_a = configs[unit]) !== null && _a !== void 0 ? _a : baseconfig;
     };
     const defaultValue = 16;
     const isValidValue = value => value >= 0;
@@ -23955,7 +23955,7 @@
           const value = parsedText.map(res => res.value).getOr(defaultValue);
           const defaultUnit = getFontSizeInputDefaultUnit(editor);
           const unit = parsedText.map(res => res.unit).filter(u => u !== '').getOr(defaultUnit);
-          const newValue = updateFunction(value, getConfigFromUnit(unit).step);
+          const newValue = updateFunction(value, getconfigFromUnit(unit).step);
           const res = `${ isValidValue(newValue) ? newValue : value }${ unit }`;
           if (res !== currentValue) {
             fireFontSizeInputTextUpdate(editor, { value: res });
@@ -24285,8 +24285,8 @@
           ]
         },
         buttonBehaviours: derive$1([
-          DisablingConfigs.toolbarButton(providersBackstage.isDisabled),
-          receivingConfig(),
+          Disablingconfigs.toolbarButton(providersBackstage.isDisabled),
+          receivingconfig(),
           config(commonButtonDisplayEvent, [
             runOnAttached((comp, _se) => forceInitialSize(comp)),
             run$1(updateMenuText, (comp, se) => {
@@ -24355,8 +24355,8 @@
               onControlAttached(specialisation, editorOffCell),
               onControlDetached(specialisation, editorOffCell)
             ]),
-            DisablingConfigs.toolbarButton(() => !spec.enabled || providersBackstage.isDisabled()),
-            receivingConfig()
+            Disablingconfigs.toolbarButton(() => !spec.enabled || providersBackstage.isDisabled()),
+            receivingconfig()
           ].concat(specialisation.toolbarButtonBehaviours)),
           [commonButtonDisplayEvent]: (_d = structure.buttonBehaviours) === null || _d === void 0 ? void 0 : _d[commonButtonDisplayEvent]
         }
@@ -24440,8 +24440,8 @@
         onItemExecute: (_a, _b, _c) => {
         },
         splitDropdownBehaviours: derive$1([
-          DisablingConfigs.splitButton(sharedBackstage.providers.isDisabled),
-          receivingConfig(),
+          Disablingconfigs.splitButton(sharedBackstage.providers.isDisabled),
+          receivingconfig(),
           config('split-dropdown-events', [
             runOnAttached((comp, _se) => forceInitialSize(comp)),
             run$1(focusButtonEvent, Focusing.focus),
@@ -24475,8 +24475,8 @@
               innerHtml: get$2('chevron-down', sharedBackstage.providers.icons)
             },
             buttonBehaviours: derive$1([
-              DisablingConfigs.splitButton(sharedBackstage.providers.isDisabled),
-              receivingConfig(),
+              Disablingconfigs.splitButton(sharedBackstage.providers.isDisabled),
+              receivingconfig(),
               addFocusableBehaviour()
             ])
           }),
@@ -24588,9 +24588,9 @@
       return map$2(groupsStrings, g => ({ items: g.trim().split(' ') }));
     };
     const isToolbarGroupSettingArray = toolbar => isArrayOf(toolbar, t => has$2(t, 'name') && has$2(t, 'items'));
-    const createToolbar = toolbarConfig => {
-      const toolbar = toolbarConfig.toolbar;
-      const buttons = toolbarConfig.buttons;
+    const createToolbar = toolbarconfig => {
+      const toolbar = toolbarconfig.toolbar;
+      const buttons = toolbarconfig.buttons;
       if (toolbar === false) {
         return [];
       } else if (toolbar === undefined || toolbar === true) {
@@ -24612,11 +24612,11 @@
         return extractFrom(spec, backstage, editor);
       }
     });
-    const identifyButtons = (editor, toolbarConfig, backstage, prefixes) => {
-      const toolbarGroups = createToolbar(toolbarConfig);
+    const identifyButtons = (editor, toolbarconfig, backstage, prefixes) => {
+      const toolbarGroups = createToolbar(toolbarconfig);
       const groups = map$2(toolbarGroups, group => {
         const items = bind$3(group.items, toolbarItem => {
-          return toolbarItem.trim().length === 0 ? [] : lookupButton(editor, toolbarConfig.buttons, toolbarItem, toolbarConfig.allowToolbarGroups, backstage, prefixes).toArray();
+          return toolbarItem.trim().length === 0 ? [] : lookupButton(editor, toolbarconfig.buttons, toolbarItem, toolbarconfig.allowToolbarGroups, backstage, prefixes).toArray();
         });
         return {
           title: Optional.from(editor.translate(group.name)),
@@ -24626,22 +24626,22 @@
       return filter$2(groups, group => group.items.length > 0);
     };
 
-    const setToolbar = (editor, uiRefs, rawUiConfig, backstage) => {
+    const setToolbar = (editor, uiRefs, rawUiconfig, backstage) => {
       const outerContainer = uiRefs.mainUi.outerContainer;
-      const toolbarConfig = rawUiConfig.toolbar;
-      const toolbarButtonsConfig = rawUiConfig.buttons;
-      if (isArrayOf(toolbarConfig, isString)) {
-        const toolbars = toolbarConfig.map(t => {
+      const toolbarconfig = rawUiconfig.toolbar;
+      const toolbarButtonsconfig = rawUiconfig.buttons;
+      if (isArrayOf(toolbarconfig, isString)) {
+        const toolbars = toolbarconfig.map(t => {
           const config = {
             toolbar: t,
-            buttons: toolbarButtonsConfig,
-            allowToolbarGroups: rawUiConfig.allowToolbarGroups
+            buttons: toolbarButtonsconfig,
+            allowToolbarGroups: rawUiconfig.allowToolbarGroups
           };
           return identifyButtons(editor, config, backstage, Optional.none());
         });
         OuterContainer.setToolbars(outerContainer, toolbars);
       } else {
-        OuterContainer.setToolbar(outerContainer, identifyButtons(editor, rawUiConfig, backstage, Optional.none()));
+        OuterContainer.setToolbar(outerContainer, identifyButtons(editor, rawUiconfig, backstage, Optional.none()));
       }
     };
 
@@ -24699,7 +24699,7 @@
       }
       attachSystem(uiRoot, uiRefs.dialogUi.mothership);
     };
-    const render$1 = (editor, uiRefs, rawUiConfig, backstage, args) => {
+    const render$1 = (editor, uiRefs, rawUiconfig, backstage, args) => {
       const {mainUi, uiMotherships} = uiRefs;
       const lastToolbarWidth = Cell(0);
       const outerContainer = mainUi.outerContainer;
@@ -24709,11 +24709,11 @@
       attachSystemAfter(eTargetNode, mainUi.mothership);
       attachUiMotherships(editor, uiRoot, uiRefs);
       editor.on('SkinLoaded', () => {
-        OuterContainer.setSidebar(outerContainer, rawUiConfig.sidebar, getSidebarShow(editor));
-        setToolbar(editor, uiRefs, rawUiConfig, backstage);
+        OuterContainer.setSidebar(outerContainer, rawUiconfig.sidebar, getSidebarShow(editor));
+        setToolbar(editor, uiRefs, rawUiconfig, backstage);
         lastToolbarWidth.set(editor.getWin().innerWidth);
-        OuterContainer.setMenubar(outerContainer, identifyMenus(editor, rawUiConfig));
-        OuterContainer.setViews(outerContainer, rawUiConfig.views);
+        OuterContainer.setMenubar(outerContainer, identifyMenus(editor, rawUiconfig));
+        OuterContainer.setViews(outerContainer, rawUiconfig.views);
         setupEvents$1(editor, uiRefs);
       });
       const socket = OuterContainer.getSocket(outerContainer).getOrDie('Could not find expected socket element');
@@ -25077,7 +25077,7 @@
         elementLoad.clear();
       });
     };
-    const render = (editor, uiRefs, rawUiConfig, backstage, args) => {
+    const render = (editor, uiRefs, rawUiconfig, backstage, args) => {
       const {mainUi} = uiRefs;
       const floatContainer = value$2();
       const targetElm = SugarElement.fromDom(args.targetNode);
@@ -25098,8 +25098,8 @@
           attachSystem(uiContainer, mainUi.mothership);
         }
         attachSystem(uiContainer, uiRefs.dialogUi.mothership);
-        setToolbar(editor, uiRefs, rawUiConfig, backstage);
-        OuterContainer.setMenubar(mainUi.outerContainer, identifyMenus(editor, rawUiConfig));
+        setToolbar(editor, uiRefs, rawUiconfig, backstage);
+        OuterContainer.setMenubar(mainUi.outerContainer, identifyMenus(editor, rawUiconfig));
         ui.show();
         setupEvents(editor, targetElm, ui, toolbarPersist);
         editor.nodeChanged();
@@ -26425,7 +26425,7 @@
       register$4(editor);
     };
 
-    const patchPipeConfig = config => isString(config) ? config.split(/[ ,]/) : config;
+    const patchPipeconfig = config => isString(config) ? config.split(/[ ,]/) : config;
     const option = name => editor => editor.options.get(name);
     const register = editor => {
       const registerOption = editor.options.register;
@@ -26446,7 +26446,7 @@
             };
           } else if (isString(value) || isArrayOf(value, isString)) {
             return {
-              value: patchPipeConfig(value),
+              value: patchPipeconfig(value),
               valid: true
             };
           } else {
@@ -26728,8 +26728,8 @@
       const before = lastMenuItem.fold(() => [], _ => [separator]);
       return xs.concat(before).concat(groupItems).concat([separator]);
     };
-    const generateContextMenu = (contextMenus, menuConfig, selectedElement) => {
-      const sections = foldl(menuConfig, (acc, name) => {
+    const generateContextMenu = (contextMenus, menuconfig, selectedElement) => {
+      const sections = foldl(menuconfig, (acc, name) => {
         return get$g(contextMenus, name.toLowerCase()).map(menu => {
           const items = menu.update(selectedElement);
           if (isString(items) && isNotEmpty(trim$1(items))) {
@@ -26789,8 +26789,8 @@
         const buildMenu = () => {
           const selectedElement = getSelectedElement(editor, e);
           const registry = editor.ui.registry.getAll();
-          const menuConfig = getContextMenu(editor);
-          return generateContextMenu(registry.contextMenus, menuConfig, selectedElement);
+          const menuconfig = getContextMenu(editor);
+          return generateContextMenu(registry.contextMenus, menuconfig, selectedElement);
         };
         const initAndShow$2 = isTouch() ? initAndShow : initAndShow$1;
         initAndShow$2(editor, e, buildMenu, backstage, contextmenu, anchorType);
@@ -26965,9 +26965,9 @@
       extra: snap.extra
     });
 
-    const snapTo = (component, dragConfig, _state, snap) => {
-      const target = dragConfig.getTarget(component.element);
-      if (dragConfig.repositionTarget) {
+    const snapTo = (component, dragconfig, _state, snap) => {
+      const target = dragconfig.getTarget(component.element);
+      if (dragconfig.repositionTarget) {
         const doc = owner$4(component.element);
         const scroll = get$b(doc);
         const origin = getOrigin(target);
@@ -27075,50 +27075,50 @@
       });
       return clampCoords(component, newCoord, scroll, origin, startData);
     };
-    const dragBy = (component, dragConfig, startData, delta) => {
-      const target = dragConfig.getTarget(component.element);
-      if (dragConfig.repositionTarget) {
+    const dragBy = (component, dragconfig, startData, delta) => {
+      const target = dragconfig.getTarget(component.element);
+      if (dragconfig.repositionTarget) {
         const doc = owner$4(component.element);
         const scroll = get$b(doc);
         const origin = getOrigin(target);
         const currentCoord = getCurrentCoord(target);
-        const newCoord = calcNewCoord(component, dragConfig.snaps, currentCoord, scroll, origin, delta, startData);
+        const newCoord = calcNewCoord(component, dragconfig.snaps, currentCoord, scroll, origin, delta, startData);
         const styles = toStyles(newCoord, scroll, origin);
         setOptions(target, styles);
       }
-      dragConfig.onDrag(component, target, delta);
+      dragconfig.onDrag(component, target, delta);
     };
 
-    const calcStartData = (dragConfig, comp) => ({
-      bounds: dragConfig.getBounds(),
+    const calcStartData = (dragconfig, comp) => ({
+      bounds: dragconfig.getBounds(),
       height: getOuter$2(comp.element),
       width: getOuter$1(comp.element)
     });
-    const move = (component, dragConfig, dragState, dragMode, event) => {
+    const move = (component, dragconfig, dragState, dragMode, event) => {
       const delta = dragState.update(dragMode, event);
-      const dragStartData = dragState.getStartData().getOrThunk(() => calcStartData(dragConfig, component));
+      const dragStartData = dragState.getStartData().getOrThunk(() => calcStartData(dragconfig, component));
       delta.each(dlt => {
-        dragBy(component, dragConfig, dragStartData, dlt);
+        dragBy(component, dragconfig, dragStartData, dlt);
       });
     };
-    const stop = (component, blocker, dragConfig, dragState) => {
+    const stop = (component, blocker, dragconfig, dragState) => {
       blocker.each(discard);
-      dragConfig.snaps.each(snapInfo => {
+      dragconfig.snaps.each(snapInfo => {
         stopDrag(component, snapInfo);
       });
-      const target = dragConfig.getTarget(component.element);
+      const target = dragconfig.getTarget(component.element);
       dragState.reset();
-      dragConfig.onDrop(component, target);
+      dragconfig.onDrop(component, target);
     };
-    const handlers = events => (dragConfig, dragState) => {
+    const handlers = events => (dragconfig, dragState) => {
       const updateStartState = comp => {
-        dragState.setStartData(calcStartData(dragConfig, comp));
+        dragState.setStartData(calcStartData(dragconfig, comp));
       };
       return derive$2([
         run$1(windowScroll(), comp => {
           dragState.getStartData().each(() => updateStartState(comp));
         }),
-        ...events(dragConfig, dragState, updateStartState)
+        ...events(dragconfig, dragState, updateStartState)
       ]);
     };
 
@@ -27140,13 +27140,13 @@
         getDelta: getDelta$1
     });
 
-    const events$3 = (dragConfig, dragState, updateStartState) => [run$1(mousedown(), (component, simulatedEvent) => {
+    const events$3 = (dragconfig, dragState, updateStartState) => [run$1(mousedown(), (component, simulatedEvent) => {
         const raw = simulatedEvent.event.raw;
         if (raw.button !== 0) {
           return;
         }
         simulatedEvent.stop();
-        const stop$1 = () => stop(component, Optional.some(blocker), dragConfig, dragState);
+        const stop$1 = () => stop(component, Optional.some(blocker), dragconfig, dragState);
         const delayDrop = DelayedFunction(stop$1, 200);
         const dragApi = {
           drop: stop$1,
@@ -27154,10 +27154,10 @@
           forceDrop: stop$1,
           move: event => {
             delayDrop.cancel();
-            move(component, dragConfig, dragState, MouseData, event);
+            move(component, dragconfig, dragState, MouseData, event);
           }
         };
-        const blocker = createComponent(component, dragConfig.blockerClass, init$3(dragApi));
+        const blocker = createComponent(component, dragconfig.blockerClass, init$3(dragApi));
         const start = () => {
           updateStartState(component);
           instigate(component, blocker);
@@ -27195,10 +27195,10 @@
         getDelta: getDelta
     });
 
-    const events$2 = (dragConfig, dragState, updateStartState) => {
+    const events$2 = (dragconfig, dragState, updateStartState) => {
       const blockerSingleton = value$2();
       const stopBlocking = component => {
-        stop(component, blockerSingleton.get(), dragConfig, dragState);
+        stop(component, blockerSingleton.get(), dragconfig, dragState);
         blockerSingleton.clear();
       };
       return [
@@ -27210,10 +27210,10 @@
             delayDrop: noop,
             forceDrop: stop,
             move: event => {
-              move(component, dragConfig, dragState, TouchData, event);
+              move(component, dragconfig, dragState, TouchData, event);
             }
           };
-          const blocker = createComponent(component, dragConfig.blockerClass, init$2(dragApi));
+          const blocker = createComponent(component, dragconfig.blockerClass, init$2(dragApi));
           blockerSingleton.set(blocker);
           const start = () => {
             updateStartState(component);
@@ -27223,7 +27223,7 @@
         }),
         run$1(touchmove(), (component, simulatedEvent) => {
           simulatedEvent.stop();
-          move(component, dragConfig, dragState, TouchData, simulatedEvent.event);
+          move(component, dragconfig, dragState, TouchData, simulatedEvent.event);
         }),
         run$1(touchend(), (component, simulatedEvent) => {
           simulatedEvent.stop();
@@ -27237,9 +27237,9 @@
       output$1('dragger', { handlers: handlers(events$2) })
     ];
 
-    const events$1 = (dragConfig, dragState, updateStartState) => [
-      ...events$3(dragConfig, dragState, updateStartState),
-      ...events$2(dragConfig, dragState, updateStartState)
+    const events$1 = (dragconfig, dragState, updateStartState) => [
+      ...events$3(dragconfig, dragState, updateStartState),
+      ...events$2(dragconfig, dragState, updateStartState)
     ];
     const schema$3 = [
       ...schema$6,
@@ -27294,17 +27294,17 @@
       branches: DraggingBranches,
       name: 'dragging',
       active: {
-        events: (dragConfig, dragState) => {
-          const dragger = dragConfig.dragger;
-          return dragger.handlers(dragConfig, dragState);
+        events: (dragconfig, dragState) => {
+          const dragger = dragconfig.dragger;
+          return dragger.handlers(dragconfig, dragState);
         }
       },
       extra: {
-        snap: sConfig => ({
-          sensor: sConfig.sensor,
-          range: sConfig.range,
-          output: sConfig.output,
-          extra: Optional.from(sConfig.extra)
+        snap: sconfig => ({
+          sensor: sconfig.sensor,
+          range: sconfig.range,
+          output: sconfig.output,
+          extra: Optional.from(sconfig.extra)
         })
       },
       state: DragState,
@@ -27331,7 +27331,7 @@
         extra: { td }
       });
     });
-    const getSnapsConfig = (getSnapPoints, cell, onChange) => {
+    const getSnapsconfig = (getSnapPoints, cell, onChange) => {
       const isSameCell = (cellOpt, td) => cellOpt.exists(currentTd => eq(currentTd, td));
       return {
         getSnapPoints,
@@ -27387,7 +27387,7 @@
         return calcSnap(memBottomRight.getOpt(sink), td, box.right, box.bottom, box.width, box.height);
       };
       const getBottomRightSnaps = () => map$2(brTds.get(), td => getBottomRightSnap(td));
-      const topLeftSnaps = getSnapsConfig(getTopLeftSnaps, startCell, start => {
+      const topLeftSnaps = getSnapsconfig(getTopLeftSnaps, startCell, start => {
         finishCell.get().each(finish => {
           editor.dispatch('TableSelectorChange', {
             start,
@@ -27395,7 +27395,7 @@
           });
         });
       });
-      const bottomRightSnaps = getSnapsConfig(getBottomRightSnaps, finishCell, finish => {
+      const bottomRightSnaps = getSnapsconfig(getBottomRightSnaps, finishCell, finish => {
         startCell.get().each(start => {
           editor.dispatch('TableSelectorChange', {
             start,
@@ -27417,8 +27417,8 @@
           set$8(selector.element, 'display', 'none');
         }
       };
-      const snapTo = (selector, cell, getSnapConfig, pos) => {
-        const snap = getSnapConfig(cell);
+      const snapTo = (selector, cell, getSnapconfig, pos) => {
+        const snap = getSnapconfig(cell);
         Dragging.snapTo(selector, snap);
         const isAbove = rect => rect[pos] < 0;
         const isBelow = (rect, viewportHeight) => rect[pos] > viewportHeight;
@@ -27482,8 +27482,8 @@
           editor.nodeChanged();
         },
         buttonBehaviours: derive$1([
-          DisablingConfigs.button(providersBackstage.isDisabled),
-          receivingConfig()
+          Disablingconfigs.button(providersBackstage.isDisabled),
+          receivingconfig()
         ])
       });
       const renderDivider = () => ({
@@ -27537,7 +27537,7 @@
             selector: 'div[role=button]'
           }),
           Disabling.config({ disabled: providersBackstage.isDisabled }),
-          receivingConfig(),
+          receivingconfig(),
           Tabstopping.config({}),
           Replacing.config({}),
           config('elementPathEvents', [runOnAttached((comp, _e) => {
@@ -27638,8 +27638,8 @@
         },
         components: [],
         buttonBehaviours: derive$1([
-          DisablingConfigs.button(providersBackstage.isDisabled),
-          receivingConfig(),
+          Disablingconfigs.button(providersBackstage.isDisabled),
+          receivingconfig(),
           Tabstopping.config({}),
           Replacing.config({}),
           Representing.config({
@@ -28062,7 +28062,7 @@
             partThrobber
           ],
           behaviours: derive$1([
-            receivingConfig(),
+            receivingconfig(),
             Disabling.config({ disableClass: 'tox-tinymce--disabled' }),
             Keying.config({
               mode: 'cyclic',
@@ -28110,12 +28110,12 @@
       };
       const renderUIWithRefs = uiRefs => {
         const {mainUi, popupUi, uiMotherships} = uiRefs;
-        map$1(getToolbarGroups(editor), (toolbarGroupButtonConfig, name) => {
-          editor.ui.registry.addGroupToolbarButton(name, toolbarGroupButtonConfig);
+        map$1(getToolbarGroups(editor), (toolbarGroupButtonconfig, name) => {
+          editor.ui.registry.addGroupToolbarButton(name, toolbarGroupButtonconfig);
         });
         const {buttons, menuItems, contextToolbars, sidebars, views} = editor.ui.registry.getAll();
         const toolbarOpt = getMultipleToolbarsOption(editor);
-        const rawUiConfig = {
+        const rawUiconfig = {
           menuItems,
           menus: getMenus(editor),
           menubar: getMenubar(editor),
@@ -28140,7 +28140,7 @@
           targetNode: elm,
           height
         };
-        return mode.render(editor, uiRefs, rawUiConfig, backstages.popup, args);
+        return mode.render(editor, uiRefs, rawUiconfig, backstages.popup, args);
       };
       const reuseDialogUiForPopuUi = dialogUi => {
         lazyPopupMothership.set(dialogUi.mothership);
@@ -28800,15 +28800,15 @@
       redial: structure => extract(structure)
     };
 
-    const events = (reflectingConfig, reflectingState) => {
+    const events = (reflectingconfig, reflectingState) => {
       const update = (component, data) => {
-        reflectingConfig.updateState.each(updateState => {
+        reflectingconfig.updateState.each(updateState => {
           const newState = updateState(component, data);
           reflectingState.set(newState);
         });
-        reflectingConfig.renderComponents.each(renderComponents => {
+        reflectingconfig.renderComponents.each(renderComponents => {
           const newComponents = renderComponents(data, reflectingState.get());
-          const replacer = reflectingConfig.reuseDom ? withReuse : withoutReuse;
+          const replacer = reflectingconfig.reuseDom ? withReuse : withoutReuse;
           replacer(component, newComponents);
         });
       };
@@ -28816,14 +28816,14 @@
         run$1(receive(), (component, message) => {
           const receivingData = message;
           if (!receivingData.universal) {
-            const channel = reflectingConfig.channel;
+            const channel = reflectingconfig.channel;
             if (contains$2(receivingData.channels, channel)) {
               update(component, receivingData.data);
             }
           }
         }),
         runOnAttached((comp, _se) => {
-          reflectingConfig.initialData.each(rawData => {
+          reflectingconfig.initialData.each(rawData => {
             update(comp, rawData);
           });
         })
@@ -28835,7 +28835,7 @@
         events: events
     });
 
-    const getState = (component, replaceConfig, reflectState) => reflectState;
+    const getState = (component, replaceconfig, reflectState) => reflectState;
 
     var ReflectingApis = /*#__PURE__*/Object.freeze({
         __proto__: null,
@@ -28913,7 +28913,7 @@
             mode: 'acyclic',
             useTabstopAt: not(isPseudoStop)
           }),
-          ComposingConfigs.memento(memForm),
+          Composingconfigs.memento(memForm),
           memento(memForm, {
             postprocess: formValue => toValidValues(formValue).fold(err => {
               console.error(err);
@@ -29413,7 +29413,7 @@
         },
         components: [],
         behaviours: derive$1([
-          ComposingConfigs.childAt(0),
+          Composingconfigs.childAt(0),
           Reflecting.config({
             channel: `${ bodyChannel }-${ dialogId }`,
             updateState,

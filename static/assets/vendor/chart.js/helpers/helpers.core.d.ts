@@ -82,7 +82,7 @@ export declare function _elementsEqual(a0: ActiveDataPoint[], a1: ActiveDataPoin
 export declare function clone<T>(source: T): T;
 /**
  * The default merger when Chart.helpers.merge is called without merger option.
- * Note(SB): also used by mergeConfig and mergeScaleConfig as fallback.
+ * Note(SB): also used by mergeconfig and mergeScaleconfig as fallback.
  * @private
  */
 export declare function _merger(key: string, target: AnyObject, source: AnyObject, options: AnyObject): void;

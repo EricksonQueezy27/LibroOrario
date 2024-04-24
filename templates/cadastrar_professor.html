@@ -1,0 +1,74 @@
+<!-- cadastrar_professor.html -->
+{% extends 'base_admin.html' %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Cadastro de Professor</h5>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="nome" class="form-label">Nome do Professor</label>
+                            <input type="text" class="form-control" id="nome" name="nome">
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Nome de Usuário</label>
+                            <select class="form-select" id="username" name="username">
+                                {% for user in form.username.field.queryset %}
+                                    <option value="{{ user.id }}">{{ user.username }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="departamento" class="form-label">Departamento</label>
+                            <input type="text" class="form-control" id="departamento" name="departamento">
+                        </div>
+                        <div class="mb-3">
+                            <label for="titulacao" class="form-label">Titulação</label>
+                            <input type="text" class="form-control" id="titulacao" name="titulacao">
+                        </div>
+                        <div class="mb-3">
+                            <label for="disciplinas_associadas" class="form-label">Disciplinas Associadas</label>
+                            <select multiple class="form-select" id="disciplinas_associadas" name="disciplinas_associadas">
+                                {% for disciplina in form.disciplinas_associadas.field.queryset %}
+                                    <option value="{{ disciplina.id }}">{{ disciplina.nome }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="turmas_associadas" class="form-label">Turmas Associadas</label>
+                            <select multiple class="form-select" id="turmas_associadas" name="turmas_associadas">
+                                {% for turma in form.turmas_associadas.field.queryset %}
+                                    <option value="{{ turma.id }}">{{ turma.nome }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="foto" class="form-label">Foto</label>
+                            <input type="file" class="form-control" id="foto" name="foto">
+                        </div>
+                        <select multiple class="form-select" id="horarios" name="horarios">
+                            {% for horario in form.horarios.field.queryset %}
+                                <option value="{{ horario.id }}">
+                                    Disciplina: {{ horario.disciplina }}
+                                    Dia: {{ horario.dia_semana }}
+                                    Horário: {{ horario.hora_inicio|time:"H:i" }} - {{ horario.hora_termino|time:"H:i" }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        
+                        <!-- Adicione os campos restantes do formulário do professor aqui -->
+                        <button type="submit" class="btn btn-primary">Cadastrar Professor</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

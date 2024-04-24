@@ -1,0 +1,13 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Eliminar Professor</h1>
+    <p>Tem certeza de que deseja eliminar o professor {{ professor.nome }}?</p>
+    <form action="{% url 'eliminar_professor' professor.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Sim, Eliminar</button>
+        <a href="{% url 'ver_professores' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

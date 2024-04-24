@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import *
+from django.db import IntegrityError
 from datetime import datetime, time
 from django.http import HttpResponse
 from django.urls import reverse
@@ -10,6 +11,7 @@ from django.utils import timezone
 from django.http import Http404
 from .forms import *
 from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import user_passes_test
 #from django_sendsms.backends.base import BaseSmsBackend
 
@@ -449,6 +451,7 @@ def avalicao(request):
     
     
     return  render(request, 'avalicao.html')
+
 
 @login_required
 def detalhes_turma(request, turma_id):
@@ -905,14 +908,14 @@ def editar_publicidade(request, publicidade_id):
     
     return render(request, 'editar_publicidade.html', {'form': form})
 
-@user_passes_test(is_superuser)
-def editar_aluno(request, id):  
-    aluno = get_object_or_404(Aluno, id=id)  
+@user_passes_test(lambda u: u.is_superuser)
+def editar_aluno(request, id):
+    aluno = get_object_or_404(Aluno, id=id)
     if request.method == 'POST':
-        form = AlunoForm(request.POST, instance=aluno)
+        form = AlunoForm(request.POST, request.FILES, instance=aluno)
         if form.is_valid():
             form.save()
-            return redirect('ver_alunos')  
+            return redirect('ver_alunos')
     else:
         form = AlunoForm(instance=aluno)
     return render(request, 'editar_aluno.html', {'form': form})
@@ -948,3 +951,134 @@ def atribuir_turmas_horarios(request, professor_id):
 def detalhes_professor(request, professor_id):
     professor = get_object_or_404(Professor, id=professor_id)
     return render(request, 'detalhes_professor.html', {'professor': professor})
+
+@user_passes_test(is_superuser)  # Restringe acesso somente a superusuários
+def sigup(request):
+    if request.method == 'GET':
+        # Renderiza o formulário de inscrição em solicitações GET
+        return render(request, 'cadastro.html', {'form': UserCreationForm()})
+    else:  # Processa o envio do formulário (POST)
+        if request.POST['password1'] == request.POST['password2']:
+            try:
+                # Cria um novo usuário com senhas validadas
+                user = User.objects.create_user(
+                    username=request.POST['username'],
+                    password=request.POST['password1']
+                )
+                
+                # Redireciona para a visualização "ver_professores" após inscrição bem-sucedida
+                return redirect('cadastrar_professor')
+            except IntegrityError:
+                # Trata o erro de usuário já existente
+                return render(request, 'cadastro.html', {'form': UserCreationForm(), 'error': 'Usuário já existe!'})
+            except Exception as e:
+                # Captura outros erros inesperados
+                return render(request, 'cadastro.html', {'form': UserCreationForm(), 'error': str(e)})
+        else:
+            # Exibe mensagem de erro para senhas diferentes
+            return render(request, 'cadastro.html', {'form': UserCreationForm(), 'error': 'Senhas diferentes!'})
+
+@user_passes_test(is_superuser)
+def cadastrar_professor(request):
+    if request.method == 'POST':
+        form = ProfessorCreationForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Salvar o professor e associar ao usuário selecionado
+            professor = form.save(commit=False)
+            professor.user = form.cleaned_data['username']  # Corrigido para 'username' ao invés de 'user'
+            professor.save()
+            print("Professor salvo com sucesso!")
+            return redirect('ver_professores')  # Redirecionar para uma página de sucesso
+        else:
+            print("Formulário inválido:", form.errors)
+    else:
+        form = ProfessorCreationForm()
+    print("Renderizando o formulário de cadastro de professor")
+    return render(request, 'cadastrar_professor.html', {'form': form})
+
+@user_passes_test(lambda u: u.is_superuser)
+def cadastrar_encarregado(request):
+    if request.method == 'POST':
+        form = EncarregadoForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Salvar o encarregado e associar ao usuário selecionado
+            encarregado = form.save(commit=False)
+            encarregado.user = form.cleaned_data['username']  # Corrigido para 'username' ao invés de 'user'
+            encarregado.save()
+            print("Encarregado salvo com sucesso!")
+            return redirect('encarregado_list')  # Redirecionar para uma página de sucesso
+        else:
+            print("Formulário inválido:", form.errors)
+    else:
+        form = EncarregadoForm()
+    print("Renderizando o formulário de cadastro de encarregado")
+    return render(request, 'cadastrar_encarregado.html', {'form': form})
+
+
+@user_passes_test(is_superuser) 
+def encarregado_list_view(request):
+    encarregados = Encarregado.objects.all()
+    return render(request, 'encarregado_list.html', {'encarregados': encarregados})
+
+
+@user_passes_test(is_superuser)  # Restringe acesso somente a superusuários
+def enca(request):
+    if request.method == 'GET':
+        # Renderiza o formulário de inscrição em solicitações GET
+        return render(request, 'cadastroenc.html', {'form': UserCreationForm()})
+    else:  # Processa o envio do formulário (POST)
+        if request.POST['password1'] == request.POST['password2']:
+            try:
+                # Cria um novo usuário com senhas validadas
+                user = User.objects.create_user(
+                    username=request.POST['username'],
+                    password=request.POST['password1']
+                )
+                
+                # Redireciona para a visualização "ver_professores" após inscrição bem-sucedida
+                return redirect('cadastrar_encarregado')
+            except IntegrityError:
+                # Trata o erro de usuário já existente
+                return render(request, 'cadastroenc.html', {'form': UserCreationForm(), 'error': 'Usuário já existe!'})
+            except Exception as e:
+                # Captura outros erros inesperados
+                return render(request, 'cadastroenc.html', {'form': UserCreationForm(), 'error': str(e)})
+        else:
+            # Exibe mensagem de erro para senhas diferentes
+            return render(request, 'cadastroenc.html', {'form': UserCreationForm(), 'error': 'Senhas diferentes!'})
+        
+@user_passes_test(is_superuser)
+def editar_encarregado(request, id):
+    encarregado = get_object_or_404(Encarregado, id=id)
+    if request.method == 'POST':
+        form = Encarregado1Form(request.POST, request.FILES, instance=encarregado)
+        if form.is_valid():
+            form.save()
+            return redirect('encarregado_list')  # Redirecione para a visualização de encarregados após salvar com sucesso
+    else:
+        form = Encarregado1Form(instance=encarregado)
+    return render(request, 'editar_encarregado.html', {'form': form})
+
+@user_passes_test(is_superuser)
+def eliminar_turma(request, turma_id):
+    turma = get_object_or_404(Turma, id=turma_id)
+    if request.method == 'POST':
+        turma.delete()
+        return redirect('verturmas')  # Substitua 'pagina_de_turmas' pelo nome da sua página de turmas
+    return render(request, 'eliminar_turma.html', {'turma': turma})
+
+@user_passes_test(is_superuser)
+def eliminar_professor(request, professor_id):
+    professor = get_object_or_404(Professor, id=professor_id)
+    if request.method == 'POST':
+        professor.delete()
+        return redirect('ver_professores')
+    return render(request, 'confirmar_eliminar_professor.html', {'professor': professor})
+
+@user_passes_test(is_superuser)
+def eliminar_aluno(request, id):
+    aluno = get_object_or_404(Aluno, id=id)
+    if request.method == 'POST':
+        aluno.delete()
+        return redirect('ver_alunos')
+    return render(request, 'confirmar_eliminar_aluno.html', {'aluno': aluno})

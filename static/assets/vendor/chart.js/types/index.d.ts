@@ -87,7 +87,7 @@ export interface ControllerDatasetOptions extends ParsingOptions {
    */
   stack: string;
   /**
-     * Configures the visibility state of the dataset. Set it to true, to hide the dataset from the chart.
+     * configures the visibility state of the dataset. Set it to true, to hide the dataset from the chart.
    * @default false
    */
   hidden: boolean;
@@ -490,7 +490,7 @@ export declare class Chart<
   readonly id: string;
   readonly canvas: HTMLCanvasElement;
   readonly ctx: CanvasRenderingContext2D;
-  readonly config: ChartConfiguration<TType, TData, TLabel> | ChartConfigurationCustomTypesPerDataset<TType, TData, TLabel>;
+  readonly config: Chartconfiguration<TType, TData, TLabel> | ChartconfigurationCustomTypesPerDataset<TType, TData, TLabel>;
   readonly width: number;
   readonly height: number;
   readonly aspectRatio: number;
@@ -506,7 +506,7 @@ export declare class Chart<
   data: ChartData<TType, TData, TLabel>;
   options: ChartOptions<TType>;
 
-  constructor(item: ChartItem, config: ChartConfiguration<TType, TData, TLabel> | ChartConfigurationCustomTypesPerDataset<TType, TData, TLabel>);
+  constructor(item: ChartItem, config: Chartconfiguration<TType, TData, TLabel> | ChartconfigurationCustomTypesPerDataset<TType, TData, TLabel>);
 
   clear(): this;
   stop(): this;
@@ -2189,9 +2189,9 @@ export declare class BasePlatform {
   isAttached(canvas: HTMLCanvasElement): boolean;
   /**
    * Updates config with platform specific requirements
-   * @param {ChartConfiguration | ChartConfigurationCustomTypes} config
+   * @param {Chartconfiguration | ChartconfigurationCustomTypes} config
    */
-  updateConfig(config: ChartConfiguration | ChartConfigurationCustomTypesPerDataset): void;
+  updateconfig(config: Chartconfiguration | ChartconfigurationCustomTypesPerDataset): void;
 }
 
 export declare class BasicPlatform extends BasePlatform {}
@@ -3808,7 +3808,7 @@ export interface ChartDataCustomTypesPerDataset<
   datasets: ChartDatasetCustomTypesPerDataset<TType, TData>[];
 }
 
-export interface ChartConfiguration<
+export interface Chartconfiguration<
   TType extends ChartType = ChartType,
   TData = DefaultDataPoint<TType>,
   TLabel = unknown
@@ -3820,7 +3820,7 @@ export interface ChartConfiguration<
   platform?: typeof BasePlatform;
 }
 
-export interface ChartConfigurationCustomTypesPerDataset<
+export interface ChartconfigurationCustomTypesPerDataset<
   TType extends ChartType = ChartType,
   TData = DefaultDataPoint<TType>,
   TLabel = unknown

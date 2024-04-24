@@ -24,7 +24,7 @@ Getting started with the TinyMCE rich text editor is easy, and for simple config
 
 TinyMCE provides a range of configuration options that allow you to integrate it into your application. Start customizing with a [basic setup](https://www.tiny.cloud/docs/tinymce/6/basic-setup/).
 
-Configure it for one of three modes of editing:
+configure it for one of three modes of editing:
 
 - [TinyMCE classic editing mode](https://www.tiny.cloud/docs/tinymce/6/use-tinymce-classic/).
 - [TinyMCE inline editing mode](https://www.tiny.cloud/docs/tinymce/6/use-tinymce-inline/).

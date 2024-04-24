@@ -2299,7 +2299,7 @@ var helpers = {
 
 	/**
 	 * The default merger when Chart.helpers.merge is called without merger option.
-	 * Note(SB): also used by mergeConfig and mergeScaleConfig as fallback.
+	 * Note(SB): also used by mergeconfig and mergeScaleconfig as fallback.
 	 * @private
 	 */
 	_merger: function(key, target, source, options) {
@@ -9185,7 +9185,7 @@ core_defaults._set('global', {
  * by incorporating scale defaults in `xAxes` and `yAxes` array items, then
  * returns a deep copy of the result, thus doesn't alter inputs.
  */
-function mergeScaleConfig(/* config objects ... */) {
+function mergeScaleconfig(/* config objects ... */) {
 	return helpers$1.merge(Object.create(null), [].slice.call(arguments), {
 		merger: function(key, target, source, options) {
 			if (key === 'xAxes' || key === 'yAxes') {
@@ -9225,7 +9225,7 @@ function mergeScaleConfig(/* config objects ... */) {
  * default scale options for the `scales` and `scale` properties, then returns
  * a deep copy of the result, thus doesn't alter inputs.
  */
-function mergeConfig(/* config objects ... */) {
+function mergeconfig(/* config objects ... */) {
 	return helpers$1.merge(Object.create(null), [].slice.call(arguments), {
 		merger: function(key, target, source, options) {
 			var tval = target[key] || Object.create(null);
@@ -9233,7 +9233,7 @@ function mergeConfig(/* config objects ... */) {
 
 			if (key === 'scales') {
 				// scale config merging is complex. Add our own function here for that
-				target[key] = mergeScaleConfig(tval, sval);
+				target[key] = mergeScaleconfig(tval, sval);
 			} else if (key === 'scale') {
 				// used in polar area & radar charts since there is only one scale
 				target[key] = helpers$1.merge(tval, [core_scaleService.getScaleDefaults(sval.type), sval]);
@@ -9244,16 +9244,16 @@ function mergeConfig(/* config objects ... */) {
 	});
 }
 
-function initConfig(config) {
+function initconfig(config) {
 	config = config || Object.create(null);
 
-	// Do NOT use mergeConfig for the data object because this method merges arrays
+	// Do NOT use mergeconfig for the data object because this method merges arrays
 	// and so would change references to labels and datasets, preventing data updates.
 	var data = config.data = config.data || {};
 	data.datasets = data.datasets || [];
 	data.labels = data.labels || [];
 
-	config.options = mergeConfig(
+	config.options = mergeconfig(
 		core_defaults.global,
 		core_defaults[config.type],
 		config.options || {});
@@ -9261,14 +9261,14 @@ function initConfig(config) {
 	return config;
 }
 
-function updateConfig(chart) {
+function updateconfig(chart) {
 	var newOptions = chart.options;
 
 	helpers$1.each(chart.scales, function(scale) {
 		core_layouts.removeBox(chart, scale);
 	});
 
-	newOptions = mergeConfig(
+	newOptions = mergeconfig(
 		core_defaults.global,
 		core_defaults[chart.config.type],
 		newOptions);
@@ -9319,7 +9319,7 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 	construct: function(item, config) {
 		var me = this;
 
-		config = initConfig(config);
+		config = initconfig(config);
 
 		var context = platform.acquireContext(item, config);
 		var canvas = context && context.canvas;
@@ -9626,7 +9626,7 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 			};
 		}
 
-		updateConfig(me);
+		updateconfig(me);
 
 		// plugins options references might have change, let's invalidate the cache
 		// https://github.com/chartjs/Chart.js/issues/5111#issuecomment-355934167
@@ -10286,7 +10286,7 @@ Chart.types = {};
  * @todo remove at version 3
  * @private
  */
-helpers$1.configMerge = mergeConfig;
+helpers$1.configMerge = mergeconfig;
 
 /**
  * Provided for backward compatibility, not available anymore.
@@ -10295,7 +10295,7 @@ helpers$1.configMerge = mergeConfig;
  * @todo remove at version 3
  * @private
  */
-helpers$1.scaleMerge = mergeScaleConfig;
+helpers$1.scaleMerge = mergeScaleconfig;
 
 var core_helpers = function() {
 
@@ -12544,7 +12544,7 @@ var core_scale = Scale;
 
 var isNullOrUndef$1 = helpers$1.isNullOrUndef;
 
-var defaultConfig = {
+var defaultconfig = {
 	position: 'bottom'
 };
 
@@ -12667,7 +12667,7 @@ var scale_category = core_scale.extend({
 });
 
 // INTERNAL: static default options, registered in src/index.js
-var _defaults = defaultConfig;
+var _defaults = defaultconfig;
 scale_category._defaults = _defaults;
 
 var noop = helpers$1.noop;
@@ -12920,7 +12920,7 @@ var scale_linearbase = core_scale.extend({
 	}
 });
 
-var defaultConfig$1 = {
+var defaultconfig$1 = {
 	position: 'left',
 	ticks: {
 		callback: core_ticks.formatters.linear
@@ -13080,7 +13080,7 @@ var scale_linear = scale_linearbase.extend({
 });
 
 // INTERNAL: static default options, registered in src/index.js
-var _defaults$1 = defaultConfig$1;
+var _defaults$1 = defaultconfig$1;
 scale_linear._defaults = _defaults$1;
 
 var valueOrDefault$b = helpers$1.valueOrDefault;
@@ -13132,7 +13132,7 @@ function generateTicks$1(generationOptions, dataRange) {
 	return ticks;
 }
 
-var defaultConfig$2 = {
+var defaultconfig$2 = {
 	position: 'left',
 
 	// label settings
@@ -13383,14 +13383,14 @@ var scale_logarithmic = core_scale.extend({
 });
 
 // INTERNAL: static default options, registered in src/index.js
-var _defaults$2 = defaultConfig$2;
+var _defaults$2 = defaultconfig$2;
 scale_logarithmic._defaults = _defaults$2;
 
 var valueOrDefault$c = helpers$1.valueOrDefault;
 var valueAtIndexOrDefault$1 = helpers$1.valueAtIndexOrDefault;
 var resolve$4 = helpers$1.options.resolve;
 
-var defaultConfig$3 = {
+var defaultconfig$3 = {
 	display: true,
 
 	// Boolean - Whether to animate scaling the chart from the centre
@@ -13936,7 +13936,7 @@ var scale_radialLinear = scale_linearbase.extend({
 });
 
 // INTERNAL: static default options, registered in src/index.js
-var _defaults$3 = defaultConfig$3;
+var _defaults$3 = defaultconfig$3;
 scale_radialLinear._defaults = _defaults$3;
 
 var deprecated$1 = helpers$1._deprecated;
@@ -14324,7 +14324,7 @@ function ticksFromTimestamps(scale, values, majorUnit) {
 	return (ilen === 0 || !majorUnit) ? ticks : setMajorTicks(scale, ticks, map, majorUnit);
 }
 
-var defaultConfig$4 = {
+var defaultconfig$4 = {
 	position: 'bottom',
 
 	/**
@@ -14695,7 +14695,7 @@ var scale_time = core_scale.extend({
 });
 
 // INTERNAL: static default options, registered in src/index.js
-var _defaults$4 = defaultConfig$4;
+var _defaults$4 = defaultconfig$4;
 scale_time._defaults = _defaults$4;
 
 var scales = {

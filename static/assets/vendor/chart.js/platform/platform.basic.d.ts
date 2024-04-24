@@ -5,6 +5,6 @@
  */
 export default class BasicPlatform extends BasePlatform {
     acquireContext(item: any): any;
-    updateConfig(config: any): void;
+    updateconfig(config: any): void;
 }
 import BasePlatform from "./platform.base.js";

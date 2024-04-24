@@ -10,8 +10,8 @@ declare class Chart {
     static getChart: (key: any) => any;
     static register(...items: any[]): void;
     static unregister(...items: any[]): void;
-    constructor(item: any, userConfig: any);
-    config: Config;
+    constructor(item: any, userconfig: any);
+    config: config;
     platform: any;
     id: number;
     ctx: any;
@@ -253,5 +253,5 @@ declare class Chart {
      */
     _getActiveElements(e: ChartEvent, lastActive: import('../types/index.js').ActiveElement[], inChartArea: boolean, useFinalPosition: boolean): import('../types/index.js').ActiveElement[];
 }
-import Config from "./core.config.js";
+import config from "./core.config.js";
 import PluginService from "./core.plugins.js";

@@ -661,7 +661,7 @@
       // this <style> would only produce a false negative anyway.
 
 
-      if (WINDOW.FontAwesomeConfig && t.innerText.match(new RegExp("svg:not\\(:root\\)\\.".concat(WINDOW.FontAwesomeConfig.replacementClass)))) {
+      if (WINDOW.FontAwesomeconfig && t.innerText.match(new RegExp("svg:not\\(:root\\)\\.".concat(WINDOW.FontAwesomeconfig.replacementClass)))) {
         return false;
       }
 
@@ -799,7 +799,7 @@
       var diagScriptFun = function diagScriptFun(nodeUnderTestId, md5, parentOrigin) {
         parent.FontAwesomeDetection.__pollUntil({
           fn: function fn() {
-            return !!window.FontAwesomeConfig || !!window.FontAwesomeKitConfig;
+            return !!window.FontAwesomeconfig || !!window.FontAwesomeKitconfig;
           }
         }).then(function () {
           var scriptNode = document.getElementById(nodeUnderTestId);
@@ -948,7 +948,7 @@
     }
   } // Allow clients to access, and in some cases, override some properties
 
-  var initialConfig = WINDOW.FontAwesomeDetection || {}; // These can be overridden
+  var initialconfig = WINDOW.FontAwesomeDetection || {}; // These can be overridden
 
   var _default = {
     report: report,
@@ -956,7 +956,7 @@
     resultsCollectionMaxWait: +(DOCUMENT.currentScript.getAttribute(resultsCollectionMaxWaitAttr) || "5000")
   };
 
-  var _config = _objectSpread({}, _default, initialConfig, {
+  var _config = _objectSpread({}, _default, initialconfig, {
     // These cannot be overridden
     __pollUntil: pollUntil,
     md5ForNode: md5ForNode,

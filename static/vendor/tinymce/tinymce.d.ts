@@ -1141,12 +1141,12 @@ interface ToolbarGroupSetting {
     name: string;
     items: string[];
 }
-declare type ToolbarConfig = string | ToolbarGroupSetting[];
+declare type Toolbarconfig = string | ToolbarGroupSetting[];
 interface GroupToolbarButtonInstanceApi extends BaseToolbarButtonInstanceApi {
 }
 interface GroupToolbarButtonSpec extends BaseToolbarButtonSpec<GroupToolbarButtonInstanceApi> {
     type?: 'grouptoolbarbutton';
-    items?: ToolbarConfig;
+    items?: Toolbarconfig;
 }
 declare type MenuButtonItemTypes = NestedMenuItemContents;
 declare type SuccessCallback = (menu: string | MenuButtonItemTypes[]) => void;
