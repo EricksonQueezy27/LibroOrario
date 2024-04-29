@@ -1,3 +1,4 @@
+import calendar
 from django.shortcuts import render, redirect
 from .models import *
 from django.db import IntegrityError
@@ -9,10 +10,12 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseNotFound
 from django.utils import timezone
 from django.http import Http404
+ 
 from .forms import *
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import user_passes_test
+from math import ceil 
 #from django_sendsms.backends.base import BaseSmsBackend
 
 
@@ -161,7 +164,6 @@ def prof(request):
     numero_de_disciplinas = professor.disciplinas_associadas.count()
     turmas_associadas = professor.turmas_associadas.all()
     disciplinas_associadas = professor.disciplinas_associadas.all()
-    horarios_professor = professor.horarios.all()
     publicidade = Publicidade.objects.all()
     alunos = Aluno.objects.all()
     alunos_relacionados = turmas_associadas.count()
@@ -178,7 +180,51 @@ def prof(request):
     # Definir os formulários fora do bloco else
     evento_form = EventoForm()
     sms_form = SMSForm(professor)
+    
     resposta_form = RespostaForm()
+    horarios = Horario.objects.filter(professor=professor)
+    info_horario = False
+    horarios_proximos = {}
+    horarios_vencido = {}
+    for horarioIndex in horarios:
+        curr_date = date.today()
+        print(calendar.day_name[curr_date.weekday()])   
+        print(horarioIndex.dia_semana)
+        print(horarioIndex.hora_inicio)
+    
+        # Obtendo a data e hora atual
+        now = datetime.now()
+        horario_inicio = datetime.combine(now.date(), horarioIndex.hora_inicio)
+        if(calendar.day_name[curr_date.weekday()] == "Monday" and horarioIndex.dia_semana == "Segunda"):
+            tempo_restante = (horario_inicio - now).total_seconds() / 3600
+            
+            if tempo_restante <= 0 :
+                print("Faltam mai de 2 horas para o início do horário")
+                info_horario= True
+                horas = ceil(tempo_restante)
+                horarios_vencido = {
+                    "turma" : horarioIndex.turma, 
+                    "disciplina" : horarioIndex.disciplina, 
+                    "hora_inicio" : horarioIndex.hora_inicio, 
+                    "tempo_restante" : horas, 
+                    
+                 }
+                print(now, "rwerw")
+            
+            if tempo_restante <= 2:
+                print("Faltam menos de 2 horas para o início do horário")
+                info_horario= True
+                horas = ceil(tempo_restante)
+                
+                horarios_proximos = {
+                    "turma" : horarioIndex.turma, 
+                    "disciplina" : horarioIndex.disciplina, 
+                    "hora_inicio" : horarioIndex.hora_inicio, 
+                    "tempo_restante" : horas, 
+                 }                 
+            else:
+                print(f"Faltam {tempo_restante:.2f} horas para o início do horário")
+
 
     # Filtrar disciplinas associadas ao professor
     disciplinas_associadas_professor = professor.disciplinas_associadas.all()
@@ -202,7 +248,8 @@ def prof(request):
         'publicidade': publicidade,
         'turmas_associados': turmas_associadas,
         'numero_de_turmas': numero_de_turmas,
-        'horarios_professor': horarios_professor,
+        'horarios_proximos': horarios_proximos,
+        'horarios_vencido': horarios_vencido, 
         'numero_de_disciplinas': numero_de_disciplinas,
         'disciplinas_associadas': disciplinas_associadas,
         'alunos_relacionados': alunos_relacionados,
@@ -510,7 +557,11 @@ def detalhes_turma(request, turma_id):
     }
 
     return render(request, 'detalhes_turma.html', context)
-
+def iniciar_aula_turma(request, turma_id ):
+    
+    
+    
+    return render(request, 'iniciar_aula.html')
 def iniciar_aula(request):
     if request.method == 'POST':
         professor = request.user.professor

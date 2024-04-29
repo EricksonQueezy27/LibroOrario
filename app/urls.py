@@ -12,6 +12,7 @@ urlpatterns = [
     path('perfilenc/', perfilenc, name='perfilenc'),
     path('turma/<int:turma_id>/', detalhes_turma, name='detalhes_turma'),
     path('detalhes_turma/<int:turma_id>/', detalhes_turma, name='detalhes_turma'),
+    path('iniciar_aula/<int:turma_id>/', iniciar_aula_turma, name='iniciar_aula_turma'),
     #path('perfilenc/<int:perfilenc_id>/',perfilenc, name='perfilenc'),
     path('alunos/', listar_alunos, name='listar_alunos'),
     path('alunos/<int:aluno_id>/', detalhes_aluno, name='detalhes_aluno'),

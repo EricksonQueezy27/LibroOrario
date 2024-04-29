@@ -85,7 +85,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="{% url 'Perfilenc' % }">
+              <a class="dropdown-item d-flex align-items-center" href="">
                 <i class="bi bi-person"></i>
                 <span>Meu perfil</span>
               </a>
@@ -189,7 +189,7 @@
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
-        <h1>Iniciar Aula</h1>
+        <h3>Iniciar Aula</h3>
 
         {% if erro %}
           <div class="alert alert-danger" role="alert">
@@ -208,11 +208,39 @@
            
             </div>
           </div>
-          {{ form.as_p }}
+
+          <div class="mb-3 form-password-toggle">
+            <label class="form-label" for="password1">Senha</label>
+            <div class="input-group input-group-merge">
+              <input
+                type="password"
+                id="password1"
+                class="form-control"
+                name="password1"
+                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                aria-describedby="password1"
+              />
+              <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+            </div>
+          </div>
+          <div class="mb-3 form-password-toggle">
+            <label class="form-label" for="password2">Confirmar Senha</label>
+            <div class="input-group input-group-merge">
+              <input
+                type="password"
+                id="password2"
+                class="form-control"
+                name="password2"
+                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                aria-describedby="password2"
+              />
+              <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+            </div>
+          </div>
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-              <button type="submit" class="btn btn-primary">Iniciar Aula</button>
             </div>
+            <button type="submit" class="btn btn-primary">Iniciar Aula</button>
           </div>
         </form>
         
