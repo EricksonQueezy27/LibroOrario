@@ -10,7 +10,8 @@
   <link
       href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
       rel="stylesheet">
-
+      <link rel="stylesheet" href="path/to/lightbox.min.css">
+        <script src="path/to/lightbox.min.js"></script>
       <link href={% static "assets/img/favicon.png" %} rel="icon">
       <link href={% static "assets/img/apple-touch-icon.png" %}    rel="apple-touch-icon">
     
@@ -41,30 +42,47 @@
         }
 
         .story-card {
-            flex: 0 0 auto;
-            width: calc(20% - 10px);
-            margin-right: 10px;
             position: relative;
-            border: 30px;
-           
+            width: 200px; /* Ajuste conforme necessário */
+            height: 200px; /* Ajuste conforme necessário */
+            margin: 10px; /* Espaçamento entre os cards */
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra interna */
           }
-        
+          
           .story-card img {
             width: 100%;
-            height: auto;
-            border-radius: 5px;
+            height: 100%;
+            object-fit: cover;
           }
-        
+          
           .author {
             position: absolute;
             bottom: 10px;
             left: 10px;
             color: white;
+            font-size: 14px;
             font-weight: bold;
-            padding: 5px;
-            border-radius: 5px;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Sombra de texto */
           }
+          .p1 {
+            max-width: 200px; /* Define a largura máxima */
+            max-height: 70px; /* Define a altura máxima */
+            border-radius: 10px; /* Define um raio de curvatura de 10 pixels para as bordas do parágrafo *
+            overflow: auto; /* Adiciona barras de rolagem caso o conteúdo exceda as dimensões máximas */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Adiciona sombra com deslocamento de 2px na horizontal e vertical, com um raio de desfoque de 5px e uma cor de sombra semi-transparente */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Adiciona sombra com deslocamento de 2px na horizontal e vertical, com um raio de desfoque de 5px e uma cor de sombra semi-transparente */
+            padding: 10px; /* Adiciona um espaçamento interno para manter a sombra dentro do elemento */
+          }
+                /* Estilo para a imagem no modal */
+        #modalImagem {
+            max-width: 100%; /* Largura máxima igual à largura do contêiner do modal */
+            max-height: 400px; /* Altura máxima definida para 400 pixels */
+            display: block; /* Exibir a imagem como bloco para centralizar horizontalmente */
+            margin: 0 auto; /* Margem automática nas laterais para centralizar horizontalmente */
+        }
+
       </style>
     </head>
     <body>
@@ -78,10 +96,10 @@
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
               <ul class="navbar-nav">
                 <li class="nav-item">
-                  <a class="nav-link" href="#"><i class="bi bi-house-door-fill"></i></a>
+                  <a class="nav-link" onclick="history.back()" ><i class="bi bi-house-door-fill"></i></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#"><i class="bi bi-person-fill"></i></a>
+                  <a class="nav-link" href="{% url 'perfilenc' %}"><i class="bi bi-person-fill"></i></a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#"><i class="bi bi-box-arrow-right"></i></a>
@@ -89,47 +107,45 @@
               </ul>
             </div>
           </nav>
-
-
-<!-- Área de Histórias -->
-<h2 class="mt-4 mb-4">Histórias</h2>
+       
+          <div class="d-flex flex-wrap">
+            <!-- Link para Publicar Story -->
+            <div class="story-card">
+                <a href="{% url 'publicar_story' %}">
+                    <img src="/media/{{ user.foto }}" alt="Publicar Story">
+                    <div class="author">
+                        <i class="fas fa-upload"></i> Publicar Story
+                      </div>
+                      
+                </a>
+            </div>
+            <!-- Loop pelos Storys -->
 <div class="d-flex flex-wrap">
-  <!-- História 1 -->
-  <div class="story-card">
-    <a href="#">
-      <img src={% static "assets/img/news-1.jpg" %} alt="História 1">
-      <div class="author">Nome da Pessoa 1</div>
-    </a>
-  </div>
-  <!-- História 2 -->
-  <div class="story-card">
-    <a href="#">
-      <img src="https://via.placeholder.com/200/00FF00/FFFFFF?text=Story+2" alt="História 2">
-      <div class="author">Nome da Pessoa 2</div>
-    </a>
-  </div>
-  <!-- História 3 -->
-  <div class="story-card">
-    <a href="#">
-      <img src="https://via.placeholder.com/200/0000FF/FFFFFF?text=Story+3" alt="História 3">
-      <div class="author">Nome da Pessoa 3</div>
-    </a>
-  </div>
-  <!-- História 4 -->
-  <div class="story-card">
-    <a href="#">
-      <img src="https://via.placeholder.com/200/FFFF00/FFFFFF?text=Story+4" alt="História 4">
-      <div class="author">Nome da Pessoa 4</div>
-    </a>
-  </div>
-  <!-- História 5 -->
-  <div class="story-card">
-    <a href="#">
-      <img src="https://via.placeholder.com/200/00FFFF/FFFFFF?text=Story+5" alt="História 5">
-      <div class="author">Nome da Pessoa 5</div>
-    </a>
-  </div>
+    <!-- Loop pelos Storys -->
+    {% for story in storys %}
+    <div class="story-card">
+        <a href="#" onclick="showStoryDetails('{{ story.imagem.url }}', '{{ story.titulo }}', '{{ story.descricao }}', '{{ story.data_publicacao }}', '{{ story.autor }}')">
+            <img src="{{ story.imagem.url }}" alt="{{ story.titulo }}" onclick="incrementarVisualizacoes('{{ story.id }}')">
+            <div class="author">
+                {% if story.autor.encarregado %}
+                <p class="p1">Encarregado:{{ story.autor.encarregado.nome }}</p>
+                {% elif story.autor.professor %}
+                {{ story.autor.professor.nome }}
+                {% elif story.autor.gestor %}
+                {{ story.autor.user.nome }}
+                {% endif %}
+            </div>
+            {% if story.autor == request.user %}
+            <div class="author">
+                <i class="fas fa-eye"></i> <span id="story-views-{{ story.id }}">{{ story.visualizacoes }}</span>
+            </div>
+            {% endif %}
+        </a>
+    </div>
+    {% endfor %}
 </div>
+
+            
         <!-- Área do Feed de Notícias -->
         <h1 class="mt-4 mb-4">Feed de Notícias</h1>
         <div class="row">
@@ -158,20 +174,63 @@
           {% endif %}
                         
         </div>
-    
+            <!-- Modal de Detalhes da História -->
+            <div class="modal fade" id="storyModal" tabindex="-1" role="dialog" aria-labelledby="storyModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="storyModalLabel">Detalhes da História</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <img id="modalImagem" src="#" alt="Imagem da História">
+                            <h5 id="modalTitulo"></h5>
+                            <p id="modalDescricao"></p>
+                            <p>Data de Publicação: <span id="modalDataPublicacao"></span></p>
+                            <p>Autor: <span id="modalAutor"></span></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+  
         <!-- Área do Feed de Notícias -->
 
     <div class="row">
       <!-- Feedback e pesquisas -->
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Feedback e Pesquisas</h5>
-            <p class="card-text">Descrição da área de feedback e pesquisas.</p>
-            <a href="#" class="btn btn-primary">Ver Mais</a>
-          </div>
+      <div class="container">
+        <h2>Feedback e Pesquisas</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Feedback</h3>
+                <p>Deixe-nos saber sua opinião! Envie-nos seu feedback:</p>
+                <form action="{% url 'enviar_feedback' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="feedback">Comentários:</label>
+                        <textarea class="form-control" id="feedback" name="feedback" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enviar Feedback</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h3>Pesquisa</h3>
+                <p>Participe da nossa pesquisa:</p>
+                <form action="{% url 'enviar_pesquisa' %}" method="post">
+                    {% csrf_token %}
+                    <!-- Adicione campos para a pesquisa aqui -->
+                    <button type="submit" class="btn btn-primary">Enviar Respostas</button>
+                </form>
+            </div>
         </div>
-      </div>
+    </div>
+    
       <!-- Eventos e atividades -->
       <div class="col-md-6">
         <div class="card">
@@ -239,8 +298,42 @@
       <p class="text-center">&copy; 2024 Sistema de Gestão Escolar</p>
     </footer>
   </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Função para exibir os detalhes do Story no modal
+    function showStoryDetails(imagemUrl, titulo, descricao, dataPublicacao, autor) {
+        // Atualiza os elementos do modal com as informações da história
+        document.getElementById('modalImagem').src = imagemUrl;
+        document.getElementById('modalTitulo').textContent = titulo;
+        document.getElementById('modalDescricao').textContent = descricao;
+        document.getElementById('modalDataPublicacao').textContent = dataPublicacao;
+        document.getElementById('modalAutor').textContent = autor;
+    
+        // Abre o modal
+        $('#storyModal').modal('show');
+    }
+    
+  </script>
   
-  <!-- Scripts do Bootstrap -->
+  <script>
+    function incrementarVisualizacoes(storyId) {
+        $.ajax({
+            type: 'POST',
+            url: '/incrementar-visualizacao/' + storyId + '/',
+            dataType: 'json',
+            success: function(response) {
+                if (response && response.visualizacoes !== undefined) {
+                    $('#story-views-' + storyId).text(response.visualizacoes);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Erro ao incrementar visualização:', error);
+            }
+        });
+    }
+       
+    </script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -284,5 +377,7 @@
       });
     });
   </script>
+
+
 </body>
 </html>

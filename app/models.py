@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager, User,AbstractUser
 from django.contrib.auth import get_user_model
 from django.conf import settings 
-from datetime import date
+from datetime import date, timedelta
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from django.utils.dateparse import parse_date
@@ -263,22 +263,27 @@ class Publicidade(models.Model):
         return self.titulo
 
 class Story(models.Model):
-    AUTOR_CHOICES = (
-        ('Professor', 'Professor'),
-        ('Encarregado', 'Encarregado'),
-        ('Gestor', 'Gestor'),
-    )
-
-    autor = models.CharField(max_length=50, choices=AUTOR_CHOICES)
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    autor = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
+    imagem = models.ImageField(upload_to="images/stories/")
     titulo = models.CharField(max_length=100)
-    conteudo = models.TextField()
+    descricao = models.TextField()
     data_publicacao = models.DateTimeField(auto_now_add=True)
-    imagem = models.ImageField(upload_to="story_images/", blank=True, null=True)
+    visualizacoes = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.titulo
-    
+
+    def incrementar_visualizacao(self):
+        self.visualizacoes += 1
+        self.save()
+        
+def apagar_stories_antigos():
+    # Calcule a data limite para manter os stories
+    data_limite = timezone.now() - timedelta(seconds=3)  # Por exemplo, 30 dias
+
+    # Apague os stories mais antigos que a data limite
+    Story.objects.filter(data_publicacao__lte=data_limite).delete()
+        
 class Encarregado(models.Model):
     user = models.OneToOneField(AUTH_USER_MODEL, on_delete=models.CASCADE)
     nome = models.CharField(max_length=100)
@@ -292,6 +297,22 @@ class Encarregado(models.Model):
         return f"{self.nome} - {self.telefone}"
     
 
+class Feedback(models.Model):
+    comentario = models.TextField()
+    criado_em = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Feedback {self.id}"
+
+class Pesquisa(models.Model):
+    # Adicione campos relevantes para a pesquisa aqui
+    pergunta_1 = models.CharField(max_length=100)
+    pergunta_2 = models.CharField(max_length=100)
+    criado_em = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Pesquisa {self.id}"
+    
 class Comunicado(models.Model):
     titulo = models.CharField(max_length=100)
     mensagem = models.TextField()

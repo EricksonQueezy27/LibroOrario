@@ -72,6 +72,11 @@ urlpatterns = [
     path('perfil_alunos/<int:encarregado_id>/', perfil_alunos, name='perfilalunos'),
     path('editar-aluno/<int:aluno_id>/', alunoed, name='alunoed'),
     path('feed-noticias/', feed_noticias, name='feed_noticias'),
+    path('publicar-story/', publicar_story, name='publicar_story'),
+    path('incrementar-visualizacao/<int:story_id>/', incrementar_visualizacao, name='incrementar_visualizacao'),
+    path('feedback/', enviar_feedback, name='enviar_feedback'),
+    path('pesquisa/', enviar_pesquisa, name='enviar_pesquisa'),
+
 
 
 

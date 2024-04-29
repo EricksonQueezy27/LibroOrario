@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .models import *
 from django.db import IntegrityError
 from datetime import datetime, time
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
@@ -1123,10 +1123,58 @@ def alunoed(request, aluno_id):
         form = AlunoForm1(instance=aluno)
     return render(request, 'alunoed.html', {'form': form})
 
+@login_required
 def feed_noticias(request):
     publicidade = Publicidade.objects.all()
-    
+    storys = Story.objects.all()
     context = {
         'publicidade': publicidade,
+        'storys': storys,
     }
     return render(request, 'feed_noticias.html', context)
+
+
+
+@login_required
+def incrementar_visualizacao(request, story_id):
+    if request.method == 'POST' and request.is_ajax():
+        story = Story.objects.get(pk=story_id)
+        story.visualizacoes += 1
+        story.save()
+        return JsonResponse({'visualizacoes': story.visualizacoes})
+    return JsonResponse({'error': 'Método inválido ou requisição não é AJAX.'}, status=400)
+
+
+
+@login_required
+def publicar_story(request):
+    if request.method == 'POST':
+        form = StoryForm(request.POST, request.FILES)
+        if form.is_valid():
+            story = form.save(commit=False)
+            story.autor = request.user  # Define o autor como o usuário atual (encarregado)
+            story.save()
+            return redirect('feed_noticias')
+    else:
+        form = StoryForm()
+    return render(request, 'publicar_story.html', {'form': form})
+
+def enviar_feedback(request):
+    if request.method == 'POST':
+        formulario = FormularioFeedback(request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect('sucesso_feedback')  # Redireciona para uma página de sucesso após enviar o feedback
+    else:
+        formulario = FormularioFeedback()
+    return render(request, 'feed_noticias.html', {'formulario': formulario})
+    
+def enviar_pesquisa(request):
+    if request.method == 'POST':
+        formulario = FormularioPesquisa(request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect('sucesso_pesquisa')  # Redireciona para uma página de sucesso após enviar a pesquisa
+    else:
+        formulario = FormularioPesquisa()
+    return render(request, 'feed_noticias.html', {'formulario': formulario})

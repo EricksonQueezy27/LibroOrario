@@ -1,0 +1,23 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Publicar Story</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.titulo.label_tag }}
+            {{ form.titulo }}
+        </div>
+        <div class="mb-3">
+            {{ form.descricao.label_tag }}
+            {{ form.descricao }}
+        </div>
+        <div class="mb-3">
+            {{ form.imagem.label_tag }}
+            {{ form.imagem }}
+        </div>
+        <button type="submit" class="btn btn-primary">Publicar</button>
+    </form>
+</div>
+{% endblock %}

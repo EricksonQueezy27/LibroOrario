@@ -286,3 +286,20 @@ class AlunoForm1(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Personalize os widgets, rótulos, etc., conforme necessário    
+        
+
+class StoryForm(forms.ModelForm):
+    class Meta:
+        model = Story
+        fields = ['imagem', 'titulo', 'descricao']
+        
+
+class FormularioFeedback(forms.ModelForm):
+    class Meta:
+        model = Feedback
+        fields = ['comentario']
+
+class FormularioPesquisa(forms.ModelForm):
+    class Meta:
+        model = Pesquisa
+        fields = ['pergunta_1', 'pergunta_2']  
