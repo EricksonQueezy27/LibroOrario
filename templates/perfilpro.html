@@ -178,13 +178,7 @@
 
         <div class="pagetitle">
           <h1>Profile</h1>
-          <nav>
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-              <li class="breadcrumb-item">Users</li>
-              <li class="breadcrumb-item active">Profile</li>
-            </ol>
-          </nav>
+       
         </div><!-- End Page Title -->
     
         <section class="section profile">
@@ -267,7 +261,7 @@
     
                       <div class="row">
                         <div class="col-lg-3 col-md-4 label">Email</div>
-                        <div class="col-lg-9 col-md-8">...</div>
+                        <div class="col-lg-9 col-md-8">{{prof.email}}</div>
                       </div>
     
                     </div>
@@ -279,7 +273,7 @@
                         <div class="row mb-3">
                           <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Imagem do Perfil</label>
                           <div class="col-md-8 col-lg-9">
-                            <img src="assets/img/profile-img.jpg" alt="Profile">
+                            <img src="/media/{{ user.foto }}" alt="Profile">
                             <div class="pt-2">
                               <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i class="bi bi-upload"></i></a>
                               <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i class="bi bi-trash"></i></a>
@@ -289,9 +283,11 @@
     
                         <div class="row mb-3">
                           <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Nome Completo</label>
-                          <div class="col-md-8 col-lg-9">
-                            <input name="fullName" type="text" class="form-control" id="fullName" value="Kevin Anderson">
-                          </div>
+                          <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                        </form> 
                         </div>
     
                         <div class="row mb-3">

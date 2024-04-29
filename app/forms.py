@@ -188,7 +188,7 @@ class CustomUserChangeForm(UserChangeForm):
 class TurmaForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(TurmaForm, self).__init__(*args, **kwargs)
-        # Filtra os alunos que ainda não estão associados a nenhuma turma
+        # Filtra os alunos que ainda não estão associados a uma turma
         alunos_sem_turma = Aluno.objects.filter(turma__isnull=True)
         self.fields['alunos'].queryset = alunos_sem_turma
 
@@ -200,7 +200,9 @@ class TurmaForm(forms.ModelForm):
 
     class Meta:
         model = Turma
-        fields = ['nome', 'imagem', 'classe', 'alunos']
+        fields = ['nome', 'imagem', 'classe', 'alunos']     
+
+
 
 
         
@@ -225,7 +227,11 @@ class AlunoForm(forms.ModelForm):
     class Meta:
         model = Aluno
         fields = ['nome', 'profissao_encarregado', 'data_nascimento', 'foto', 'sexo', 'Classe', 'encarregado_nome', 'encarregado_numero']
-    
+   
+class ProfForm(forms.ModelForm):
+    class Meta:
+        model = Professor
+        fields = ['user','nome','email','departamento', 'titulacao','foto'] 
 
 class NotaForm(forms.ModelForm):
     class Meta:
@@ -269,3 +275,14 @@ class Encarregado1Form(forms.ModelForm):
     class Meta:
         model = Encarregado
         fields = ['nome', 'email', 'telefone', 'profissao', 'alunos_associados', 'foto']
+        
+
+
+class AlunoForm1(forms.ModelForm):
+    class Meta:
+        model = Aluno
+        fields = ['nome', 'profissao_encarregado', 'data_nascimento', 'foto', 'encarregado_nome', 'encarregado_numero']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Personalize os widgets, rótulos, etc., conforme necessário    

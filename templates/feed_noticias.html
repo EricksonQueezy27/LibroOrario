@@ -1,0 +1,288 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feed de Notícias</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="{% static 'fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+  <link
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+      rel="stylesheet">
+
+      <link href={% static "assets/img/favicon.png" %} rel="icon">
+      <link href={% static "assets/img/apple-touch-icon.png" %}    rel="apple-touch-icon">
+    
+      <!-- Google Fonts -->
+      <link href="https://fonts.gstatic.com" rel="preconnect">
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    
+      <!-- Vendor CSS Files -->
+      <link href={% static "assets/vendor/bootstrap/css/bootstrap.min.css" %} rel="stylesheet">
+      <link href={% static "assets/vendor/bootstrap-icons/bootstrap-icons.css" %} rel="stylesheet">
+      <link href={% static "assets/vendor/boxicons/css/boxicons.min.css" %} rel="stylesheet">
+      <link href={% static "assets/vendor/quill/quill.snow.css" %} rel="stylesheet">
+      <link href={% static "assets/vendor/quill/quill.bubble.css" %} rel="stylesheet">
+      <link href={% static "assets/vendor/remixicon/remixicon.css" %} rel="stylesheet">
+      <link href={% static "assets/vendor/simple-datatables/style.css" %} rel="stylesheet">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
+
+      <!-- Template Main CSS File -->
+      <link href={% static "assets/css/style.css" %} rel="stylesheet">
+      <style>
+        /* Estilo personalizado */
+        .card {
+          margin-bottom: 20px;
+        }
+        .card img{
+            max-width:auto;
+            max-height:700px;
+        }
+
+        .story-card {
+            flex: 0 0 auto;
+            width: calc(20% - 10px);
+            margin-right: 10px;
+            position: relative;
+            border: 30px;
+           
+          }
+        
+          .story-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+          }
+        
+          .author {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: white;
+            font-weight: bold;
+            padding: 5px;
+            border-radius: 5px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+          }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">LibroOrario</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="#"><i class="bi bi-house-door-fill"></i></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#"><i class="bi bi-person-fill"></i></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#"><i class="bi bi-box-arrow-right"></i></a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+
+
+<!-- Área de Histórias -->
+<h2 class="mt-4 mb-4">Histórias</h2>
+<div class="d-flex flex-wrap">
+  <!-- História 1 -->
+  <div class="story-card">
+    <a href="#">
+      <img src={% static "assets/img/news-1.jpg" %} alt="História 1">
+      <div class="author">Nome da Pessoa 1</div>
+    </a>
+  </div>
+  <!-- História 2 -->
+  <div class="story-card">
+    <a href="#">
+      <img src="https://via.placeholder.com/200/00FF00/FFFFFF?text=Story+2" alt="História 2">
+      <div class="author">Nome da Pessoa 2</div>
+    </a>
+  </div>
+  <!-- História 3 -->
+  <div class="story-card">
+    <a href="#">
+      <img src="https://via.placeholder.com/200/0000FF/FFFFFF?text=Story+3" alt="História 3">
+      <div class="author">Nome da Pessoa 3</div>
+    </a>
+  </div>
+  <!-- História 4 -->
+  <div class="story-card">
+    <a href="#">
+      <img src="https://via.placeholder.com/200/FFFF00/FFFFFF?text=Story+4" alt="História 4">
+      <div class="author">Nome da Pessoa 4</div>
+    </a>
+  </div>
+  <!-- História 5 -->
+  <div class="story-card">
+    <a href="#">
+      <img src="https://via.placeholder.com/200/00FFFF/FFFFFF?text=Story+5" alt="História 5">
+      <div class="author">Nome da Pessoa 5</div>
+    </a>
+  </div>
+</div>
+        <!-- Área do Feed de Notícias -->
+        <h1 class="mt-4 mb-4">Feed de Notícias</h1>
+        <div class="row">
+          <!-- Card de Notícia 1 -->
+          {% if publicidade %}
+          {% for publicidade in publicidade %}            
+      
+          <div class="col-md-6">
+            <div class="card">
+              <img src="{{publicidade.imagem.url}}" class="card-img-top" alt="Imagem da Notícia 1">
+              <div class="card-body">
+                <h5 class="card-title">{{publicidade.titulo}}</h5>
+                <p class="card-text">{{publicidade.conteudo}}</p>
+                <a href="#" class="btn btn-primary">Ver Mais</a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          {% else %}
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Não Tem Publicidade da Escola no Momennto</h5>
+              <p class="card-text">aguarde....</p>
+            </div>
+          </div>
+          {% endif %}
+                        
+        </div>
+    
+        <!-- Área do Feed de Notícias -->
+
+    <div class="row">
+      <!-- Feedback e pesquisas -->
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Feedback e Pesquisas</h5>
+            <p class="card-text">Descrição da área de feedback e pesquisas.</p>
+            <a href="#" class="btn btn-primary">Ver Mais</a>
+          </div>
+        </div>
+      </div>
+      <!-- Eventos e atividades -->
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Eventos e Atividades</h5>
+            <p class="card-text">Descrição da área de eventos e atividades.</p>
+            <a href="#" class="btn btn-primary">Ver Mais</a>
+          </div>
+        </div>
+      </div>
+      <!-- Recados dos professores -->
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Recados dos Professores</h5>
+            <p class="card-text">Descrição da área de recados dos professores.</p>
+            <a href="#" class="btn btn-primary">Ver Mais</a>
+          </div>
+        </div>
+      </div>
+      <!-- Atualizações do sistema -->
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Atualizações do Sistema</h5>
+            <p class="card-text">Descrição da área de atualizações do sistema.</p>
+            <a href="#" class="btn btn-primary">Ver Mais</a>
+          </div>
+        </div>
+      </div>
+      <!-- Avisos e comunicados -->
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Avisos e Comunicados</h5>
+            <p class="card-text">Descrição da área de avisos e comunicados.</p>
+            <a href="#" class="btn btn-primary">Ver Mais</a>
+          </div>
+        </div>
+      </div>
+      <!-- Destaques dos alunos -->
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Destaques dos Alunos</h5>
+            <p class="card-text">Descrição da área de destaques dos alunos.</p>
+            <a href="#" class="btn btn-primary">Ver Mais</a>
+          </div>
+        </div>
+      </div>
+      <!-- Recursos educacionais -->
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Recursos Educacionais</h5>
+            <p class="card-text">Descrição da área de recursos educacionais.</p>
+            <a href="#" class="btn btn-primary">Ver Mais</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="mt-5 mb-3">
+      <p class="text-center">&copy; 2024 Sistema de Gestão Escolar</p>
+    </footer>
+  </div>
+  
+  <!-- Scripts do Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src={% static "assets/vendor/apexcharts/apexcharts.min.js" %}></script>
+<script src={% static "assets/vendor/bootstrap/js/bootstrap.bundle.min.js" %}></script>
+<script src={% static "assets/vendor/chart.js/chart.umd.js" %}></script>
+<script src={% static "assets/vendor/echarts/echarts.min.js" %}></script>
+<script src={% static "assets/vendor/quill/quill.min.js" %}></script>
+<script src={% static "assets/vendor/simple-datatables/simple-datatables.js" %}></script>
+<script src={% static "assets/vendor/tinymce/tinymce.min.js" %}></script>
+<script src={% static "assets/vendor/php-email-form/validate.js" %}></script>
+<script>
+    // Adiciona um degradê automático ao nome da pessoa com base na cor dominante da imagem
+    document.querySelectorAll('.story-card').forEach(card => {
+      const img = card.querySelector('img');
+      const author = card.querySelector('.author');
+  
+      img.addEventListener('load', () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0, img.width, img.height);
+  
+        const imageData = ctx.getImageData(0, 0, img.width, img.height);
+        const data = imageData.data;
+        let r = 0, g = 0, b = 0;
+  
+        for (let i = 0; i < data.length; i += 4) {
+          r += data[i];
+          g += data[i + 1];
+          b += data[i + 2];
+        }
+  
+        r = Math.floor(r / (data.length / 4));
+        g = Math.floor(g / (data.length / 4));
+        b = Math.floor(b / (data.length / 4));
+  
+        const gradient = `linear-gradient(to top, rgba(${r}, ${g}, ${b}, 0.8), transparent)`;
+        author.style.background = gradient;
+      });
+    });
+  </script>
+</body>
+</html>

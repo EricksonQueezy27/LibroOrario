@@ -268,9 +268,15 @@
             </a>
           </li>
           <li>
+            <a href="{% url 'feed_noticias' %}" class="btn btn-primary">
+              <i class="bi bi-circle"></i><span>Ver Feed de Notícias</span>
+            </a>
+          </li>
+            
+
             <li>
                 <a href="{% url 'visualizar_educandos' encarregado_id=request.user.encarregado.id %}">
-                  <i class="bi bi-circle"></i><span>Ver Educandos</span>
+                  <i class="bi bi-circle"></i><span>Informações academicas dos alunos</span>
                 </a>
               </li>
               <li>
@@ -300,7 +306,7 @@
 
       </li><!-- End Icons Nav -->
 
-      <li class="nav-heading">Paginas</li>
+      <li class="nav-heading">Outras Paginas</li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="{% url 'perfilenc' %}">
@@ -309,7 +315,12 @@
         </a>
       </li><!-- End Profile Page Nav -->
 
-      
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'perfilalunos' encarregado_id=request.user.encarregado.id %}">
+          <i class="ri-team-fill"></i>
+          <span>Perfil dos alunos</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
     </ul>
 
   </aside><!-- End Sidebar-->

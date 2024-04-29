@@ -14,8 +14,6 @@ class CustomUser(AbstractUser):
 
 class Disciplina(models.Model):
     nome = models.CharField(max_length=100)
-    turma = models.ForeignKey('Turma', on_delete=models.CASCADE)
-
     def __str__(self):
         return self.nome
     
@@ -121,7 +119,9 @@ class Aluno(models.Model):
     
     
     def __str__(self):
-        return f"{self.nome} - Idade: {self.idade} - {self.turma}"
+        turma_nome = self.turma.nome if self.turma else "Sem turma"
+        return f"{self.nome} - Idade: {self.idade} - Turma: {turma_nome}"
+
     
 class InformacoesAcademicas(models.Model):
     aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE, related_name='informacoes_academicas')
@@ -241,7 +241,7 @@ class Propina(models.Model):
     pago = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.aluno.nome} - {self.data_pagamento}"
+        return f"{self.aluno} - {self.data_pagamento}"
 
     def calcular_status_propina(self):
         hoje = timezone.now().date()
@@ -258,6 +258,23 @@ class Publicidade(models.Model):
     titulo = models.CharField(max_length=255)
     conteudo = models.TextField()
     imagem = models.ImageField(upload_to='publicidades/', null=True, blank=True)
+
+    def __str__(self):
+        return self.titulo
+
+class Story(models.Model):
+    AUTOR_CHOICES = (
+        ('Professor', 'Professor'),
+        ('Encarregado', 'Encarregado'),
+        ('Gestor', 'Gestor'),
+    )
+
+    autor = models.CharField(max_length=50, choices=AUTOR_CHOICES)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    titulo = models.CharField(max_length=100)
+    conteudo = models.TextField()
+    data_publicacao = models.DateTimeField(auto_now_add=True)
+    imagem = models.ImageField(upload_to="story_images/", blank=True, null=True)
 
     def __str__(self):
         return self.titulo

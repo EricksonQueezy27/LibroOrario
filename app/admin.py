@@ -36,7 +36,7 @@ admin.site.register(Comportamento)
 admin.site.register(Boletim)
 admin.site.register(Pagamento)
 admin.site.register(Eventos)
-
+admin.site.register(Story)
 
 class ComunicadoAdmin(admin.ModelAdmin):
     list_display = ('titulo', 'data_publicacao', 'destino', 'requerido_pagamento')

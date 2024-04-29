@@ -1,0 +1,36 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Alunos Associados</h1>
+    <div class="row">
+        {% for aluno in alunos_associados %}
+        <div class="col-md-4">
+            <div class="card">
+                {% if aluno.foto %}
+                <img src="{{ aluno.foto.url }}" class="card-img-top" alt="{{ aluno.nome }}">
+                {% else %}
+                <!-- Adicione um ícone de usuário padrão do Bootstrap se o aluno não tiver foto -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                  <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zm0 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1z"/>
+                  <path d="M8 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm0 1a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/>
+                  <path d="M8 10.5a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9zM6.5 8a.5.5 0 1 0-1 0h1zm3 0a.5.5 0 1 0-1 0h1z"/>
+                </svg>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ aluno.nome }}</h5>
+                    <p class="card-text">Idade: {{ aluno.idade }}</p>
+                    <p class="card-text">Gênero: {{ aluno.sexo }}</p>
+                    <p class="card-text">Encarregado: {{ aluno.encarregado_nome }}</p>
+                    <p class="card-text">Turma: {{ aluno.turma }} {{ aluno.turma.classe }}</p>
+                    
+                    <a href="{% url 'alunoed' aluno.id %}" class="btn btn-primary">Editar Aluno</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

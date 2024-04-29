@@ -395,10 +395,20 @@ def perfilenc(request):
 @login_required
 def perfilpro(request):
     professor = get_object_or_404(Professor, user=request.user)
+    prof = Professor.objects.filter(user=request.user)
+    if request.method == 'POST':
+        form = ProfForm(request.POST, request.FILES, instance=professor)
+        if form.is_valid():
+         form.save()
+        return redirect(perfilpro)
+    else:
+        form = ProfForm(instance=professor)
     disciplinas_associadas = professor.disciplinas_associadas.all()
     context={
         'professo':professor,
         'disciplinas_associadas': disciplinas_associadas,
+        'form':form,
+        'prof':prof,
     }
     return render(request, 'perfilpro.html', context)
  
@@ -462,12 +472,12 @@ def detalhes_turma(request, turma_id):
     disciplinas = ProfessorDisciplina.objects.filter(professor=professor_instance.get())
     horarios = Horario.objects.filter(turma=turma)
     # Obtenha a disciplina selecionada
-    disciplina_selecionada = request.GET.get("disciplina")
-    if disciplina_selecionada:
-        disc = Disciplina.objects.filter(id=disciplina_selecionada).get()
-        disciplina_selecionada_instance = ProfessorDisciplina.objects.filter(disciplina=disc).get()
-    else:
-        disciplina_selecionada_instance = disciplinas[0]
+    # disciplina_selecionada = request.GET.get("disciplina")
+    # if disciplina_selecionada:
+    #     disc = Disciplina.objects.filter(id=disciplina_selecionada).get()
+    #     disciplina_selecionada_instance = ProfessorDisciplina.objects.filter(disciplina=disc).get()
+    # else:
+    #     disciplina_selecionada_instance = disciplinas[0]
 
     # Lógica para lidar com a troca de disciplina
     troca_disciplina_form = TrocaDisciplinaForm()
@@ -493,9 +503,9 @@ def detalhes_turma(request, turma_id):
         'alunos_relacionados': alunos_relacionados,
         'horarios': horarios,
         'troca_disciplina_form': troca_disciplina_form,
-        'nova_disciplina': disciplina_selecionada,
+        #'nova_disciplina': disciplina_selecionada,
         'disciplinas': disciplinas,
-        'disciplinaData': disciplina_selecionada_instance,
+        #'disciplinaData': disciplina_selecionada_instance,
         'nota_form': nota_form,  # Adicionando o formulário de lançamento de notas ao contexto
     }
 
@@ -634,25 +644,25 @@ def avaliacoes_turma(request, turma_id):
     professor = Professor.objects.get(user=request.user)
     turma = get_object_or_404(Turma, id=turma_id)
     alunos_associados = turma.alunos.all()
-    avaliacoes_turma = Avaliacao.objects.filter(aluno__turma=turma)
-    #disciplinas = professor.disciplinas_associadas()  # Obtendo disciplinas associadas ao professor
+    # avaliacoes_turma = Avaliacao.objects.filter(aluno__turma=turma)
+    # #disciplinas = professor.disciplinas_associadas()  # Obtendo disciplinas associadas ao professor
 
-    if request.method == 'POST':
-        # Lógica para processar o envio de uma avaliação individual, se necessário
-        pass
+    # if request.method == 'POST':
+    #     # Lógica para processar o envio de uma avaliação individual, se necessário
+    #     pass
     
-    # Consulta para obter todas as avaliações (substitua por sua lógica de consulta)
-    avaliacoes_individuais = Avaliacao.objects.all()
+    # # Consulta para obter todas as avaliações (substitua por sua lógica de consulta)
+    # avaliacoes_individuais = Avaliacao.objects.all()
     
     # Consulta para calcular a média por disciplina (substitua por sua lógica de consulta)
     media_por_disciplina = {}  # Dicionário onde a chave é a disciplina e o valor é a média
 
     context = {
         'titulo': 'Avaliações',
-        'avaliacoes_individuais': avaliacoes_individuais,
+        #'avaliacoes_individuais': avaliacoes_individuais,
         'media_por_disciplina': media_por_disciplina,
         'turma': turma,
-        'avaliacoes_turma': avaliacoes_turma,
+        #'avaliacoes_turma': avaliacoes_turma,
         'alunos_associados': alunos_associados,
         #'disciplinas': disciplinas,
     }
@@ -781,6 +791,7 @@ def detalhes_aluno1(request, aluno_id):
 @user_passes_test(is_superuser)
 def adicionar_aluno(request):
     if request.method == 'POST':
+        # Obtenha os dados do formulário do pedido POST
         nome = request.POST['nome']
         profissao_encarregado = request.POST['profissao_encarregado']
         data_nascimento = request.POST['data_nascimento']
@@ -790,13 +801,14 @@ def adicionar_aluno(request):
         encarregado_nome = request.POST['encarregado_nome']
         encarregado_numero = request.POST['encarregado_numero']
 
-        # Verifica se o campo 'turma' está presente nos dados do request
+        # Verifique se o campo 'turma' está presente nos dados do request
         if 'turma' in request.POST:
-            turma_id = request.POST['turma']  # Obtém o ID da turma selecionada no formulário
-            turma = Turma.objects.get(id=turma_id)  # Obtém a turma com base no ID
+            turma_id = request.POST['turma']  # Obtenha o ID da turma selecionada no formulário
+            turma = Turma.objects.get(id=turma_id)  # Obtenha a turma com base no ID
         else:
-            turma = None  # Define turma como None se não estiver presente nos dados do request
+            turma = None  # Se nenhum turma foi selecionada, defina como None
 
+        # Crie uma instância do aluno com os dados fornecidos
         aluno = Aluno.objects.create(
             nome=nome,
             profissao_encarregado=profissao_encarregado,
@@ -806,7 +818,7 @@ def adicionar_aluno(request):
             Classe=Classe,
             encarregado_nome=encarregado_nome,
             encarregado_numero=encarregado_numero,
-            turma=turma
+            turma=turma  # Associe a turma ao aluno
         )
         return redirect('criar_turma')
 
@@ -816,16 +828,19 @@ def adicionar_aluno(request):
     # Retorna o formulário renderizado com o contexto das turmas
     return render(request, 'adicionar_aluno.html', {'turmas': turmas})
 
+
+
 @user_passes_test(is_superuser)
 def criar_turma(request):
     if request.method == 'POST':
         form = TurmaForm(request.POST, request.FILES)
         if form.is_valid():
-            turma = form.save()
+            turma = form.save(commit=False)  # Salva o formulário, mas não no banco de dados ainda
+            turma.save()  # Salva a turma no banco de dados para que possamos associar os alunos
             # Se houver alunos selecionados, adicione-os à turma
             alunos_selecionados = form.cleaned_data['alunos']
             if alunos_selecionados:
-                turma.alunos.set(alunos_selecionados)
+                turma.alunos.add(*alunos_selecionados)
             return redirect('verturmas')
     else:
         form = TurmaForm()
@@ -1082,3 +1097,36 @@ def eliminar_aluno(request, id):
         aluno.delete()
         return redirect('ver_alunos')
     return render(request, 'confirmar_eliminar_aluno.html', {'aluno': aluno})
+
+
+@login_required
+def perfil_alunos(request, encarregado_id):
+    encarregado = get_object_or_404(Encarregado, pk=encarregado_id)
+    alunos_associados = encarregado.alunos_associados.all()
+    
+    context = {
+        'encarregado': encarregado,
+        'alunos_associados': alunos_associados,
+    }
+    return render(request, 'alunosp.html', context)
+
+@login_required
+def alunoed(request, aluno_id):
+    aluno = get_object_or_404(Aluno, pk=aluno_id)
+    if request.method == 'POST':
+        form = AlunoForm1(request.POST, request.FILES, instance=aluno)
+        if form.is_valid():
+            form.save()
+            # Redirecione para a visualização do perfil do encarregado associado ao aluno
+            return redirect('perfilalunos',encarregado_id=request.user.encarregado.id)
+    else:
+        form = AlunoForm1(instance=aluno)
+    return render(request, 'alunoed.html', {'form': form})
+
+def feed_noticias(request):
+    publicidade = Publicidade.objects.all()
+    
+    context = {
+        'publicidade': publicidade,
+    }
+    return render(request, 'feed_noticias.html', context)
