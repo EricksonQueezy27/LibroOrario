@@ -52,7 +52,9 @@
         <button type="submit" title="Search"><i class="bi bi-search"></i></button>
       </form>
     </div><!-- End Search Bar -->
-
+    <a href="{% url 'feed_noticias' %}" class="btn btn-primary">
+      <i class="bi bi-newspaper"></i><span>Ver Feed de Notícias</span>
+  </a>
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
 
@@ -322,8 +324,8 @@
         <ul id="components-nav3" class="nav-content collapse " data-bs-parent="#sidebar-nav">
        
           <li>
-            <a href="{% url 'turmas' %}">
-              <i class="bi bi-circle"></i><span>Gerenciar</span>
+            <a href="{% url 'colocar_aluno_destaque' %}">
+              <i class="bi bi-circle"></i><span>Alunos Destaques</span>
             </a>
           </li>
           <li>

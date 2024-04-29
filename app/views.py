@@ -1127,11 +1127,57 @@ def alunoed(request, aluno_id):
 def feed_noticias(request):
     publicidade = Publicidade.objects.all()
     storys = Story.objects.all()
+    alunos_destaque = AlunoDestaque.objects.all()  # Busca todos os alunos em destaque
+
+    if request.method == 'POST':
+        formulario = FormularioFeedback(request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect('feed_noticias')  # Redireciona para uma página de sucesso após enviar o feedback
+    else:
+        formulario = FormularioFeedback()
+
     context = {
         'publicidade': publicidade,
         'storys': storys,
+        'formulario': formulario,
+        'alunos_destaque': alunos_destaque,  # Passa os alunos em destaque para o contexto
     }
     return render(request, 'feed_noticias.html', context)
+
+@login_required
+def colocar_aluno_destaque(request):
+    professor = request.user.professor  # Acessa o objeto Professor associado ao usuário autenticado
+    if professor:  # Verifica se o usuário autenticado é um professor
+        if request.method == 'POST':
+            formulario = FormularioAlunoDestaque(professor, request.POST)
+            if formulario.is_valid():
+                aluno_id = formulario.cleaned_data['aluno']
+                descricao = formulario.cleaned_data['descricao']
+                aluno = Aluno.objects.get(pk=aluno_id)
+                AlunoDestaque.objects.create(aluno=aluno, descricao=descricao, autor=professor)
+                return redirect('feed_noticias')  # Redireciona para a página inicial
+        else:
+            formulario = FormularioAlunoDestaque(professor)
+        context = {'formulario': formulario}
+        return render(request, 'aluno_destaque.html', context)
+    else:
+        # Se o usuário autenticado não for um professor, redirecione para uma página de acesso negado ou outra página relevante
+        return HttpResponse("Você não tem permissão para acessar esta página.")
+
+@login_required
+def enviar_feedback(request):
+    if request.method == 'POST':
+        formulario = FormularioFeedback(request.POST)
+        if formulario.is_valid():
+            feedback = formulario.save(commit=False)
+            feedback.usuario = request.user  # Associa o usuário atual ao feedback
+            feedback.save()
+            # Redireciona para uma página de sucesso ou para a mesma página
+            return redirect('feed_noticias')
+    # Caso o método da solicitação não seja POST, ou o formulário não seja válido,
+    # redirecionamos para a mesma página ou para uma página de erro
+    return redirect('feed_noticias  ')
 
 
 
@@ -1159,15 +1205,15 @@ def publicar_story(request):
         form = StoryForm()
     return render(request, 'publicar_story.html', {'form': form})
 
-def enviar_feedback(request):
-    if request.method == 'POST':
-        formulario = FormularioFeedback(request.POST)
-        if formulario.is_valid():
-            formulario.save()
-            return redirect('sucesso_feedback')  # Redireciona para uma página de sucesso após enviar o feedback
-    else:
-        formulario = FormularioFeedback()
-    return render(request, 'feed_noticias.html', {'formulario': formulario})
+# def enviar_feedback(request):
+#     if request.method == 'POST':
+#         formulario = FormularioFeedback(request.POST)
+#         if formulario.is_valid():
+#             formulario.save()
+#             return redirect('feed_noticias')  # Redireciona para uma página de sucesso após enviar o feedback
+#     else:
+#         formulario = FormularioFeedback()
+#     return render(request, 'feed_noticias.html', {'formulario': formulario})
     
 def enviar_pesquisa(request):
     if request.method == 'POST':

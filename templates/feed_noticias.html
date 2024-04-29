@@ -208,24 +208,15 @@
         <h2>Feedback e Pesquisas</h2>
         <div class="row">
             <div class="col-md-6">
-                <h3>Feedback</h3>
                 <p>Deixe-nos saber sua opinião! Envie-nos seu feedback:</p>
                 <form action="{% url 'enviar_feedback' %}" method="post">
+
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="feedback">Comentários:</label>
                         <textarea class="form-control" id="feedback" name="feedback" rows="3"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Enviar Feedback</button>
-                </form>
-            </div>
-            <div class="col-md-6">
-                <h3>Pesquisa</h3>
-                <p>Participe da nossa pesquisa:</p>
-                <form action="{% url 'enviar_pesquisa' %}" method="post">
-                    {% csrf_token %}
-                    <!-- Adicione campos para a pesquisa aqui -->
-                    <button type="submit" class="btn btn-primary">Enviar Respostas</button>
                 </form>
             </div>
         </div>
@@ -271,16 +262,42 @@
           </div>
         </div>
       </div>
-      <!-- Destaques dos alunos -->
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Destaques dos Alunos</h5>
-            <p class="card-text">Descrição da área de destaques dos alunos.</p>
-            <a href="#" class="btn btn-primary">Ver Mais</a>
-          </div>
-        </div>
-      </div>
+
+      
+          <!-- Destaques dos alunos -->
+            <!-- Destaques dos alunos -->
+            <div class="col-md-6" >
+                <div class="card" style="max-width: 400px;"> <!-- Defina a largura máxima do card -->
+                    <div class="card-body">
+                        <h5 class="card-title">Destaques dos Alunos</h5>
+                        <div class="row row-cols-1 row-cols-md-2 g-4">
+                            {% for aluno_destaque in alunos_destaque %}
+                            <div class="col">
+                                <div class="card">
+                                    {% if aluno_destaque.aluno.foto %}
+                                        <img src="{{ aluno_destaque.aluno.foto.url }}" class="card-img-top" alt="{{ aluno_destaque.aluno.nome }}" style="max-height: 200px;"> <!-- Defina a altura máxima da imagem -->
+                                    {% else %}
+                                        <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
+                                            <i class="bi bi-person-circle" style="font-size: 5rem; color: #6c757d;"></i> <!-- Ícone de usuário Bootstrap -->
+                                        </div>
+                                    {% endif %}
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ aluno_destaque.aluno.nome }}</h5>
+                                        <p class="card-text">{{ aluno_destaque.descricao }}</p>
+                                        <!-- Adicione outros campos relevantes aqui -->
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+    
       <!-- Recursos educacionais -->
       <div class="col-md-6">
         <div class="card">
