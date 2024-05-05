@@ -58,15 +58,6 @@ class Professor(models.Model):
         
     def __str__(self):
         return f"{self.nome} - {self.departamento}"
-    
-class AlunoDestaque(models.Model):
-    aluno = models.ForeignKey('Aluno', on_delete=models.CASCADE)
-    descricao = models.TextField()
-    data = models.DateField(auto_now_add=True)
-    autor = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.aluno.nome} - {self.descricao}"
 
 class DisciplinaSelecionada(models.Model):
     professor = models.ForeignKey(Professor, on_delete=models.CASCADE)

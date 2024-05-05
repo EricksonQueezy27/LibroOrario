@@ -293,33 +293,13 @@ class StoryForm(forms.ModelForm):
         model = Story
         fields = ['imagem', 'titulo', 'descricao']
         
+
 class FormularioFeedback(forms.ModelForm):
     class Meta:
         model = Feedback
         fields = ['comentario']
-        widgets = {
-            'comentario': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-        }
 
 class FormularioPesquisa(forms.ModelForm):
     class Meta:
         model = Pesquisa
         fields = ['pergunta_1', 'pergunta_2']  
-
-class BaseForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs.update({'class': 'form-control'})
-
-class FormularioAlunoDestaque(forms.Form):
-    descricao = forms.CharField(label='Descrição', max_length=100)
-    
-    def __init__(self, professor, *args, **kwargs):
-        super(FormularioAlunoDestaque, self).__init__(*args, **kwargs)
-        # Filtra os alunos associados às turmas do professor
-        alunos_associados = Aluno.objects.filter(turma__in=professor.turmas_associadas.all())
-        # Cria uma lista de tuplas (id, nome) para usar como escolhas no campo aluno
-        escolhas_alunos = [(aluno.id, aluno.nome) for aluno in alunos_associados]
-        # Define o campo aluno como um ModelChoiceField com as escolhas dos alunos
-        self.fields['aluno'] = forms.ChoiceField(choices=escolhas_alunos, label='Aluno')

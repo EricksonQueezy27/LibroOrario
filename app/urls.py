@@ -77,7 +77,6 @@ urlpatterns = [
     path('incrementar-visualizacao/<int:story_id>/', incrementar_visualizacao, name='incrementar_visualizacao'),
     path('feedback/', enviar_feedback, name='enviar_feedback'),
     path('pesquisa/', enviar_pesquisa, name='enviar_pesquisa'),
-    path('colocar-aluno-destaque/', colocar_aluno_destaque, name='colocar_aluno_destaque'),
 
 
 

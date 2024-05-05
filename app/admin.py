@@ -39,7 +39,6 @@ admin.site.register(Eventos)
 admin.site.register(Story)
 admin.site.register(Feedback)
 admin.site.register(Pesquisa)
-admin.site.register(AlunoDestaque)
 
 class ComunicadoAdmin(admin.ModelAdmin):
     list_display = ('titulo', 'data_publicacao', 'destino', 'requerido_pagamento')
