@@ -438,7 +438,39 @@
                 </div>
               </div>
 
-            </div><!-- End Customers Card -->
+            </div>
+            
+            <div class="col-xxl-4 col-xl-12">
+
+              <div class="card info-card customers-card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Iniciar nova aula</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-people"></i>
+                    </div>
+                    <div class="ps-3">
+                      {% for alunos in professor.turmas_associadas.alunos_relacionados %}
+                      <h6>{{alunos_relacionados}}</h6>
+                      {%endfor%}
+                      <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+            
+            <!-- End Customers Card -->
      <!-- Informações do Professor -->
 <div class="col-lg-14 mb-4 order-0">
   <div class="card">
@@ -446,15 +478,29 @@
           <div class="col-sm-7">
               <div class="card-body">
                   <h5 class="card-title text-primary">Sr. {{ user.first_name }} 🎉</h5>
+                  
+                  {% if horarios_proximos %}
                   <p class="mb-4">
-                      Bem-Vindo à Sua Página Professor! Use a Barra de navegação para acessar diferentes seções da plataforma.
+                    Faltam {{ horarios_proximos.tempo_restante}} horas para começar a sua aula de {{ horarios_proximos.disciplina.nome}} Às {{ horarios_proximos.hora_inicio}}
                   </p>
+                  <a href="/iniciar_aula/{{horarios_proximos.turma.id}}" class="btn btn-sm btn-outline-primary">Iniciar Aula</a>
+                  {% elif horarios_proximos %}
+                  <p class="mb-4">
+                    Faltam {{ horarios_proximos.tempo_restante}} horas para começar a sua aula de {{ horarios_proximos.disciplina.nome}} Às {{ horarios_proximos.hora_inicio}}
+                  </p>
+                  <a href="{% url 'turmas' %}" class="btn btn-sm btn-outline-primary">Iniciar Aula</a>
+                  
+                  {% else %}
+                   <p class="mb-4">
+                    {% lorem 1 b random %}
+                   </p>
                   <a href="{% url 'turmas' %}" class="btn btn-sm btn-outline-primary">Ver Turmas</a>
+                   {% endif %}
               </div>
           </div>
           <div class="col-sm-5 text-center text-sm-left">
               <div class="card-body pb-0 px-0 px-md-4">
-                  <img src="/media/{{ user.foto }}" height="180" width="180" alt="View Badge User" />
+                  <img src="{% static 'img/teacher.svg' %}" height="180" width="180" alt="View Badge User" />
               </div>
           </div>
       </div>
@@ -465,7 +511,7 @@
       <h5 class="card-title mb-3 font-weight-bold">Horário do Professor</h5>
 
       <div class="row">
-          {% for horario in horarios_professor %}
+          {% comment %} {% for horario in horarios_professor %}
           <div class="col-lg-6 mb-4">
               <div class="card bg-primary text-white shadow">
                   <div class="card-body">
@@ -482,7 +528,7 @@
                   </div>
               </div>
           </div>
-          {% endfor %}
+          {% endfor %} {% endcomment %}
       </div>
   </div>
 </div>
@@ -580,8 +626,7 @@
 </div>
     </section>
 
-  </main><!-- End #main -->
-
+ 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">

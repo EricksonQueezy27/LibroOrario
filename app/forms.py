@@ -251,7 +251,7 @@ class ProfessorCreationForm(forms.ModelForm):
 
     class Meta:
         model = Professor
-        fields = ['username', 'email', 'nome', 'conteudos_educacionais', 'departamento', 'titulacao', 'disciplinas_associadas', 'turmas_associadas', 'foto', 'horarios']
+        fields = ['username', 'email', 'nome', 'conteudos_educacionais', 'departamento', 'titulacao', 'disciplinas_associadas', 'turmas_associadas', 'foto']
 
 class EncarregadoForm(forms.ModelForm):
     username = forms.ModelChoiceField(queryset=User.objects.all(), label='Nome de Usuário')

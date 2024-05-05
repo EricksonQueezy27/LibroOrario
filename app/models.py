@@ -17,6 +17,7 @@ class Disciplina(models.Model):
     def __str__(self):
         return self.nome
     
+    
 class Turma(models.Model):
     nome = models.CharField(max_length=30)
     imagem = models.ImageField(upload_to="images/turmas/", blank=True, null=True)
@@ -53,7 +54,7 @@ class Professor(models.Model):
     disciplinas_associadas = models.ManyToManyField(Disciplina)
     turmas_associadas = models.ManyToManyField(Turma,blank=True)
     foto = models.ImageField(upload_to="images/professores/", blank=True, null=True)
-    horarios = models.ManyToManyField('Horario', blank=True, related_name='horarios_professor')
+    # horarios = models.ManyToManyField('Horario', blank=True, related_name='horarios_professor')
         
     def __str__(self):
         return f"{self.nome} - {self.departamento}"
@@ -179,6 +180,8 @@ class Aula(models.Model):
     turma = models.ForeignKey('Turma', on_delete=models.CASCADE)
     disciplina = models.ForeignKey('Disciplina', on_delete=models.CASCADE)
     data = models.DateField()
+    Tema = models.CharField( max_length=500)
+    objectivo = models.TextField( max_length=1000)
     inicio = models.TimeField()
     fim = models.TimeField()
 
@@ -366,7 +369,9 @@ class Horario(models.Model):
     hora_inicio = models.TimeField()
     hora_termino = models.TimeField()
     sala_aula = models.CharField(max_length=50)
-    turma = models.ForeignKey(Turma, on_delete=models.CASCADE)
+    professor = models.ForeignKey(Professor, on_delete=models.CASCADE)
+
+    # turma = models.ForeignKey(Turma, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.disciplina} - {self.dia_semana} - {self.hora_inicio} às {self.hora_termino}"
