@@ -521,9 +521,11 @@
                 <a href="{% url 'turmas' %}" class="btn btn-sm btn-outline-primary">Iniciar Aula</a>
                 
                 {% else %}
-                 <p class="mb-4">
-                  {% lorem 1 b random %}
-                 </p>
+                <div class="container">
+                  <h2>{{ greeting }}, {{ user.first_name }}!</h2>
+                  <p>{{ schedule_text }}</p>
+                  <!-- Restante do conteúdo -->
+               </div>
                 <a href="{% url 'turmas' %}" class="btn btn-sm btn-outline-primary">Ver Turmas</a>
                  {% endif %}
               </div>
