@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat de Professores e Encarregados</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    .chat-container {
+      max-width: 600px;
+      margin: auto;
+      margin-top: 50px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .chat-box {
+      height: 400px;
+      overflow-y: scroll;
+    }
+
+    .message {
+      padding: 10px;
+      margin-bottom: 5px;
+      border-radius: 5px;
+    }
+
+    .message.sender {
+      background-color: #007bff;
+      color: #fff;
+      align-self: flex-end;
+    }
+
+    .message.receiver {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+          <a class="navbar-brand" href="{% url 'encarregado' %}">LibroOrario <i class="fas fa-book"></i></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="{% url 'encarregado' %}"><i class="fas fa-home"></i> Início</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-users"></i> Professores</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-user-graduate"></i> Alunos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-cogs"></i> Configurações</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+<div class="container">
+  <div class="chat-container">
+    <div class="chat-box">
+      <div class="message receiver">Olá, como posso ajudá-lo?</div>
+      <div class="message sender">Olá, gostaria de saber como está o desempenho do meu filho na escola.</div>
+      <div class="message receiver">Seu filho está tendo um bom desempenho acadêmico. No entanto, gostaria de marcar uma reunião para discutir mais detalhes.</div>
+    </div>
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="Digite sua mensagem..." aria-label="Digite sua mensagem..." aria-describedby="button-addon2">
+      <div class="input-group-append">
+        <button class="btn btn-outline-primary" type="button" id="button-addon2">Enviar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
