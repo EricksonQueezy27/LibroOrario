@@ -686,34 +686,40 @@ def detalhes_turma(request, turma_id):
 
     return render(request, "detalhes_turma.html", context)
 
+def aula(request, aula_id):
+    aula = Aula.objects.get(id=aula_id)
+    context = {
+        'aula':aula,
+    }
+    print("Data")
+    return render(request, "aula.html", context=context)
 
 def iniciar_aula_turma(request, turma_id):
-    horario_data = Horario.objects.filter(id=turma_id)
+    horario_data = Horario.objects.filter(turma=turma_id)
     date = datetime.now()
+    print(horario_data)
     context = {}
     if horario_data:
         context = {"horario": horario_data.get(),"date": date }
         print(date)
         if request.method == 'POST':
             data = request.POST
-            disciplina_selecionada = get_object_or_404(Disciplina, pk=horario_data.get().disciplina)
-            turma = get_object_or_404(Turma, pk=horario_data.get().turma)
+            disciplina_selecionada = Disciplina.objects.get(id=horario_data.get().disciplina_id)
+            turmaObj = Turma.objects.get(id=horario_data.get().turma_id)
             tema = data["Tema"]
             objectivos = data["objectivos"]
             dateFim = data["dateFim"]
             dateInicio = data["dateInicio"]
-            aula = Aula(
-                turma=turma,
-                Tema=tema,
-                objectivos=objectivos,
-                disciplina=disciplina_selecionada,
-                data=data,
-                inicio=dateInicio,
-                fim=dateFim,
-            )
-            aula.save()
+            aula = Aula()
             
-        
+            aula.turma=turmaObj
+            aula.Tema=tema
+            aula.objectivo=objectivos
+            aula.disciplina=disciplina_selecionada
+            aula.inicio=dateInicio
+            aula.fim=dateFim
+            aula.save()
+            return redirect("aula", aula.id)
 
     else:
         context = {"error": "Erro ao buscar dados!"}
