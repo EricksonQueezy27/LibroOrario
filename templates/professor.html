@@ -467,139 +467,6 @@
               </div>
 
             </div>
-            
-            <!-- End Customers Card -->
-     <!-- Informações do Professor -->
-<div class="col-lg-14 mb-4 order-0">
-  <div class="card">
-      <div class="d-flex align-items-end row">
-          <div class="col-sm-7">
-              <div class="card-body">
-                  <h5 class="card-title text-primary">Sr. {{ user.first_name }} 🎉</h5>
-                  
-                  {% if horarios_proximos %}
-                  <p class="mb-4">
-                    Faltam {{ horarios_proximos.tempo_restante}} horas para começar a sua aula de {{ horarios_proximos.disciplina.nome}} Às {{ horarios_proximos.hora_inicio}}
-                  </p>
-                  <a href="/iniciar_aula/{{horarios_proximos.id}}" class="btn btn-sm btn-outline-primary">Iniciar Aula</a>
-                  {% elif horarios_proximos %}
-                  <p class="mb-4">
-                    Faltam {{ horarios_proximos.tempo_restante}} horas para começar a sua aula de {{ horarios_proximos.disciplina.nome}} Às {{ horarios_proximos.hora_inicio}}
-                  </p>
-                  <a href="/iniciar_aula/{{horarios_proximos.id}}" class="btn btn-sm btn-outline-primary">Iniciar Aula</a>
-                  
-                  {% else %}
-                   <p class="mb-4">
-                    {% lorem 1 b random %}
-                   </p>
-                   <a href="/iniciar_aula/{{horarios_proximos.id}}" class="btn btn-sm btn-outline-primary">Iniciar Aula</a>
-                   {% endif %}
-              </div>
-          </div>
-          <div class="col-sm-5 text-center text-sm-left">
-              <div class="card-body pb-0 px-0 px-md-4">
-                  <img src="{% static 'img/teacher.svg' %}" height="180" width="180" alt="View Badge User" />
-              </div>
-          </div>
-      </div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-body pb-0">
-      <h5 class="card-title mb-3 font-weight-bold">Horário do Professor</h5>
-
-      <div class="row">
-          {% comment %} {% for horario in horarios_professor %}
-          <div class="col-lg-6 mb-4">
-              <div class="card bg-primary text-white shadow">
-                  <div class="card-body">
-                      <div class="card-text">
-                          <ul class="list-unstyled">
-                              <li class="badge badge-success mb-2">{{ horario }}</li>
-                              <ul class="list-unstyled">
-                                  {% for aula in horario.aulas.all %}
-                                  <li class="badge badge-warning">{{ aula }}</li>
-                                  {% endfor %}
-                              </ul>
-                          </ul>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          {% endfor %} {% endcomment %}
-      </div>
-  </div>
-</div>
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Publicidade <span>| Escolar</span> </h5>
-            
-                <!-- Slides with captions -->
-                <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
-                  <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                  </div>
-            
-                  <div class="carousel-inner">
-                    {% for pub in publicidade %}
-                    <div class="carousel-item{% if forloop.first %} active{% endif %}">
-                      <img src="{{ pub.imagem.url }}" class="d-block w-100" alt="...">
-                      <div class="carousel-caption d-none d-md-block">
-                        <p class="badge bg-warning">{{ pub.titulo }}</p>
-                        <br>
-                        <p class="badge bg-warning">{{ pub.conteudo }}</p>
-                      </div>
-                    </div>
-                    {% endfor %}
-                  </div>
-            
-                  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                  </button>
-                  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                  </button>
-                </div><!-- End Slides with captions -->
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-body">
-                  <h5 class="card-title mb-3 font-weight-bold">Adicionar/Modificar Evento</h5>
-                  <form method="post" action="{% url 'prof' %}">
-                      {% csrf_token %}
-                      <div class="mb-3">
-                          <label for="id_titulo" class="form-label">Título:</label>
-                          {{ evento_form.titulo }}
-                      </div>
-                      <div class="mb-3">
-                          <label for="id_descricao" class="form-label">Descrição:</label>
-                          {{ evento_form.descricao }}
-                      </div>
-                      <div class="mb-3">
-                          <label for="id_data" class="form-label">Data:</label>
-                          {{ evento_form.data }}
-                      </div>
-                      <div class="mb-3">
-                          <label for="id_hora_inicio" class="form-label">Hora de Início:</label>
-                          {{ evento_form.hora_inicio }}
-                      </div>
-                      <div class="mb-3">
-                          <label for="id_hora_fim" class="form-label">Hora de Fim:</label>
-                          {{ evento_form.hora_fim }}
-                      </div>
-                      <button type="submit" class="btn btn-primary">Salvar Evento</button>
-                  </form>
-              </div>
-          </div>
-        </div>
-        
-
-
-
 <!-- Modal -->
 <div class="modal fade" id="smsModal" tabindex="-1" role="dialog" aria-labelledby="smsModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -624,7 +491,173 @@
 </div>
     </section>
 
- 
+    <section class="section dashboard">
+      <div class="row">
+
+        <!-- Left side columns -->
+        <div class="col-lg-8">
+          <div class="row">
+
+            
+            <hr>
+    </section>
+    <section class="section">
+        <div class="row align-items-top">
+          <div class="col-lg-6">
+  
+            <!-- Default Card -->
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">{{ user.first_name }} 🎉</h5>      
+                {% if horarios_proximos %}
+                <p class="mb-4">
+                  Faltam {{ horarios_proximos.tempo_restante}} horas para começar a sua aula de {{ horarios_proximos.disciplina.nome}} Às {{ horarios_proximos.hora_inicio}}
+                </p>
+                <a href="/iniciar_aula/{{horarios_proximos.turma.id}}" class="btn btn-sm btn-outline-primary">Iniciar Aula</a>
+                {% elif horarios_proximos %}
+                <p class="mb-4">
+                  Faltam {{ horarios_proximos.tempo_restante}} horas para começar a sua aula de {{ horarios_proximos.disciplina.nome}} Às {{ horarios_proximos.hora_inicio}}
+                </p>
+                <a href="{% url 'turmas' %}" class="btn btn-sm btn-outline-primary">Iniciar Aula</a>
+                
+                {% else %}
+                <div class="container">
+                  <h2>{{ greeting }}, {{ user.first_name }}!</h2>
+                  <p>{{ schedule_text }}</p>
+                  <!-- Restante do conteúdo -->
+               </div>
+                <a href="{% url 'turmas' %}" class="btn btn-sm btn-outline-primary">Ver Turmas</a>
+                 {% endif %}
+              </div>
+            </div><!-- End Default Card -->
+  
+          </div>
+          
+          <div class="col-lg-3">
+            <div class="card">
+                <img src="{% static 'img/teacher.svg' %}" class="card-img-top" alt="Imagem de professor">
+                <div class="card-body">
+                    <p class="card-text">LibroOrario - Seu assistente educacional</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3">
+            <div class="card">
+                <img src="{% static 'img/9842877.jpg' %}" class="card-img-top" alt="Imagem de professor">
+                <div class="card-body">
+                    <p class="card-text">LibroOrario - Organize suas aulas facilmente</p>
+                </div>
+            </div>
+        </div>
+        
+    
+        </div>
+    </div>
+            <!-- Card with an image on bottom -->
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Horário do Professor</h5>
+                {% for horario in horarios_professor %}
+                <div class="col-lg-6 mb-4">
+                    <div class="card bg-primary text-white shadow">
+                        <div class="card-body">
+                            <div class="card-text">
+                                <ul class="list-unstyled">
+                                    <li class="badge badge-success mb-2">{{ horario }}</li>
+                                    <ul class="list-unstyled">
+                                        {% for aula in horario.aulas.all %}
+                                        <li class="badge badge-warning">{{ aula }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+              </div>
+              <img src="{% static 'img/icons8-agenda-64.png' %}" class="card-img-bottom" alt="..." style="width: 50px;">
+
+            </div><!-- End Card with an image on bottom -->
+  
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Publicidade <span>| Escolar</span> </h5>
+          
+              <!-- Slides with captions -->
+              <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                  <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                  <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                  <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                </div>
+          
+                <div class="carousel-inner">
+                  {% for pub in publicidade %}
+                  <div class="carousel-item{% if forloop.first %} active{% endif %}">
+                    <img src="{{ pub.imagem.url }}" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                      <p class="badge bg-warning">{{ pub.titulo }}</p>
+                      <br>
+                      <p class="badge bg-warning">{{ pub.conteudo }}</p>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+          
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div><!-- End Slides with captions -->
+            </div>
+          </div>
+  
+            <!-- Card with titles, buttons, and links -->
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Card with titles, buttons, and links</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <p class="card-text"><a href="#" class="btn btn-primary">Button</a></p>
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
+              </div>
+            </div><!-- End Card with titles, buttons, and links -->
+  
+            <!-- Special title treatmen -->
+            <div class="card text-center">
+              <div class="card-header">
+                <ul class="nav nav-pills card-header-pills">
+                  <li class="nav-item">
+                    <a class="nav-link active" href="#">Active</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Special title treatment</h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+              </div>
+            </div><!-- End Special title treatmen -->
+  
+          </div>
+  
+        </div>
+    </section>
+  
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">

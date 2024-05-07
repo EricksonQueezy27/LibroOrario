@@ -56,9 +56,7 @@
         <button type="submit" title="Search"><i class="bi bi-search"></i></button>
       </form>     
     </div><!-- End Search Bar -->
-    <a href="{% url 'feed_noticias' %}" class="btn btn-primary">
-      <i class="bi bi-newspaper"></i><span>Ver Feed de Notícias</span>
-  </a>
+ 
   
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
@@ -286,7 +284,7 @@
         </a>
         <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="">
+            <a href="{% url 'chat' %}">
               <i class="bi bi-circle"></i><span>Chat</span>
             </a>
           </li>
@@ -332,6 +330,9 @@
           <li class="breadcrumb-item active">Bem-Vindo</li>
         </ol>
       </nav>
+      <a href="{% url 'feed_noticias' %}" class="btn btn-primary">
+        <i class="bi bi-newspaper"></i><span>Ver Feed de Notícias</span>
+    </a>
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
@@ -406,7 +407,7 @@
             <!-- Recent Sales -->
             <div class="col-12">
               <div class="card recent-sales overflow-auto">
-
+                {% if presenca %}
                 <div class="container">
                   <div class="card-body">
                       <h5 class="card-title">Presença dos Alunos <span>| {{ aula_atual.data }}</span></h5>
@@ -449,8 +450,21 @@
                       </div>
                   </div>
               </div>
-              
-
+              {%else%}
+              <div class="card">
+                <div class="card-body">
+                  <div class="col-lg-3">
+                    <div class="card">
+                        <img src="{% static 'img/9842877.jpg' %}" class="card-img-top" alt="Imagem de professor">
+                        <div class="card-body">
+                            <p class="card-text">LibroOrario - Organize suas aulas facilmente</p>
+                        </div>
+                    </div>
+                </div>
+                </div>
+              </div>
+              <marquee behavior="" direction="">Aqui Você terá acesso a presenças de todos os teus Educandos| Sem Aulas No Momento</marquee>
+              {%endif%}
               </div>
             </div><!-- End Recent Sales -->
 

@@ -153,9 +153,60 @@ def detalhes_aluno(request, aluno_id):
         "form_comportamento": form_comportamento,
         "comportamento_aluno": comportamento_aluno,
     }
-    return render(request, "detalhes_aluno.html", context)
+    return render(request, 'detalhes_aluno.html', context)
 
 
+def get_dynamic_text():
+    current_time = datetime.now().time()
+    current_weekday = datetime.now().weekday()
+
+    if current_time.hour < 12:
+        greeting = "Bom dia, Professor(a)!"
+    elif current_time.hour < 18:
+        greeting = "Boa tarde, Professor(a)!"
+    else:
+        greeting = "Boa noite, Professor(a)!"
+
+    if current_weekday < 5:  # Segunda a sexta-feira
+        if current_time.hour < 8:
+            schedule_text = "Bom dia! Hora de se preparar para as aulas do dia."
+        elif current_time.hour < 10:
+            schedule_text = "Hora de começar as aulas. Mantenha o foco!"
+        elif current_time.hour < 12:
+            schedule_text = "Aulas em andamento. Esteja disponível para ajudar os alunos."
+        elif current_time.hour < 14:
+            schedule_text = "Hora do intervalo. Aproveite para descansar um pouco."
+        elif current_time.hour < 16:
+            schedule_text = "Retorno das aulas. Continue inspirando seus alunos."
+        elif current_time.hour < 18:
+            schedule_text = "Aulas do dia encerradas. Hora de preparar o material para amanhã."
+        else:
+            schedule_text = "Seu dia como professor acabou. Recarregue suas energias!"
+
+    else:  # Fim de semana
+        if current_time.hour < 10:
+            schedule_text = "Bom dia! Aproveite o fim de semana para recarregar as energias."
+        elif current_time.hour < 12:
+            schedule_text = "Um novo dia. Que tal revisar seu plano de aulas?"
+        elif current_time.hour < 14:
+            schedule_text = "Hora do almoço. Descanse e relaxe um pouco."
+        elif current_time.hour < 16:
+            schedule_text = "Tarde tranquila. Dedique um tempo para sua paixão pela educação."
+        elif current_time.hour < 18:
+            schedule_text = "Fim de tarde. Reflita sobre seus objetivos como educador."
+        else:
+            schedule_text = "Boa noite, Professor! Amanhã é um novo dia cheio de oportunidades."
+
+    return greeting, schedule_text
+
+# Exemplo de uso:
+for _ in range(6):
+    greeting, schedule_text = get_dynamic_text()
+    print(greeting)
+    print(schedule_text)
+    print("-----------------")
+    
+    
 @login_required
 def prof(request):
     professor = get_object_or_404(Professor, user=request.user)
@@ -166,6 +217,7 @@ def prof(request):
     publicidade = Publicidade.objects.all()
     alunos = Aluno.objects.all()
     alunos_relacionados = turmas_associadas.count()
+    greeting, schedule_text = get_dynamic_text()
 
     # Mensagens não respondidas pelo professor
     mensagens_nao_respondidas = MensagemSMS.objects.filter(
@@ -286,23 +338,25 @@ def prof(request):
         # Restante do código para processar outros formulários...
 
     context = {
-        "professor": professor,
-        "evento_form": evento_form,
-        "sms_form": sms_form,
-        "publicidade": publicidade,
-        "turmas_associados": turmas_associadas,
-        "numero_de_turmas": numero_de_turmas,
-        "horarios_proximos": horarios_proximos,
-        "horarios_vencido": horarios_vencido,
-        "numero_de_disciplinas": numero_de_disciplinas,
-        "disciplinas_associadas": disciplinas_associadas,
-        "alunos_relacionados": alunos_relacionados,
-        "alunos": alunos,
-        "mensagens_respondidas": mensagens_respondidas,
-        "mensagens_nao_respondidas": mensagens_nao_respondidas,
-        "resposta_form": resposta_form,
-        "numero_mensagens_respondidas": numero_mensagens_respondidas,
-        "selecao_disciplina_form": selecao_disciplina_form,  # Adicione o formulário de seleção de disciplina ao contexto
+        'professor': professor,
+        'evento_form': evento_form,
+        'sms_form': sms_form,
+        'publicidade': publicidade,
+        'turmas_associados': turmas_associadas,
+        'numero_de_turmas': numero_de_turmas,
+        'horarios_proximos': horarios_proximos,
+        'horarios_vencido': horarios_vencido, 
+        'numero_de_disciplinas': numero_de_disciplinas,
+        'disciplinas_associadas': disciplinas_associadas,
+        'alunos_relacionados': alunos_relacionados,
+        'alunos': alunos,
+        'mensagens_respondidas': mensagens_respondidas,
+        'mensagens_nao_respondidas': mensagens_nao_respondidas,
+        'resposta_form': resposta_form,
+        'numero_mensagens_respondidas': numero_mensagens_respondidas,
+        'selecao_disciplina_form': selecao_disciplina_form,  # Adicione o formulário de seleção de disciplina ao contexto
+        'greeting': greeting,
+        'schedule_text': schedule_text,
     }
 
     return render(request, "professor.html", context)
@@ -1441,4 +1495,8 @@ def enviar_pesquisa(request):
             )  # Redireciona para uma página de sucesso após enviar a pesquisa
     else:
         formulario = FormularioPesquisa()
-    return render(request, "feed_noticias.html", {"formulario": formulario})
+    return render(request, 'feed_noticias.html', {'formulario': formulario})
+
+def chat(request):
+    
+    return render(request, 'chat.html')
