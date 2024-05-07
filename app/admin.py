@@ -5,7 +5,7 @@ from .models import *
 admin.site.site_header = "LibroOraio"
 admin.site.site_title = "Gerenciador"
 admin.site.index_title = "Sistema Escolar LibroOrarrio"
-admin.site.site_url = "http://192.168.8.116:3000"
+# admin.site.site_url = "http://192.168.8.116:3000"
 admin.site.name  = "LibroOrario"
 # admin.site.register(Notificacao)
 admin.site.register(Publicidade)

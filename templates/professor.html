@@ -481,18 +481,18 @@
                   <p class="mb-4">
                     Faltam {{ horarios_proximos.tempo_restante}} horas para começar a sua aula de {{ horarios_proximos.disciplina.nome}} Às {{ horarios_proximos.hora_inicio}}
                   </p>
-                  <a href="/iniciar_aula/{{horarios_proximos.turma.id}}" class="btn btn-sm btn-outline-primary">Iniciar Aula</a>
+                  <a href="/iniciar_aula/{{horarios_proximos.id}}" class="btn btn-sm btn-outline-primary">Iniciar Aula</a>
                   {% elif horarios_proximos %}
                   <p class="mb-4">
                     Faltam {{ horarios_proximos.tempo_restante}} horas para começar a sua aula de {{ horarios_proximos.disciplina.nome}} Às {{ horarios_proximos.hora_inicio}}
                   </p>
-                  <a href="{% url 'turmas' %}" class="btn btn-sm btn-outline-primary">Iniciar Aula</a>
+                  <a href="/iniciar_aula/{{horarios_proximos.id}}" class="btn btn-sm btn-outline-primary">Iniciar Aula</a>
                   
                   {% else %}
                    <p class="mb-4">
                     {% lorem 1 b random %}
                    </p>
-                  <a href="{% url 'turmas' %}" class="btn btn-sm btn-outline-primary">Ver Turmas</a>
+                   <a href="/iniciar_aula/{{horarios_proximos.id}}" class="btn btn-sm btn-outline-primary">Iniciar Aula</a>
                    {% endif %}
               </div>
           </div>
