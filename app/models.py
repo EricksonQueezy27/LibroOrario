@@ -186,15 +186,18 @@ class Presenca(models.Model):
     PRESENCA_CHOICES = [
         ('P', 'Presente'),
         ('A', 'Ausente'),
+        ('T', 'Atrasado'),
+        ('J', 'Justificado'),
     ]
 
     aluno = models.ForeignKey('Aluno', on_delete=models.CASCADE)
     aula = models.ForeignKey('Aula', on_delete=models.CASCADE)
     data = models.DateField()
     presente = models.CharField(max_length=1, choices=PRESENCA_CHOICES, default='A')
-
+    nota = models.FloatField(default=0.0)
     def __str__(self):
         return f'{self.aluno.nome} - {self.aula} - {self.data} - {self.get_presente_display()}'
+
     
 # class Presenca(models.Model):
 #     aluno = models.ForeignKey('Aluno', on_delete=models.CASCADE)

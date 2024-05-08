@@ -19,48 +19,39 @@
     </div>
 <h1>Lista de Professores</h1>
 <div class="row">
-    {% for professor in professores %}
-    <div class="col-lg-4">
-        <div class="card mb-3">
-            <div class="card-header">
-                <h5 class="card-title">Professor(a) {{ professor.nome }}</h5>
-            </div>
-            {% if professor.foto %}
-                <img src="{{ professor.foto.url }}" class="card-img-top" alt="Foto do Professor">
-            {% else %}
-                <!-- Ícone de usuário usando Bootstrap -->
-          <!-- Ícone de usuário usando Bootstrap -->
-            <span class="bi bi-person-circle" style="font-size: 3em; display: block; margin: 0 auto;"></span>
-
-
-            {% endif %}
-            <div class="card-body">
-                <p class="card-text">Email: {{ professor.email }}</p>
-                <p class="card-text">Departamento: {{ professor.departamento }}</p>
-                <p class="card-text">Titulação: {{ professor.titulacao }}</p>
-                <p class="card-text">Disciplinas Associadas:</p>
-                <ul class="list-group">
-                    {% for disciplina in professor.disciplinas_associadas.all %}
-                    <li class="list-group-item">{{ disciplina.nome }}</li>
-                    {% endfor %}
-                </ul>
-                <p class="card-text">Turmas Associadas:</p>
-                <ul class="list-group">
-                    {% for turma in professor.turmas_associadas.all %}
-                    <li class="list-group-item">{{ turma.nome }} - {{ turma.classe }}</li>
-                    <a href="{% url 'visualizar_turma' turma.id %}" class="btn btn-primary">Visualizar Turma</a>
-                    <br> <!-- Adiciona uma quebra de linha após cada turma -->
-                    {% endfor %}
-                </ul>
-
-                  <br>
-                <!-- Link para atribuir turmas e horários -->
-                <a href="{% url 'atribuir_turmas_horarios' professor.id %}" class="btn btn-success">Atribuir Turmas e Horários</a>
-                <a href="{% url 'eliminar_professor' professor.id %}" class="btn btn-danger">Eliminar Professor</a>
-
-            </div>
-        </div>
-    </div>
-    {% endfor %}
+  {% for professor in professores %}
+  <div class="col-lg-3 mb-3">
+      <div class="card">
+          <div class="card-body">
+              <h5 class="card-title">Professor(a) {{ professor.nome }}</h5>
+              {% if professor.foto %}
+                  <img src="{{ professor.foto.url }}" class="card-img-top" alt="Foto do Professor">
+              {% else %}
+                  <!-- Ícone de usuário usando Bootstrap -->
+                  <span class="bi bi-person-circle" style="font-size: 2em;"></span>
+              {% endif %}
+              <p class="card-text">Email: {{ professor.email }}</p>
+              <p class="card-text">Departamento: {{ professor.departamento }}</p>
+              <p class="card-text">Titulação: {{ professor.titulacao }}</p>
+              <ul class="list-group">
+                {% for disciplina in professor.disciplinas_associadas.all %}
+                <li class="list-group-item">{{ disciplina.nome }}</li>
+                {% endfor %}
+            </ul>
+            <p class="card-text">Turmas Associadas:</p>
+            <ul class="list-group">
+                {% for turma in professor.turmas_associadas.all %}
+                <li class="list-group-item">{{ turma.nome }} - {{ turma.classe }}</li>
+                <a href="{% url 'visualizar_turma' turma.id %}" class="btn btn-primary btn-sm">Visualizar Turma</a>
+                <br> 
+                {% endfor %}
+            </ul>
+              <a href="{% url 'atribuir_turmas_horarios' professor.id %}" class="btn btn-success btn-sm">Atribuir Turmas e Horários</a>
+              <a href="{% url 'eliminar_professor' professor.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+          </div>
+      </div>
+  </div>
+  {% endfor %}
 </div>
+
 {% endblock %}

@@ -29,6 +29,48 @@
 
   <!-- Template Main CSS File -->
   <link href={% static "assets/css/style.css" %} rel="stylesheet">
+  <style>
+    /* Estilos para a seção de detalhes da aula */
+.details-section {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.details-section .title {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.aula-details p {
+  margin-bottom: 5px;
+}
+
+/* Estilos para a seção de detalhes da turma */
+.turma-section {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.turma-section .title {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.turma-details p {
+  margin-bottom: 5px;
+}
+
+
+
+  </style>
 
 </head>
 
@@ -45,162 +87,10 @@
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div><!-- End Search Bar -->
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
 
-        <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle " href="#">
-            <i class="bi bi-search"></i>
-          </a>
-        </li><!-- End Search Icon-->
-
-        <li class="nav-item dropdown">
-
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-bell"></i>
-            <span class="badge bg-primary badge-number">4</span>
-          </a><!-- End Notification Icon -->
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-            <li class="dropdown-header">
-              You have 4 new notifications
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-exclamation-circle text-warning"></i>
-              <div>
-                <h4>Lorem Ipsum</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>30 min. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-x-circle text-danger"></i>
-              <div>
-                <h4>Atque rerum nesciunt</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>1 hr. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-check-circle text-success"></i>
-              <div>
-                <h4>Sit rerum fuga</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>2 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-info-circle text-primary"></i>
-              <div>
-                <h4>Dicta reprehenderit</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>4 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li class="dropdown-footer">
-              <a href="#">Show all notifications</a>
-            </li>
-
-          </ul><!-- End Notification Dropdown Items -->
-
-        </li><!-- End Notification Nav -->
-
-        <li class="nav-item dropdown">
-
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-chat-left-text"></i>
-            <span class="badge bg-success badge-number">3</span>
-          </a><!-- End Messages Icon -->
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-            <li class="dropdown-header">
-              You have 3 new messages
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>Maria Hudson</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>4 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>Anna Nelson</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>6 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>David Muldon</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>8 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="dropdown-footer">
-              <a href="#">Show all messages</a>
-            </li>
-
-          </ul><!-- End Messages Dropdown Items -->
-
-        </li><!-- End Messages Nav -->
 
         <li class="nav-item dropdown pe-3">
 
@@ -227,27 +117,6 @@
             <li>
               <hr class="dropdown-divider">
             </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Definição</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Ajuda</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
             <li>
               <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}" data-toggle="modal" data-target="#logoutModal">
                 <i class="bi bi-box-arrow-right"></i>
@@ -320,8 +189,23 @@
         </ol>
       </nav>
     </div><!-- End Page Title -->
-     <h5>Detalhes da Aula: {{ aula.Tema }}-{{aula.objectivo}}</h5>
-    
+    <div class="details-section">
+      <h5 class="title">Detalhes da Aula</h5>
+      <div class="aula-details">
+          <p><strong>Tema:</strong> {{ aula.Tema }}</p>
+          <p><strong>Objetivo:</strong> {{ aula.objectivo }}</p>
+          <p><strong>Data:</strong> {{ aula.data }}</p>
+      </div>
+  </div>
+  
+  <div class="turma-section">
+      <h5 class="title">Turma</h5>
+      <div class="turma-details">
+          <p><strong>Nome:</strong> {{ turma_aula.nome }}</p>
+          <p><strong>Classe:</strong> {{ turma_aula.classe }}</p>
+      </div>
+  </div>
+
     <div>
       
   <!-- Adicione esta parte ao seu template -->
@@ -338,7 +222,110 @@
         </div>
     </form>
  </div>
-    
+ <hr>
+    <br>
+    <div class="container">
+      <div class="row">
+          <div class="col">
+              <h1 class="display-4 text-center">Registrar Presenças</h1>
+          </div>
+      </div>
+  </div>
+  
+ <div class="container">
+  <div class="table-responsive">
+      <table class="table table-striped table-bordered">
+          <thead class="table-dark">
+              <tr>
+                  <th scope="col">Nº</th>
+                  <th scope="col">Nome</th>
+                  <th scope="col">Sexo</th>
+                  <th scope="col">Lançar Nota</th>
+                  <th scope="col">Presença</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for aluno in alunos_turma %}
+              <tr>
+                  <th scope="row">{{ forloop.counter }}</th>
+                  <td>{{ aluno.nome }}</td>
+                  <td>{{ aluno.sexo }}</td>
+                  <td>
+                      <button class="btn btn-primary">Lançar Nota</button>
+                  </td>
+                  <td>
+                      <div class="btn-group" role="group" aria-label="Opções de Presença">
+                        <form action="{% url 'registrar_presenca' aluno.id aula.id %}" method="post">
+                          {% csrf_token %}
+                          <button type="submit" name="presenca" value="P" id="btn-presente" class="btn btn-success">Presente</button>
+                          <button type="submit" name="presenca" value="A" id="btn-ausente" class="btn btn-danger">Ausente</button>
+                          <button type="button" class="btn btn-warning" onclick="abrirModalAtrasado('{{ aluno.nome }}')" data-bs-toggle="modal" data-bs-target="#atrasadoModal">Atrasado</button>
+                          <button type="button" class="btn btn-info" onclick="abrirModalJustificar('{{ aluno.nome }}')" data-bs-toggle="modal" data-bs-target="#justificarModal">Justificar</button>
+                      </form>
+                      
+                         
+                      </div>
+                  </td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+  </div>
+</div>
+<!-- Modal para registrar atraso -->
+<div class="modal fade" id="atrasadoModal" tabindex="-1" aria-labelledby="atrasadoModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="atrasadoModalLabel">Registrar Atraso de <span id="atrasadoNome"></span></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <p>O aluno <span id="atrasadoNome"></span> está atrasado.</p>
+              <form id="atrasadoForm">
+                  <!-- Campos para registrar o atraso -->
+                  <div class="mb-3">
+                      <label for="atrasadoTempo" class="form-label">Tempo de Atraso:</label>
+                      <input type="text" class="form-control" id="atrasadoTempo" name="atrasadoTempo">
+                  </div>
+              </form>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+              <button type="button" class="btn btn-primary" onclick="registrarAtraso()">Salvar</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- Modal para justificar ausência -->
+<!-- Modal para justificar ausência -->
+<div class="modal fade" id="justificarModal" tabindex="-1" aria-labelledby="justificarModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="justificarModalLabel">Justificar Ausência de <span id="justificarNome"></span></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <p>O aluno <span id="justificarNome"></span> está ausente.</p>
+              <form id="justificarForm">
+                  <!-- Campos para justificar a ausência -->
+                  <div class="mb-3">
+                      <label for="justificarMotivo" class="form-label">Motivo da Ausência:</label>
+                      <textarea class="form-control" id="justificarMotivo" name="justificarMotivo" rows="3"></textarea>
+                  </div>
+              </form>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+              <button type="button" class="btn btn-primary" id="salvarJustificativa">Salvar</button>
+
+          </div>
+      </div>
+  </div>
+</div>
+
     
   </main><!-- End #main -->
 
@@ -363,9 +350,65 @@
   <script src={% static "assets/vendor/simple-datatables/simple-datatables.js" %}></script>
   <script src={% static "assets/vendor/tinymce/tinymce.min.js" %}></script>
   <script src={% static "assets/vendor/php-email-form/validate.js" %}></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
   <!-- Template Main JS File -->
   <script src={% static "assets/js/main.js" %}></script>
+  <script>
+    $(document).ready(function() {
+        // Script para o botão "Presente"
+        $('#btn-presente').click(function() {
+            // Faz alguma ação específica, como abrir um modal ou exibir uma mensagem
+            alert('Presença registrada com sucesso!');
+            return false; // Evita o envio do formulário
+        });
+
+        // Script para o botão "Ausente"
+        $('#btn-ausente').click(function() {
+            // Faz alguma ação específica, como abrir um modal ou exibir uma mensagem
+            alert('Ausência registrada com sucesso!');
+            return false; // Evita o envio do formulário
+        });
+    });
+</script>
+
+
+
+  <script>
+    function abrirModalAtrasado(nomeAluno) {
+        // Exibir o nome do aluno no modal de atrasado
+        document.getElementById('atrasadoNome').textContent = nomeAluno;
+        // Abrir o modal de atrasado
+        $('#atrasadoModal').modal('show');
+    }
+
+    function abrirModalJustificar(nomeAluno) {
+        // Exibir o nome do aluno no modal de justificar
+        document.getElementById('justificarNome').textContent = nomeAluno;
+        // Abrir o modal de justificar
+        $('#justificarModal').modal('show');
+    }
+
+    function registrarAtraso() {
+        // Obter os dados do formulário de atraso
+        var tempo = document.getElementById('atrasadoTempo').value;
+        // Realizar ações para registrar o atraso (por exemplo, enviar para o backend)
+        // Aqui você pode adicionar lógica para enviar os dados do atraso para o backend usando AJAX
+        // Após o registro do atraso, feche o modal
+        $('#atrasadoModal').modal('hide');
+    }
+
+    function justificarAusencia() {
+        // Obter os dados do formulário de justificação
+        var motivo = document.getElementById('justificarMotivo').value;
+        // Realizar ações para justificar a ausência (por exemplo, enviar para o backend)
+        // Aqui você pode adicionar lógica para enviar os dados da justificação para o backend usando AJAX
+        // Após a justificação da ausência, feche o modal
+        $('#justificarModal').modal('hide');
+    }
+</script>
+
   <script>
 
     const currentMonth = new Date().toLocaleString('pt-pt', { month: 'long' });

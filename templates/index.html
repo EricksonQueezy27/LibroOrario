@@ -23,49 +23,57 @@
     <link href="{% static 'img/lg1.png' %}" rel="icon">
 </head>
 
-<body class="bg-gradient-primary">
+    <body class="bg-gradient-primary">
 
-    <div class="container">
 
-        <div class="card o-hidden border-0 shadow-lg my-5">
-            <div class="card-body p-0">
-                <!-- Nested Row within Card Body -->
-                <div class="row">
-                    
-                    <div class="col-lg-7">
-                        <div class="p-5">
-                            <div class="text-center">
+        <div class="container">
+
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <!-- Nested Row within Card Body -->
+                    <div class="row">
+                        
+                        <div class="col-lg-7">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <img src="{% static 'img/logo.png' %}" alt="Logo LibroOrario" class="img-fluid mb-4">
+                                    <h1 class="h4 text-gray-900 mb-4">Olá! Bem-vindo ao LibroOrario</h1>
+                                </div>
                                 <br>
-                                <h1 class="h4 text-gray-900 mb-4">Olá Seja Bem Vindo ao LibroOrario</h1>
-                            </div>
-                            <br>
-                            <br>
-                            <form class="user">
-
-                                <a class="btn btn-primary btn-user btn-block">
-                                    Diga-nos quem és!!
-                                </a>
+                                <br>
+                                <form class="user">
+        
+                                    <a class="btn btn-primary btn-user btn-block">
+                                        Diga-nos quem és!!
+                                    </a>
+                                    <hr>
+                                    <a user_type="professor" href="{% url 'prof' %}" class="btn btn-google btn-user btn-block">
+                                        <i class="fa fa-chalkboard-teacher"></i> Sou Professor!
+                                    </a>
+                                    <a href="{% url 'encarregado' %}" user_type="encarregado" class="btn btn-facebook btn-user btn-block">
+                                        <i class="fa fa-user-tie"></i> Sou Encarregado!
+                                    </a>    
+                                </form>
                                 <hr>
-                                <a  user_type= "professor" href= "{% url 'prof' %}" class="btn btn-google btn-user btn-block">
-                                    <i class="fa fa-chalkboard-teacher"></i> Sou Professor!
-                                </a>
-                                <a href="{% url 'encarregado' %}" user_type="encarregado" class="btn btn-facebook btn-user btn-block">
-                                    <i class="fa fa-user-tie"></i> Sou Encarregado!
-                                </a>    
-                            </form>
-                            <hr>
-                            <div class="text-center">
-                                <a class="small" href="forgot-password.html">Alguma duvida?</a>
+                                <div class="text-center">
+                                    <a class="small" href="forgot-password.html">Alguma dúvida?</a>
+                                </div>
+                               
                             </div>
-                           
                         </div>
+        
+                        <div class="col-lg-5 d-none d-lg-block">
+                            <img src="{% static 'img/10046248.jpg' %}" alt="Imagem Escolar" class="img-fluid" style="max-width: 700px; max-height: 800px;">
+                        </div>
+                        
+        
                     </div>
                 </div>
             </div>
+        
         </div>
-
-    </div>
-
+        
+    
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

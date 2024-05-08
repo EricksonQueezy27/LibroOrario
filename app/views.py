@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from .models import *
 from django.db import IntegrityError
 from datetime import datetime, time
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
@@ -474,57 +474,24 @@ def enc(request):
     except Encarregado.DoesNotExist:
         return HttpResponse("Encarregado não encontrado.")
 
-    mensagens_nao_respondidas = MensagemSMS.objects.filter(
-        encarregado=encarregado, mensagem_respondida=False
-    )
-    alunosn = encarregado.alunos_associados.count()
-    eventos = Eventos.objects.all()
-    eventoscount = eventos.count()
-    # Recupere as presenças associadas ao encarregado
-    presencas_alunos = Presenca.objects.filter(aluno__encarregado=encarregado)
+        # Recupere os alunos associados ao encarregado
+    alunos_associados = encarregado.alunos_associados.all()
 
-    if request.method == "POST":
-        resposta_form = RespostaForm(request.POST)
-        if resposta_form.is_valid():
-            resposta = resposta_form.cleaned_data["resposta"]
-            mensagem_id = request.POST.get("mensagem_id")
-            mensagem = get_object_or_404(
-                MensagemSMS,
-                id=mensagem_id,
-                encarregado=encarregado,
-                mensagem_respondida=False,
-            )
+    # Recupere as presenças dos alunos associados ao encarregado
+    presencas_alunos = Presenca.objects.filter(aluno__in=alunos_associados)
 
-            # Certifique-se de que a mensagem não foi respondida por outro encarregado
-            if mensagem.mensagem_respondida:
-                messages.warning(
-                    request, "Esta mensagem já foi respondida por outro encarregado."
-                )
-                return redirect("encarregado")
 
-            mensagem.resposta = resposta
-            mensagem.mensagem_respondida = True
-            mensagem.save()
-
-            messages.success(request, "Resposta registrada com sucesso!")
-            return redirect("encarregado")
-
-    else:
-        resposta_form = RespostaForm()
-        publicidade = Publicidade.objects.all()
+    # Restante do código...
 
     context = {
         "encarregado": encarregado,
-        "mensagens_nao_respondidas": mensagens_nao_respondidas,
-        "resposta_form": resposta_form,
+        "alunos_associados": alunos_associados,
         "presencas_alunos": presencas_alunos,
-        "publicidade": publicidade,
-        "alunosn": alunosn,
-        "eventos": eventos,
-        "eventoscount": eventoscount,
+        # Outras variáveis de contexto...
     }
 
     return render(request, "encarregado.html", context)
+
 
 
 def aluno_pagou_mes(aluno, mes):
@@ -793,11 +760,52 @@ def detalhes_turma(request, turma_id):
 
 def aula(request, aula_id):
     aula = Aula.objects.get(id=aula_id)
+    turma_aula = aula.turma
+    alunos_turma = turma_aula.alunos.all().order_by('nome')
     context = {
-        'aula':aula,
+        'aula': aula,
+        'turma_aula': turma_aula,
+        'alunos_turma': alunos_turma,
     }
-    print("Data")
     return render(request, "aula.html", context=context)
+
+def registrar_presenca(request, aluno_id, aula_id):
+    # Verifica se a requisição é do tipo POST
+    if request.method == 'POST':
+        # Verifica se já existem duas entradas de presença para o aluno e aula específicos
+        presencas = Presenca.objects.filter(aluno_id=aluno_id, aula_id=aula_id)
+
+        # Se já existirem duas entradas, retorna um erro 403 (proibido)
+        if presencas.count() >= 2:
+            return HttpResponseForbidden("Você já registrou a presença duas vezes.")
+
+        # Se houver uma ou nenhuma entrada de presença para o aluno e aula específicos
+        # verifica se a presença está sendo registrada como presente ou ausente
+        if 'presenca' in request.POST:
+            presente = request.POST['presenca']
+            if presente == 'P' or presente == 'A':
+                # Se já existir uma entrada de presença, atualiza o valor de presente
+                presenca = presencas.first() if presencas.exists() else None
+                if presenca:
+                    presenca.presente = presente
+                    presenca.save()
+                else:
+                    # Se não existir, cria uma nova entrada de presença
+                    Presenca.objects.create(
+                        aluno_id=aluno_id,
+                        aula_id=aula_id,
+                        data=date.today(),
+                        presente=presente
+                    )
+
+    # Redireciona para a página anterior
+    return redirect(request.META.get('HTTP_REFERER', ''))
+
+
+
+
+
+
 
 def iniciar_aula_turma(request, turma_id):
     horario_data = Horario.objects.filter(turma=turma_id)
@@ -904,27 +912,27 @@ def excluir_aula(request, pk):
     return render(request, "detalhes_aula.html", {"aula": Aula.objects.get(pk=pk)})
 
 
-def registrar_presenca(request, aula_id):
-    aula = get_object_or_404(Aula, pk=aula_id)  # Retrieve Aula by ID
-    turma = aula.turma  # Assuming a relationship between Aula and Turma models
+# def registrar_presenca(request, aula_id):
+#     aula = get_object_or_404(Aula, pk=aula_id)  # Retrieve Aula by ID
+#     turma = aula.turma  # Assuming a relationship between Aula and Turma models
 
-    if request.method == "POST":
-        alunos = turma.alunos.all()  # Fetch all students in the turma
-        for aluno in alunos:
-            presente = request.POST.get(f"presente_{aluno.id}", False)
-            aluno.presente_aula(aula, presente)  # Call the method on each Aluno
+#     if request.method == "POST":
+#         alunos = turma.alunos.all()  # Fetch all students in the turma
+#         for aluno in alunos:
+#             presente = request.POST.get(f"presente_{aluno.id}", False)
+#             aluno.presente_aula(aula, presente)  # Call the method on each Aluno
 
-        # Handle successful registration (e.g., redirect to success page)
-        return redirect(
-            "detalhes_aula", aula_id=aula.id
-        )  # Assuming a details_aula view
+#         # Handle successful registration (e.g., redirect to success page)
+#         return redirect(
+#             "detalhes_aula", aula_id=aula.id
+#         )  # Assuming a details_aula view
 
-    context = {
-        "aula": aula,
-        "alunos": alunos,
-    }
+#     context = {
+#         "aula": aula,
+#         "alunos": alunos,
+#     }
 
-    return render(request, "registrar_presenca.html", context)
+#     return render(request, "registrar_presenca.html", context)
 
 
 def lancar_notas(request, pk):
