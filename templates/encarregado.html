@@ -410,56 +410,52 @@
           <div class="card-body">
               <h5 class="card-title">Presença dos Alunos <span>| {{ aula_atual.data }}</span></h5>
               {% if encarregado.alunos_associados.all %}
-              <div class="row">
-                  {% for aluno in encarregado.alunos_associados.all %}
-                  <div class="card shadow mb-4 col-sm-6">
-                      <img src="{% if aluno.foto %}{{ aluno.foto.url }}{% else %}/caminho/para/uma/imagem/de/placeholder.jpg{% endif %}"
-                          class="card-img-top img-fluid aluno-img" alt="Foto do Aluno">
-                      <div class="card-body">
-                          <h5 class="card-title">{{ aluno.nome }}</h5>
-                          <p class="card-text">Turma: {{ aluno.turma }}</p>
-                          <div class="card">
+                  <div class="row">
+                      {% for aluno in encarregado.alunos_associados.all %}
+                          <div class="card shadow mb-4 col-sm-6">
+                              <img src="{% if aluno.foto %}{{ aluno.foto.url }}{% else %}/caminho/para/uma/imagem/de/placeholder.jpg{% endif %}"
+                                  class="card-img-top img-fluid aluno-img" alt="Foto do Aluno">
                               <div class="card-body">
-                               
-                                <ul>
-                                    {% for presenca in presencas_alunos %}
-                                    <h5 class="card-title text-primary">Aula Atual: {{ presenca.aula.disciplina }} -- {{ presenca.aula.data }}</h5>
-                                    <p class="card-text">Presença: {{ presenca.presente }}</p>
-                                    <li>
-                                        {% if presenca.presente == 'P' %}
-                                        <span class="badge badge-success">Presente</span>
-                                        {% elif presenca.presente == 'J' %}
-                                        <span class="badge badge-warning">Justificado</span>
-                                        <small class="text-success">{{ presenca.justificativa }}</small>
-                                        {% elif presenca.presente == 'A' %}
-                                        <span class="badge badge-danger">Ausente</span>
-                                        {% endif %}
-                                    </li>
-                                    {% endfor %}
-                                </ul>
-                                
-                                  </ul>
+                                  <h5 class="card-title">{{ aluno.nome }}</h5>
+                                  <p class="card-text">Turma: {{ aluno.turma }}</p>
+                                  <div class="card">
+                                      <div class="card-body">
+                                          <h4>{{ aluno.nome }}</h4>
+                                          {% for presenca in presencas_alunos.alunos_associados %}
+                                              <h5 class="card-title text-primary">Aula Atual: {{ presenca.aula.disciplina }} -- {{ presenca.aula.data }}</h5>
+                                              <p class="card-text">Presença: {{ presenca.get_presente_display }}</p>
+                                              <li>
+                                                  {% if presenca.presente == 'P' %}
+                                                      <span class="badge badge-success">Presente</span>
+                                                  {% elif presenca.presente == 'J' %}
+                                                      <span class="badge badge-warning">Justificado</span>
+                                                      <small class="text-success">{{ presenca.justificativa }}</small>
+                                                  {% elif presenca.presente == 'A' %}
+                                                      <span class="badge badge-danger">Ausente</span>
+                                                  {% endif %}
+                                              </li>
+                                          {% endfor %}
+                                      </div>
+                                  </div>
                               </div>
                           </div>
-                      </div>
+                      {% endfor %}
                   </div>
-                  {% endfor %}
-              </div>
               {% else %}
-              <div class="card">
-                  <div class="card-body">
-                      <div class="col-lg-3">
-                          <div class="card">
-                              <img src="{% static 'img/9842877.jpg' %}" class="card-img-top"
-                                  alt="Imagem de professor">
-                              <div class="card-body">
-                                  <p class="card-text">LibroOrario - Organize suas aulas facilmente</p>
+                  <div class="card">
+                      <div class="card-body">
+                          <div class="col-lg-3">
+                              <div class="card">
+                                  <img src="{% static 'img/9842877.jpg' %}" class="card-img-top"
+                                      alt="Imagem de professor">
+                                  <div class="card-body">
+                                      <p class="card-text">LibroOrario - Organize suas aulas facilmente</p>
+                                  </div>
                               </div>
                           </div>
                       </div>
                   </div>
-              </div>
-              <marquee behavior="" direction="">Aqui Você terá acesso a presenças de todos os teus Educandos| Sem Aulas No Momento</marquee>
+                  <marquee behavior="" direction="">Aqui Você terá acesso a presenças de todos os teus Educandos| Sem Aulas No Momento</marquee>
               {% endif %}
           </div>
       </div>

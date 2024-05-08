@@ -89,7 +89,7 @@ class Classe(models.Model):
 
 class Aluno(models.Model):
     professor = models.ForeignKey(Professor, on_delete=models.CASCADE, blank=True, null=True)
-
+    
     #escola = models.ForeignKey('Escola', on_delete=models.CASCADE)
     nome = models.CharField(max_length=100, null=True, blank=True)
     turma = models.ForeignKey(Turma, on_delete=models.SET_NULL, null=True, blank=True)

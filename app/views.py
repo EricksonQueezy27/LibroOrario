@@ -474,20 +474,22 @@ def enc(request):
     except Encarregado.DoesNotExist:
         return HttpResponse("Encarregado não encontrado.")
 
-        # Recupere os alunos associados ao encarregado
+  
     alunos_associados = encarregado.alunos_associados.all()
 
-    # Recupere as presenças dos alunos associados ao encarregado
-    presencas_alunos = Presenca.objects.filter(aluno__in=alunos_associados)
+    
+    presencas_alunos = {}
 
 
-    # Restante do código...
+    for aluno in alunos_associados:
+        presencas_aluno = Presenca.objects.filter(aluno=aluno)
+        presencas_alunos[aluno] = presencas_aluno
+
+ 
 
     context = {
         "encarregado": encarregado,
-        "alunos_associados": alunos_associados,
         "presencas_alunos": presencas_alunos,
-        # Outras variáveis de contexto...
     }
 
     return render(request, "encarregado.html", context)
