@@ -316,8 +316,113 @@ def prof(request):
                 }
             else:
                 print(f"Faltam {tempo_restante:.2f} horas para o início do horário")
+                
+                #quarta-feira
+        if (
+            calendar.day_name[curr_date.weekday()] == "Wednesday"
+            and horarioIndex.dia_semana == "Quarta"
+        ):
+            tempo_restante = (horario_inicio - now).total_seconds() / 3600
+            print("tempo_restante", tempo_restante)
+            # if tempo_restante <= 0:
+            #     print("Faltam mais de 2 horas para o início do horário")
+            #     info_horario = True
+            #     horas = ceil(tempo_restante)
+            #     horarios_vencido = {
+            #         "id": horarioIndex.id,
+            #         "turma": horarioIndex.turma,
+            #         "disciplina": horarioIndex.disciplina,
+            #         "hora_inicio": horarioIndex.hora_inicio,
+            #         "tempo_restante": horas,
+            #     }
+            #     print(now, "rwerw")
 
+            if tempo_restante <= 2:
+                print("Faltam menos de 2 horas para o início do horário")
+                info_horario = True
+                horas = ceil(tempo_restante)
 
+                horarios_proximos = {
+                    "id": horarioIndex.id,
+                    "turma": horarioIndex.turma,
+                    "disciplina": horarioIndex.disciplina,
+                    "hora_inicio": horarioIndex.hora_inicio,
+                    "tempo_restante": horas,
+                }
+            else:
+                print(f"Faltam {tempo_restante:.2f} horas para o início do horário")
+                
+                #quinta-feira
+        if (
+            calendar.day_name[curr_date.weekday()] == "Thursday "
+            and horarioIndex.dia_semana == "Quinta"
+        ):
+            tempo_restante = (horario_inicio - now).total_seconds() / 3600
+            print("tempo_restante", tempo_restante)
+            # if tempo_restante <= 0:
+            #     print("Faltam mais de 2 horas para o início do horário")
+            #     info_horario = True
+            #     horas = ceil(tempo_restante)
+            #     horarios_vencido = {
+            #         "id": horarioIndex.id,
+            #         "turma": horarioIndex.turma,
+            #         "disciplina": horarioIndex.disciplina,
+            #         "hora_inicio": horarioIndex.hora_inicio,
+            #         "tempo_restante": horas,
+            #     }
+            #     print(now, "rwerw")
+
+            if tempo_restante <= 2:
+                print("Faltam menos de 2 horas para o início do horário")
+                info_horario = True
+                horas = ceil(tempo_restante)
+
+                horarios_proximos = {
+                    "id": horarioIndex.id,
+                    "turma": horarioIndex.turma,
+                    "disciplina": horarioIndex.disciplina,
+                    "hora_inicio": horarioIndex.hora_inicio,
+                    "tempo_restante": horas,
+                }
+            else:
+                print(f"Faltam {tempo_restante:.2f} horas para o início do horário")
+
+        
+        if (
+            calendar.day_name[curr_date.weekday()] == "Friday  "
+            and horarioIndex.dia_semana == "Sexta"
+        ):
+            tempo_restante = (horario_inicio - now).total_seconds() / 3600
+            print("tempo_restante", tempo_restante)
+            # if tempo_restante <= 0:
+            #     print("Faltam mais de 2 horas para o início do horário")
+            #     info_horario = True
+            #     horas = ceil(tempo_restante)
+            #     horarios_vencido = {
+            #         "id": horarioIndex.id,
+            #         "turma": horarioIndex.turma,
+            #         "disciplina": horarioIndex.disciplina,
+            #         "hora_inicio": horarioIndex.hora_inicio,
+            #         "tempo_restante": horas,
+            #     }
+            #     print(now, "rwerw")
+
+            if tempo_restante <= 2:
+                print("Faltam menos de 2 horas para o início do horário")
+                info_horario = True
+                horas = ceil(tempo_restante)
+
+                horarios_proximos = {
+                    "id": horarioIndex.id,
+                    "turma": horarioIndex.turma,
+                    "disciplina": horarioIndex.disciplina,
+                    "hora_inicio": horarioIndex.hora_inicio,
+                    "tempo_restante": horas,
+                }
+            else:
+                print(f"Faltam {tempo_restante:.2f} horas para o início do horário")
+                
+                
     # Filtrar disciplinas associadas ao professor
     disciplinas_associadas_professor = professor.disciplinas_associadas.all()
 
@@ -332,7 +437,7 @@ def prof(request):
             )
             if selecao_disciplina_form.is_valid():
                 disciplina_id = selecao_disciplina_form.cleaned_data["disciplina"]
-                # Faça algo com a disciplina selecionada, por exemplo, redirecione para uma página para iniciar a aula
+                # redirecione para uma página para iniciar a aula
                 return redirect("iniciar_aula", disciplina_id=disciplina_id)
 
         # Restante do código para processar outros formulários...
