@@ -168,9 +168,9 @@ class Nota(models.Model):
        
 
 class Aula(models.Model):
-    turma = models.ForeignKey('Turma', on_delete=models.CASCADE)
-    disciplina = models.ForeignKey('Disciplina', on_delete=models.CASCADE)
-    data = models.DateField()
+    turma = models.ForeignKey(Turma, on_delete=models.CASCADE)
+    disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE)
+    data = models.DateField(auto_now_add=True)
     Tema = models.CharField( max_length=500)
     objectivo = models.TextField( max_length=1000)
     inicio = models.TimeField()

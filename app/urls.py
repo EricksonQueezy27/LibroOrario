@@ -26,6 +26,7 @@ urlpatterns = [
     path('estatisticas_turma/<int:turma_id>/', estatisticas_turma, name='estatisticas_turma'),
     path('avaliacoes/turma/<int:turma_id>/', avaliacoes_turma, name='avaliacoes_turma'),
     #path('selecionar-aula/', selecionar_aula, name='selecionar_aula'),
+    path("aula/<int:aula_id>", aula, name="aula"),
     path('historico-pagamentos/<int:encarregado_id>/', historico_pagamentos, name='historico_pagamentos'),
     path('visualizar_educandos/<int:encarregado_id>/', visualizar_educandos, name='visualizar_educandos'),
    path('editar-informacao-academica/<int:informacao_academica_id>/', editar_informacao_academica, name='editar_informacao_academica'),

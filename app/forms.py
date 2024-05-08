@@ -126,7 +126,7 @@ class IniciarAulaForm(forms.ModelForm):
 class IniciarAulaForm(forms.ModelForm):
     class Meta:
         model = Aula  # Especifique o modelo associado ao formulário
-        fields = ['disciplina', 'data', 'inicio', 'fim']  
+        fields = ['disciplina', 'inicio', 'fim']  
 
 
 
