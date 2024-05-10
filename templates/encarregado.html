@@ -382,25 +382,26 @@
 </div>
 <!-- End Revenue Card -->
 
-<!-- Customers Card -->
+<!-- Propinas Card -->
 <div class="col-xxl-4 col-xl-12">
-  <div class="card info-card customers-card">
+  <div class="card info-card propinas-card">
     <div class="card-body">
-      <h5 class="card-title">Clientes | Este Ano</h5>
+      <h5 class="card-title">Propinas | Este Ano</h5>
 
       <div class="d-flex align-items-center">
         <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-          <i class="bi bi-people"></i>
+          <i class="bi bi-cash-stack"></i> <!-- Ícone de propinas -->
         </div>
         <div class="ps-3">
-          <h6>1244</h6>
-          <span class="text-danger small pt-1 fw-bold">12% de Decrease</span>
-          <span class="text-muted small pt-2">Comparado ao ano passado</span>
+          <h6>Valor Total a Pagar</h6> <!-- Texto personalizado para os encarregados -->
+          <span class="text-danger small pt-1 fw-bold">$124,500</span> <!-- Valor total das propinas este ano -->
+          <span class="text-muted small pt-2">Até o momento</span> <!-- Indicação de que o valor é até o momento -->
         </div>
       </div>
     </div>
   </div>
 </div>
+
 <!-- End Customers Card -->
 
 
@@ -462,6 +463,27 @@
   </div>
 </div>
 
+<div class="row">
+  {% if presencas_alunos %}
+    {% for aluno_id, info in presencas_alunos.items %}
+      <h2>Aluno: {{ info.aluno.nome }}</h2>
+      <ul>
+        {% for presenca in info.presencas %}
+          <li>
+            {{ presenca.disciplina }} - {{ presenca.data }}: <span class="{{ presenca.status_classe }}">{{ presenca.status_classe }}</span>
+            {% if presenca.justificativa %}
+              (Justificativa: {{ presenca.justificativa }})
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endfor %}
+  {% else %}
+    <p>Não há aulas disponíveis no momento.</p>
+  {% endif %}
+</div>
+
+
 
             <!-- Top Selling -->
             <div class="card">
@@ -506,7 +528,24 @@
           </div>
         </div><!-- End Left side columns -->
         </div>
-
+        <div class="col-xxl-4 col-xl-12">
+          <div class="card info-card propinas-card">
+            <div class="card-body">
+              <h5 class="card-title">Propinas | Este Ano</h5>
+        
+              <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                  <i class="bi bi-cash-stack"></i> <!-- Ícone de propinas -->
+                </div>
+                <div class="ps-3">
+                  <h6>Valor Total a Pagar</h6> <!-- Texto personalizado para os encarregados -->
+                  <span class="text-danger small pt-1 fw-bold">$124,500</span> <!-- Valor total das propinas este ano -->
+                  <span class="text-muted small pt-2">Até o momento</span> <!-- Indicação de que o valor é até o momento -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       {% for mensagem in mensagens_nao_respondidas %}
       <div class="mensagem">
           <p>{{ mensagem.mensagem }}</p>
@@ -521,7 +560,8 @@
   {% endfor %}
 
     </section>
-
+   
+    
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->

@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajuda no LibroOrario</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Favicons -->
+    <link href={% static "assets/img/favicon.png" %} rel="icon">
+    <link href={% static "assets/img/apple-touch-icon.png" %}    rel="apple-touch-icon">
+
+<head>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="text-center mb-4">Página de Ajuda</h1>
+            <p class="lead text-center">Bem-vindo à página de ajuda do LibroOrario. Aqui você encontrará informações úteis sobre como usar a plataforma.</p>
+            <p class="text-center">Se precisar de mais assistência, entre em contato conosco através do nosso suporte.</p>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{% static '12085707_20944201.svg' %}" class="card-img-top" alt="Imagem 1">
+                <div class="card-body">
+                    <h5 class="card-title">Como Solicitar Credenciais para Encarregados e Professores</h5>
+                    <p class="card-text">Saiba como os administradores podem solicitar credenciais para encarregados e professores às suas escolas no LibroOrario, permitindo-lhes acesso às funcionalidades da plataforma.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{% static '16676585_5774646.svg' %}" class="card-img-top" alt="Imagem 2">
+                <div class="card-body">
+                    <h5 class="card-title">Agendamento de Aulas</h5>
+                    <p class="card-text">Saiba como agendar aulas no LibroOrario e gerenciar seu horário escolar de forma eficiente.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{% static '12.jpg' %}" class="card-img-top" alt="Imagem 3">
+                <div class="card-body">
+                    <h5 class="card-title">Relatórios de Presença</h5>
+                    <p class="card-text">Como acessar e interpretar relatórios de presença no LibroOrario para acompanhar a frequência dos alunos.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{% static 'R.jpeg' %}" class="card-img-top" alt="Imagem 4">
+                <div class="card-body">
+                    <h5 class="card-title">Visualização de Notas</h5>
+                    <p class="card-text">Aprenda a visualizar as notas dos alunos e acompanhar seu desempenho acadêmico no LibroOrario.</p>
+                </div>
+            </div>
+        </div>
+        <!-- Adicione mais cards conforme necessário -->
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{% static 'conversacao.png' %}" class="card-img-top" alt="Imagem 5">
+                <div class="card-body">
+                    <h5 class="card-title">Comunicação com Professores</h5>
+                    <p class="card-text">Saiba como usar a funcionalidade de comunicação para entrar em contato com os professores no LibroOrario.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{% static 'projeto.png' %}" class="card-img-top" alt="Imagem 6">
+                <div class="card-body">
+                    <h5 class="card-title">Gestão de Tarefas</h5>
+                    <p class="card-text">Descubra como gerenciar e atribuir tarefas aos alunos usando a funcionalidade de gestão de tarefas no LibroOrario.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    
+    <div class="row mt-5">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="text-center mb-4">Entre em Contato</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Suporte Técnico</h5>
+                            <p class="card-text">Entre em contato com nossa equipe de suporte técnico para obter assistência técnica.</p>
+                           
+                                                        <!-- Botão para acionar o modal -->
+                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#telaConfirmacao">Contatar Suporte</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Dúvidas Gerais</h5>
+                            <p class="card-text">Para dúvidas gerais sobre o uso do LibroOrario, entre em contato conosco.</p>
+                            <a href="#" class="btn btn-primary">Enviar Mensagem</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary" onclick="goBack()">Voltar</button>
+    </div>
+   
+
+</div>
+<!-- Modal de Confirmação -->
+<div id="telaConfirmacao" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Confirmar Chamada</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <img src="{% static 'a1.png' %}" alt="Telefone" class="img-fluid">
+          <p>Deseja ligar para o suporte técnico (935833722)?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" onclick="ligarParaSuporte()">Ligar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+ 
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+
+  <script>
+    function ligarParaSuporte() {
+      // Verificar se o usuário deseja ligar
+      if (confirm("Deseja ligar para o suporte técnico (935833722)?")) {
+        // Redirecionar para o número
+        window.location.href = "tel:935833722";
+      }
+    }
+  </script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>  
+</body>
+</html>

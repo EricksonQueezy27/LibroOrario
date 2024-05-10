@@ -79,6 +79,8 @@ urlpatterns = [
     path('feedback/', enviar_feedback, name='enviar_feedback'),
     path('pesquisa/', enviar_pesquisa, name='enviar_pesquisa'),
     path('chat/', chat, name='chat'),
+    path('help/', help_page, name='help'),
+    path('presencas/<int:aluno_id>/', PresencasAlunoView.as_view(), name='presencas_aluno'),
 
 
 

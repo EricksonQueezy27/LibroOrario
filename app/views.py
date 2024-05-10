@@ -1,5 +1,7 @@
 import calendar
+from typing import Counter
 from django.shortcuts import render, redirect
+from django.views import View
 from .models import *
 from django.db import IntegrityError
 from datetime import datetime, time
@@ -18,14 +20,60 @@ from django.contrib.auth.decorators import user_passes_test
 from math import ceil
 
 # from django_sendsms.backends.base import BaseSmsBackend
+import speech_recognition as sr
+import pyttsx3
 
+def ouvir():
+    recognizer = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Diga algo:")
+        recognizer.adjust_for_ambient_noise(source)
+        audio = recognizer.listen(source)
 
-# Create your views here.
+    try:
+        texto = recognizer.recognize_google(audio, language='pt-PT')  # Português do Brasil
+        return texto.lower()
+    except sr.UnknownValueError:
+        return "Não entendi."
+    except sr.RequestError:
+        return "Erro de conexão com a API."
 
+def falar(texto):
+    engine = pyttsx3.init()
+    voices = engine.getProperty('voices')
+    for voice in voices:
+        if "brazil" in voice.name.lower():  # Procurar voz em português do Brasil
+            engine.setProperty('voice', voice.id)
+            break
+    engine.setProperty('rate', 150)  # Ajusta a velocidade da fala
+    engine.say(texto)
+    engine.runAndWait()
 
 def index(request):
+    if request.method == 'POST':
+        # Receber dados do formulário (se houver)
+        nome = request.POST.get('nome')
+        resposta = request.POST.get('resposta')
+        if not nome:
+            nome = "usuário"
+        
+        # Interagir com o assistente de voz
+        falar(f"Prazer em te conhecer, {nome}! Como posso te ajudar hoje?")
+        resposta_professor_encarregado = ouvir()
+        if 'professor' in resposta_professor_encarregado:
+            falar(f"Ótimo, {nome}! Estou abrindo o sistema do professor para você.")
+            # Redirecionar para a página do professor
+            return render(request, 'Professor.html', {'mensagem': f'Olá, {nome}! Você é professor.'})
+        elif 'encarregado' in resposta_professor_encarregado:
+            falar(f"Entendido, {nome}! Estou abrindo o sistema do encarregado para você.")
+            # Redirecionar para a página do encarregado
+            return render(request, 'Encarregado.html', {'mensagem': f'Olá, {nome}! Você é encarregado.'})
+        else:
+            falar(f"Desculpe, {nome}, não entendi. Por favor, repita se é professor ou encarregado.")
+            return render(request, 'index.html', {'mensagem': f"Desculpe, {nome}, não entendi. Por favor, repita se é professor ou encarregado."})
 
-    return render(request, "index.html")
+    return render(request, 'index.html')
+
 
 
 @login_required
@@ -466,7 +514,6 @@ def prof(request):
 
     return render(request, "professor.html", context)
 
-
 @login_required
 def enc(request):
     try:
@@ -474,26 +521,45 @@ def enc(request):
     except Encarregado.DoesNotExist:
         return HttpResponse("Encarregado não encontrado.")
 
-  
-    alunos_associados = encarregado.alunos_associados.all()
+    publicidade = Publicidade.objects.all()
 
-    
-    presencas_alunos = {}
+    # Get students associated with the encarregado
+    alunos = encarregado.alunos_associados.all()
 
+    # Filter current aulas (happening now)
+    aulas_atuais = Aula.objects.filter(data__lte=datetime.now(), fim__gte=datetime.now())
 
-    for aluno in alunos_associados:
-        presencas_aluno = Presenca.objects.filter(aluno=aluno)
-        presencas_alunos[aluno] = presencas_aluno
+    if aulas_atuais.exists():
+        presencas_alunos = {}
 
- 
+        # Loop through students and filter their presenças for current aulas
+        for aluno in alunos:
+            presencas = Presenca.objects.filter(aluno=aluno, aula__in=aulas_atuais)
+            presenca_data = []
+            for presenca in presencas:
+                # Add presence details with status class
+                presenca_data.append({
+                    'disciplina': presenca.aula.disciplina.nome,
+                    'data': presenca.aula.data,
+                    'status_classe': presenca.get_status_class(),  # Get status class here
+                    'justificativa': presenca.justificativa if presenca.justificativa else None,
+                })
+            presencas_alunos[aluno.id] = {'aluno': aluno, 'presencas': presenca_data}
 
-    context = {
-        "encarregado": encarregado,
-        "presencas_alunos": presencas_alunos,
-    }
+        context = {
+            "encarregado": encarregado,
+            "publicidade": publicidade,
+            "presencas_alunos": presencas_alunos,
+        }
+
+    else:
+        context = {
+            "encarregado": encarregado,
+            "publicidade": publicidade,
+            "presencas_alunos": None,  # Pass None if there are no current classes
+        }
 
     return render(request, "encarregado.html", context)
-
 
 
 def aluno_pagou_mes(aluno, mes):
@@ -1621,3 +1687,38 @@ def enviar_pesquisa(request):
 def chat(request):
     
     return render(request, 'chat.html')
+
+
+def help_page(request):
+    
+    
+    return render(request, 'help.html')
+
+from django.db.models import Prefetch
+class PresencasAlunoView(View):
+    def get(self, request, aluno_id):
+        try:
+            aluno = Aluno.objects.get(pk=aluno_id)
+            presencas = Presenca.objects.filter(aluno=aluno).prefetch_related(
+            Prefetch('aula', queryset=Aula.objects.select_related('disciplina')))  # Optimize query for discipline name
+            
+            # Conta o número total de presenças, ausências e justificações
+            status_counter = Counter(presenca.presente for presenca in presencas)
+
+            total_presencas = status_counter['P']
+            total_ausencias = status_counter['A']
+            total_justificacoes = status_counter['J']
+
+        except Aluno.DoesNotExist:
+            # Handle case where aluno_id is not found (e.g., display error message)
+            context = {'error_message': 'Aluno não encontrado.'}
+            return render(request, 'presencas.html', context)
+
+        context = {
+            'aluno': aluno,
+            'presencas': presencas,
+            'total_presencas': total_presencas,
+            'total_ausencias': total_ausencias,
+            'total_justificacoes': total_justificacoes,
+        }
+        return render(request, 'presencas.html', context)

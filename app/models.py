@@ -190,13 +190,37 @@ class Presenca(models.Model):
         ('J', 'Justificado'),
     ]
 
-    aluno = models.ForeignKey('Aluno', on_delete=models.CASCADE)
-    aula = models.ForeignKey('Aula', on_delete=models.CASCADE)
+    aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE)
+    aula = models.ForeignKey(Aula, on_delete=models.CASCADE)
     data = models.DateField()
     presente = models.CharField(max_length=1, choices=PRESENCA_CHOICES, default='A')
     nota = models.FloatField(default=0.0)
+    justificativa = models.TextField(blank=True, null=True)
+
     def __str__(self):
         return f'{self.aluno.nome} - {self.aula} - {self.data} - {self.get_presente_display()}'
+
+    def get_status_class(self):
+        """
+        Returns a CSS class based on the presence status for table styling.
+        """
+        if self.presente == 'P':
+            return 'presente'  # Green for presence
+        elif self.presente == 'A':
+            return 'ausente'  # Red for absence
+        elif self.presente == 'T':
+            return 'atrasado'  # Yellow for tardiness (optional)
+        else:
+            return ''
+
+    def get_justificativa(self):
+        """
+        Returns the justification if present, otherwise returns None.
+        """
+        if hasattr(self, 'justificativa'):
+            return self.justificativa
+        return None
+ # Default for other cases
 
     
 # class Presenca(models.Model):
