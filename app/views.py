@@ -19,6 +19,8 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import user_passes_test
 from math import ceil
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 
 # from django_sendsms.backends.base import BaseSmsBackend
 import speech_recognition as sr
@@ -1209,6 +1211,36 @@ def iadmin(request):
     # Renderiza a página 'admin.html' passando o contexto para o template
     return render(request, "admin.html", context)
 
+def processar_pagamento_e_gerar_pdf(request):
+    if request.method == 'POST':
+        # Obter dados do formulário
+        tipo_pagamento = request.POST.get('tipo')
+        outro_tipo = request.POST.get('outro_tipo')
+        valor = request.POST.get('valor')
+        comprovativo = request.FILES.get('comprovativo')
+
+        # Aqui você pode processar os dados e fazer o que for necessário para gerar o comprovativo em PDF
+        # Por exemplo, você pode usar a biblioteca ReportLab para criar o PDF
+
+        # Criar o PDF usando ReportLab
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="comprovativo.pdf"'
+
+        # Criar um objeto PDF Canvas
+        buffer = response.content
+        c = canvas.Canvas(buffer, pagesize=letter)
+
+        # Adicionar conteúdo ao PDF
+        c.drawString(100, 750, f'Tipo de Pagamento: {tipo_pagamento}')
+        c.drawString(100, 730, f'Outro Tipo: {outro_tipo}')
+        c.drawString(100, 710, f'Valor: {valor}')
+
+        # Salvar o PDF
+        c.save()
+        return response
+    else:
+        # Se não for uma solicitação POST, retorne uma resposta de erro
+        return HttpResponse(status=405)
 
 @user_passes_test(is_superuser)
 def edit_profile(request):

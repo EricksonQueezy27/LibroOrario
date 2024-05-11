@@ -85,6 +85,7 @@ urlpatterns = [
     path('licitacoes_pendentes/', licitacoes_pendentes, name='listar_licitacoes_pendentes'),
     path('aprovar_pagamento/<int:pagamento_id>/', aprovar_pagamento, name='aprovar_pagamento'),
      path('reprovar-pagamento/<int:pagamento_id>/', reprovar_pagamento, name='reprovar_pagamento'),
+     path('processar-pagamento/', processar_pagamento_e_gerar_pdf, name='processar_pagamento_e_gerar_pdf'),
 
 
 
