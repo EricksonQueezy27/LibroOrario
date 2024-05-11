@@ -80,7 +80,21 @@
     </style>
 </head>
 <body>
-
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">LibroOrario</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav mr-auto">
+            <!-- Adicione aqui os itens do menu, se necessário -->
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <a href="{% url 'iadmin' %}" class="btn btn-outline-light my-2 my-sm-0">Voltar</a>
+          </form>
+        </div>
+      </nav>
+      
 <div class="container mt-5">
     <h1 class="mb-4">Pagamentos Pendentes</h1>
     <table class="table">
@@ -133,7 +147,12 @@
                         {% csrf_token %}
                         <button type="submit" class="btn btn-success">Aprovar</button>
                     </form>
+                    <form action="{% url 'reprovar_pagamento' pagamento.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Reprovar</button>
+                    </form>
                 </td>
+                
             </tr>
             {% endfor %}
         </tbody>

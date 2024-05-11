@@ -1175,7 +1175,8 @@ def iadmin(request):
 
     # Conta o número de encarregados
     numero_de_encarregados = Encarregado.objects.count()
-
+    numero_de_solicitacoes = Pagamento.objects.filter(aprovado=False).count()
+    
     # Recupera o usuário atualmente autenticado
     user = request.user
 
@@ -1202,6 +1203,7 @@ def iadmin(request):
         "numero_de_professores": numero_de_professores,
         "numero_de_encarregados": numero_de_encarregados,
         "publicidades": publicidades,
+        'numero_de_solicitacoes': numero_de_solicitacoes,
     }
 
     # Renderiza a página 'admin.html' passando o contexto para o template
@@ -1358,6 +1360,17 @@ def aprovar_pagamento(request, pagamento_id):
     pagamento = Pagamento.objects.get(pk=pagamento_id)
     pagamento.aprovado = True
     pagamento.save()
+    return redirect('listar_licitacoes_pendentes')
+
+@user_passes_test(is_superuser)
+def reprovar_pagamento(request, pagamento_id):
+    pagamento = get_object_or_404(Pagamento, id=pagamento_id)
+    
+    # Excluir o pagamento
+    pagamento.delete()
+
+    messages.success(request, f'O pagamento de {pagamento.aluno} foi reprovado e removido com sucesso.')
+    
     return redirect('listar_licitacoes_pendentes')
 
 @user_passes_test(is_superuser)

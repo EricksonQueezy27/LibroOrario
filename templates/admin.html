@@ -162,10 +162,36 @@
                         </div>
                     </div>
                 </div><!-- End Encarregados Card -->
+
+                <div class="col-xxl-4 col-md-6">
+                  <div class="card info-card encarregados-card {% if numero_de_solicitacoes > 0 %}bg-warning{% else %}bg-success{% endif %}">
+                      <div class="filter">
+                          <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                      </div>
+                      <div class="card-body">
+                          <h5 class="card-title">Número de Solicitações de Pagamentos Pendentes</h5>
+                          {% if numero_de_solicitacoes > 0 %}
+                              <div class="d-flex align-items-center">
+                                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-currency-dollar"></i>
+
+                                  </div>
+                                  <div class="ps-3">
+                                      <h6>{{ numero_de_solicitacoes }}</h6>
+                                  </div>
+                              </div>
+                          {% else %}
+                              <p class="card-text">Não há solicitações pendentes.</p>
+                          {% endif %}
+                      </div>
+                  </div>
+              </div>
+              
             </div><!-- End row -->
         </div><!-- End col-lg-8 -->
     </div>
-    
+  
+
 <hr>
 
     <div class="card">
