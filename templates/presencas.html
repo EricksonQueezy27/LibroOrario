@@ -190,7 +190,12 @@
                 <td>{{ presenca.aluno.nome }}</td>  <td>{{ presenca.data }}</td>
                 <td>{{ presenca.aula.disciplina.nome }}</td>
                 <td class="{{ presenca.get_status_class }}">{{ presenca.get_presente_display }}</td>
+                
+                {% if presenca.observacoes %}                
                 <td>{{ presenca.observacoes }}</td>
+                {% else %}
+                <td>--</td>
+                {% endif %}
                 <td>{% if presenca.aula.Tema %}{{ presenca.aula.Tema }}{% endif %}</td>
               </tr>
             {% endfor %}

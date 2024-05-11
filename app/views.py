@@ -1,4 +1,5 @@
 import calendar
+import logging
 from typing import Counter
 from django.shortcuts import render, redirect
 from django.views import View
@@ -527,37 +528,31 @@ def enc(request):
     alunos = encarregado.alunos_associados.all()
 
     # Filter current aulas (happening now)
-    aulas_atuais = Aula.objects.filter(data__lte=datetime.now(), fim__gte=datetime.now())
+    aulas_atuais = Aula.objects.filter(data__lte=datetime.now(), data__gte=datetime.now())
 
-    if aulas_atuais.exists():
-        presencas_alunos = {}
+    presencas_alunos = {}
 
-        # Loop through students and filter their presenças for current aulas
-        for aluno in alunos:
-            presencas = Presenca.objects.filter(aluno=aluno, aula__in=aulas_atuais)
-            presenca_data = []
-            for presenca in presencas:
-                # Add presence details with status class
-                presenca_data.append({
-                    'disciplina': presenca.aula.disciplina.nome,
-                    'data': presenca.aula.data,
-                    'status_classe': presenca.get_status_class(),  # Get status class here
-                    'justificativa': presenca.justificativa if presenca.justificativa else None,
-                })
-            presencas_alunos[aluno.id] = {'aluno': aluno, 'presencas': presenca_data}
+    # Loop through students and filter their presenças for current aulas
+    for aluno in alunos:
+        presencas = Presenca.objects.filter(aluno=aluno, aula__in=aulas_atuais)
+        presenca_data = []
+        for presenca in presencas:
+            # Check if PresencaJustificativa exists for the current presenca
+            justificativa = Presenca.justificativa.objects.filter(presenca=presenca).first()
+            # Add presence details with status class
+            presenca_data.append({
+                'disciplina': presenca.aula.disciplina.nome,
+                'data': presenca.aula.data,
+                'status_classe': presenca.get_status_class(),  # Get status class here
+                'justificativa': justificativa.justificativa if justificativa else None,
+            })
+        presencas_alunos[aluno.id] = {'aluno': aluno, 'presencas': presenca_data}
 
-        context = {
-            "encarregado": encarregado,
-            "publicidade": publicidade,
-            "presencas_alunos": presencas_alunos,
-        }
-
-    else:
-        context = {
-            "encarregado": encarregado,
-            "publicidade": publicidade,
-            "presencas_alunos": None,  # Pass None if there are no current classes
-        }
+    context = {
+        "encarregado": encarregado,
+        "publicidade": publicidade,
+        "presencas_alunos": presencas_alunos,
+    }
 
     return render(request, "encarregado.html", context)
 
@@ -565,31 +560,67 @@ def enc(request):
 def aluno_pagou_mes(aluno, mes):
     return Propina.objects.filter(aluno=aluno, mes=mes, pago=True).exists()
 
-
 def historico_pagamentos(request, encarregado_id):
     if request.user.is_authenticated:
         if request.user.encarregado.id != encarregado_id:
             return redirect("pagina_de_erro")
 
         encarregado = Encarregado.objects.get(id=encarregado_id)
-
-        propinas = Propina.objects.filter(aluno__in=encarregado.alunos_associados.all())
-
+        alunos = encarregado.alunos_associados.all()
         comunicados_pagamento = Comunicado.objects.filter(
             encarregado_destino=encarregado, requerido_pagamento=True
         )
 
         context = {
             "encarregado": encarregado,
-            "propinas": propinas,
+            "alunos": alunos,
             "comunicados_pagamento": comunicados_pagamento,
-            "MONTH_CHOICES": Propina.MONTH_CHOICES,
-            "aluno_pagou_mes": aluno_pagou_mes,
         }
 
         return render(request, "historico_pagamentos.html", context)
     else:
         return redirect("login")
+
+def historico_pagamentos_aluno(request, aluno_id):
+    aluno = Aluno.objects.get(pk=aluno_id)
+    
+    # Pagamentos de propina do aluno
+    propinas_aluno = Propina.objects.filter(aluno=aluno)
+    meses_com_status = []
+    for month, month_name in Propina.MONTH_CHOICES:
+        propina_mes = propinas_aluno.filter(mes=month).first()
+        if propina_mes:
+            if propina_mes.pago:
+                status = 'Pago'
+                valor = propina_mes.valor
+                icone = 'fa-check-circle text-success'  # Ícone de marcação de verificação verde
+            else:
+                status = 'A Pagar'
+                valor = propina_mes.valor
+                icone = 'fa-times-circle text-danger'  # Ícone de marcação de cruz vermelha
+        else:
+            status = 'A Pagar'
+            valor = 0
+            icone = 'fa-times-circle text-danger'  # Ícone de marcação de cruz vermelha
+
+        meses_com_status.append({
+            'mes': month_name,
+            'status': status,
+            'valor': valor,
+            'icone': icone,
+        })
+
+    # Outros pagamentos do aluno
+    outros_pagamentos = Pagamento.objects.filter(aluno=aluno, aprovado=True)  # Apenas pagamentos aprovados
+
+    context = {
+        'aluno': aluno,
+        'meses_com_status': meses_com_status,
+        'outros_pagamentos': outros_pagamentos,
+    }
+
+    return render(request, 'historico_pagamentos_aluno.html', context)
+
 
 
 def visualizar_educandos(request, encarregado_id):
@@ -1088,6 +1119,8 @@ def avaliacoes_turma(request, turma_id):
     return render(request, "avaliacoes.html", context)
 
 
+logger = logging.getLogger(__name__)
+
 def realizar_pagamento(request, aluno_id):
     aluno = get_object_or_404(Aluno, id=aluno_id)
     encarregado = Encarregado.objects.get(user=request.user)
@@ -1096,8 +1129,8 @@ def realizar_pagamento(request, aluno_id):
     if request.method == "POST":
         form = PagamentoForm(request.POST, request.FILES, initial={"aluno": aluno})
         if form.is_valid():
-
             pagamento = form.save(commit=False)
+            pagamento.aluno = aluno  # Definindo o aluno manualmente
             pagamento.encarregado = encarregado
             pagamento.save()
             return redirect("pagamento_realizado")
@@ -1316,6 +1349,16 @@ def ver_alunos(request):
     }
     return render(request, "ver_alunos.html", context)
 
+@user_passes_test(is_superuser)
+def licitacoes_pendentes(request):
+    pagamentos_pendentes = Pagamento.objects.filter(aprovado=False)
+    return render(request, 'licitacoes_pendentes.html', {'pagamentos_pendentes': pagamentos_pendentes})
+@user_passes_test(is_superuser)
+def aprovar_pagamento(request, pagamento_id):
+    pagamento = Pagamento.objects.get(pk=pagamento_id)
+    pagamento.aprovado = True
+    pagamento.save()
+    return redirect('listar_licitacoes_pendentes')
 
 @user_passes_test(is_superuser)
 def cadastrar_publicidade_comunicado(request):

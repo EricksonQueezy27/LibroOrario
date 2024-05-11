@@ -1,3 +1,4 @@
+import re
 from django import forms
 from .models import *
 from crispy_forms.helper import FormHelper
@@ -139,6 +140,23 @@ class PagamentoForm(forms.ModelForm):
     class Meta:
         model = Pagamento
         fields = ['tipo', 'outro_tipo', 'valor', 'comprovativo']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['tipo'].error_messages = {'required': 'Selecione uma opção válida.'}
+        self.fields['valor'].error_messages = {'required': 'Este campo é obrigatório.', 'invalid': 'Introduza um número válido.'}
+
+    def clean_tipo(self):
+        tipo = self.cleaned_data.get('tipo')
+        if not tipo:
+            raise forms.ValidationError("Selecione uma opção válida.")
+        return tipo
+
+    def clean_valor(self):
+        valor = self.cleaned_data.get('valor')
+        if valor is None:
+            raise forms.ValidationError("Este campo é obrigatório.")
+        return valor    
 
     def clean(self):
         cleaned_data = super().clean()

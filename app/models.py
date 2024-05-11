@@ -117,8 +117,11 @@ class Aluno(models.Model):
         nascimento = self.data_nascimento
         idade_calculada = hoje.year - nascimento.year - ((hoje.month, hoje.day) < (nascimento.month, nascimento.day))
         return idade_calculada
-    
-    
+
+    def get_divida_total(self):
+        propinas = self.propina_set.filter(pago=False)
+        divida_total = sum(propina.valor for propina in propinas)
+        return divida_total
     def __str__(self):
         turma_nome = self.turma.nome if self.turma else "Sem turma"
         return f"{self.nome} - Idade: {self.idade} - Turma: {turma_nome}"
@@ -239,10 +242,9 @@ class Presenca(models.Model):
 #     class Meta:
 #         unique_together = ('aluno', 'aula')
 
-
 class Propina(models.Model):
     aluno = models.ForeignKey(Aluno, on_delete=models.SET_NULL, null=True, blank=True)
-    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    valor = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     data_pagamento = models.DateField()
     detalhes_fatura = models.TextField()
 
@@ -261,17 +263,21 @@ class Propina(models.Model):
         (12, 'Dezembro'),
     ]
 
-    tipo_pagamento = models.CharField(choices=[
-        ('Propina', 'Propina'),
-        ('Folha de Prova', 'Folha de Prova'),
-        ('Justificacao de Faltas', 'Justificacao de Faltas'),
-    ], default='Propina', max_length=30)
+    DEFAULT_DIVIDA = 14000.00  # Definindo o valor padrão da dívida
+
+    divida = models.DecimalField(max_digits=10, decimal_places=2, default=DEFAULT_DIVIDA)
 
     mes = models.IntegerField(choices=MONTH_CHOICES)
     pago = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.aluno} - {self.data_pagamento}"
+        return f"{self.aluno} - {self.data_pagamento} - {self.pago}"  
+
+    def save(self, *args, **kwargs):
+        # Verificar se o valor está vazio ou None
+        if self.valor is None or self.valor == '':
+            self.valor = self.divida  # Define o valor como a dívida padrão
+        super().save(*args, **kwargs)
 
     def calcular_status_propina(self):
         hoje = timezone.now().date()
@@ -281,6 +287,11 @@ class Propina(models.Model):
             return 'Pago'
         else:
             return 'Em Dívida'
+
+    def get_divida_mes(self):
+        if not self.pago:
+            return self.valor
+        return 0
     
 
    
@@ -462,9 +473,10 @@ class Pagamento(models.Model):
     valor = models.DecimalField(max_digits=10, decimal_places=2)
     comprovativo = models.ImageField(upload_to='comprovativos_pagamento/')
     data_pagamento = models.DateField(auto_now_add=True)
+    aprovado = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Pagamento de {self.tipo} - {self.valor}" 
+        return f"Pagamento de {self.aluno} - {self.tipo} - {self.valor} - {self.data_pagamento} - {self.aprovado}" 
 
     
 # class Escola(models.Model):

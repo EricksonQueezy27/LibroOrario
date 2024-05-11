@@ -137,68 +137,28 @@
         <div class="container mt-5">
           <h1 class="mb-4">Histórico de Pagamentos do Encarregado: {{ encarregado.nome }}</h1>
           
-          <div class="table-responsive">
-              <table class="table table-striped">
-                  <thead>
-                      <tr>
-                          <th>Aluno</th>
-                          <th>Data de Pagamento</th>
-                          <th>Valor</th>
-                          <th>Tipo de Pagamento</th>
-                          <th>Status</th>
-                          <th>Ação</th> <!-- Adicionamos uma nova coluna para a ação -->
-                      </tr>
-                  </thead>
-                  <tbody>
-               {% for propina in propinas %}
-                  <tr>
-                      <td>{{ propina.aluno.nome }}</td>
-                      <td>{{ propina.data_pagamento }}</td>
-                      <td>Akzs {{ propina.valor }}</td>
-                      <td>{{ propina.tipo_pagamento }}</td>
-                      <td>{{ propina.calcular_status_propina }}</td>
-                      <td>
-                          <!-- Botão para fazer um novo pagamento associado ao ID do aluno -->
-                          <a href="{% url 'realizar_pagamento' aluno_id=propina.aluno.id %}" class="btn btn-primary">Fazer Pagamento</a>
-                      </td>
-                  </tr>
-                  {% endfor %}
-
-                  </tbody>
-              </table>
-          </div>
-      </div>
-      
+          <div class="container mt-5">
+            <h1>Histórico de Pagamentos</h1>
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Alunos Associados:</h3>
+                    <ul class="list-group">
+                        {% for aluno in alunos %}
+                        <li class="list-group-item">{{ aluno.nome }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
-        {% comment %} </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Mês</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for mes, nome_mes in MONTH_CHOICES %}
-              <tr>
-                <td>{{ nome_mes }}</td>
-                <td style="background-color: {% if aluno_pagou_mes(encarregado.aluno, mes) %}green{% else %}red{% endif %}">
-                  {% if aluno_pagou_mes(encarregado.aluno, mes) %}
-                    Pago
-                  {% else %}
-                    Em Dívida
-                  {% endif %}
-                </td>
-                
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-         {% endcomment %}
-        
-    <!-- verificar_comunicado_pagamento.html -->
-<!-- verificar_comunicado_pagamento.html -->
-<!-- historico_pagamentos.html -->
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    {% if alunos %}
+                    {% for aluno in alunos %}
+                    <a href="{% url 'historico_pagamentos_aluno' aluno.id %}" class="btn btn-primary">Ver Pagamentos de {{ aluno.nome }}</a>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
 <div class="container mt-5">
     <h1 class="mb-4">Comunicados de Pagamento</h1>
     

@@ -67,30 +67,11 @@
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div><!-- End Search Bar -->
-
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
 
-        <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle " href="#">
-            <i class="bi bi-search"></i>
-          </a>
-        </li><!-- End Search Icon-->
 
-        
 
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}" data-toggle="modal" data-target="#logoutModal">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Sair</span>
-              </a>
-            </li>
 
           </ul><!-- End Profile Dropdown Items -->
         </li><!-- End Profile Nav -->
@@ -101,18 +82,7 @@
   </header><!-- End Header -->
 
   <!-- ======= Sidebar ======= -->
-  <aside id="sidebar" class="sidebar">
 
-    <ul class="sidebar-nav" id="sidebar-nav">
-
-      <li class="nav-item">
-        <a class="nav-link " href="{% static 'enc' %}">
-          <i class="bi bi-grid"></i>
-          <span>Menu</span>
-        </a>
-      </li><!-- End Dashboard Nav -->
-
-  </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
 
@@ -127,14 +97,14 @@
       </nav>
     </div><!-- End Page Title -->
    
-      <section class="section">
-        <div class="container mt-5">
+    <section class="section">
+      <div class="container mt-5">
           <h1 class="mb-4">Realizar Pagamento</h1>
           <form method="post" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="form-group">
                   <label for="tipo">Tipo de Pagamento:</label>
-                  <select class="form-control" id="tipo" name="tipo">
+                  <select class="form-control" id="tipo" name="tipo" onchange="showHideOutroTipo()">
                       <option value="">Selecione...</option>
                       {% for choice in form.tipo.field.choices %}
                           <option value="{{ choice.0 }}">{{ choice.1 }}</option>
@@ -148,7 +118,8 @@
               </div>
               <div class="form-group">
                   <label for="valor">Valor:</label>
-                  <input type="text" class="form-control" id="valor" name="valor">
+                  <input type="text" class="form-control" id="valor" name="valor" onkeypress="return isNumber(event)">
+                  <small class="text-danger" id="valor-error"></small> <!-- Mensagem de erro para o campo de valor -->
               </div>
               <div class="form-group">
                   <label for="comprovativo">Comprovativo:</label>
@@ -157,8 +128,7 @@
               <button type="submit" class="btn btn-primary">Realizar Pagamento</button>
           </form>
       </div>
-
-    </section>
+  </section>
 </main><!-- End #main -->
 
 <!-- ======= Footer ======= -->
@@ -186,16 +156,27 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-    $(document).ready(function(){
-        $('#tipo').change(function(){
-            if($(this).val() == 'Outro'){
-                $('#outro_tipo_field').show();
-            }else{
-                $('#outro_tipo_field').hide();
-            }
-        });
-    });
-</script>
+  function showHideOutroTipo() {
+      var selectTipo = document.getElementById("tipo");
+      var outroTipoField = document.getElementById("outro_tipo_field");
+
+      if (selectTipo.value === "Outro") {
+          outroTipoField.style.display = "block";
+      } else {
+          outroTipoField.style.display = "none";
+      }
+  }
+
+  function isNumber(evt) {
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
+      if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+          document.getElementById("valor-error").innerText = "Apenas números são permitidos.";
+          return false;
+      }
+      document.getElementById("valor-error").innerText = "";
+      return true;
+  }
+</script> 
 <!-- Template Main JS File -->
 <script src={% static "assets/js/main.js" %}></script>
 <script>

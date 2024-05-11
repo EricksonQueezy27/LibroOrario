@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamentos Pendentes</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- CSS do Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome (ícones) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+   
+
+    <style>
+        /* Estilos para a sobreposição */
+.overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: black;
+}
+
+/* Estilos para o modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    padding-top: 50px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.9);
+}
+
+/* Estilos para o conteúdo do modal */
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 800px;
+    max-height: 80%;
+}
+
+/* Estilos para o botão de fechar */
+.close {
+    color: #ffffff;
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    font-size: 50px;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+.comprovativo-img{
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: cover;
+}
+.modal-img {
+    max-width: 100%;
+    max-height: 80vh; /* Define a altura máxima como 80% da altura da janela */
+}
+
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="mb-4">Pagamentos Pendentes</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Aluno</th>
+                <th>Tipo</th>
+                <th>Valor</th>
+                <th>Comprovativo</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pagamento in pagamentos_pendentes %}
+            <tr>
+                <td>{{ pagamento.id }}</td>
+                <td>{{ pagamento.aluno }}</td>
+                <td>{{ pagamento.tipo }}</td>
+                <td>{{ pagamento.valor }}</td>
+                <td>
+                    <div class="image-container">                     
+                        <img class="comprovativo-img" src="{{ pagamento.comprovativo.url }}" alt="Comprovativo" style="max-width: 200px; max-height: 200px;">
+                        <a href="#" class="zoom-icon" data-toggle="modal" data-target="#imagemModal{{ pagamento.id }}"><i class="fas fa-search-plus"></i></a>
+                    </div>
+                </td>
+                
+                <!-- Modal -->
+                <div class="modal fade" id="imagemModal{{ pagamento.id }}" tabindex="-1" role="dialog" aria-labelledby="imagemModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="imagemModalLabel">Ampliar Imagem</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <img class="modal-img" src="{{ pagamento.comprovativo.url }}" alt="Comprovativo">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                
+                
+                <td>
+                    <form action="{% url 'aprovar_pagamento' pagamento.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success">Aprovar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Bootstrap JS e jQuery (opcional, se necessário) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+ <!-- Popper.js (necessário para alguns componentes do Bootstrap) -->
+ <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+
+ <!-- JavaScript do Bootstrap -->
+ <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function(){
+        // Quando uma imagem for clicada
+        $('.comprovativo-img').on('click', function(){
+            var modal = $(this).siblings('.modal');
+            var modalImg = modal.find('.modal-content');
+            
+            // Exibe o modal
+            modal.css('display', 'block');
+            
+            // Exibe a imagem ampliada
+            modalImg.attr('src', $(this).attr('src'));
+        });
+    
+        // Quando o botão de fechar for clicado
+        $('.close').on('click', function(){
+            $(this).closest('.modal').css('display', 'none');
+        });
+    });
+    
+</script>
+</body>
+</html>
