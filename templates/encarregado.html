@@ -35,6 +35,39 @@
         height: auto; /* Permite que a altura seja ajustada proporcionalmente à largura */
     }
 </style>
+<style>
+  .card {
+    background-color: #f8f9fa; /* Light grey background */
+    border: 1px solid #dee2e6; /* Light border */
+    border-radius: 0.25rem;
+  }
+
+  .card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  .card-text {
+    font-size: 1rem;
+  }
+
+  .card-body h4 {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+
+  .img-fluid.aluno-img {
+    border-radius: 0.25rem 0.25rem 0 0;
+    height: 200px; /* Adjust as necessary */
+    object-fit: cover;
+  }
+
+  .badge {
+    font-size: 1rem;
+    padding: 0.5em 1em;
+    border-radius: 0.25rem;
+  }
+</style>
 </head>
 
 <body>
@@ -402,132 +435,114 @@
   </div>
 </div>
 
-<!-- End Customers Card -->
-
 
 <div class="col-12">
   <div class="card recent-sales overflow-auto">
-      <div class="container">
-          <div class="card-body">
-              <h5 class="card-title">Presença dos Alunos <span>| {{ aula_atual.data }}</span></h5>
-              {% if encarregado.alunos_associados.all %}
-                  <div class="row">
-                      {% for aluno in encarregado.alunos_associados.all %}
-                          <div class="card shadow mb-4 col-sm-6">
-                              <img src="{% if aluno.foto %}{{ aluno.foto.url }}{% else %}/caminho/para/uma/imagem/de/placeholder.jpg{% endif %}"
-                                  class="card-img-top img-fluid aluno-img" alt="Foto do Aluno">
-                              <div class="card-body">
-                                  <h5 class="card-title">{{ aluno.nome }}</h5>
-                                  <p class="card-text">Turma: {{ aluno.turma }}</p>
-                                  <div class="card">
-                                      <div class="card-body">
-                                          <h4>{{ aluno.nome }}</h4>
-                                          {% for presenca in presencas_alunos.alunos_associados %}
-                                              <h5 class="card-title text-primary">Aula Atual: {{ presenca.aula.disciplina }} -- {{ presenca.aula.data }}</h5>
-                                              <p class="card-text">Presença: {{ presenca.get_presente_display }}</p>
-                                              <li>
-                                                  {% if presenca.presente == 'P' %}
-                                                      <span class="badge badge-success">Presente</span>
-                                                  {% elif presenca.presente == 'J' %}
-                                                      <span class="badge badge-warning">Justificado</span>
-                                                      <small class="text-success">{{ presenca.justificativa }}</small>
-                                                  {% elif presenca.presente == 'A' %}
-                                                      <span class="badge badge-danger">Ausente</span>
-                                                  {% endif %}
-                                              </li>
-                                          {% endfor %}
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      {% endfor %}
-                  </div>
-              {% else %}
+    <div class="container">
+      <div class="card-body">
+        <h5 class="card-title">Presença dos Alunos <span>| {{ aula_atual.data }}</span></h5>
+        {% if encarregado.alunos_associados.exists %}
+          <div class="row">
+            {% for aluno in encarregado.alunos_associados.all %}
+              <div class="card shadow mb-4 col-sm-6">
+                <img src="{% if aluno.foto %}{{ aluno.foto.url }}{% else %}/caminho/para/uma/imagem/de/placeholder.jpg{% endif %}"
+                     class="card-img-top img-fluid aluno-img" alt="Foto do Aluno">
+                <div class="card-body">
+                  <h5 class="card-title">{{ aluno.nome }}</h5>
+                  <p class="card-text">Turma: {{ aluno.turma }}</p>
                   <div class="card">
-                      <div class="card-body">
-                          <div class="col-lg-3">
-                              <div class="card">
-                                  <img src="{% static 'img/9842877.jpg' %}" class="card-img-top"
-                                      alt="Imagem de professor">
-                                  <div class="card-body">
-                                      <p class="card-text">LibroOrario - Organize suas aulas facilmente</p>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  <marquee behavior="" direction="">Aqui Você terá acesso a presenças de todos os teus Educandos| Sem Aulas No Momento</marquee>
-              {% endif %}
-          </div>
-      </div>
-  </div>
-</div>
+                    <div class="card-body">
 
-<div class="row">
-  {% if presencas_alunos %}
-    {% for aluno_id, info in presencas_alunos.items %}
-      <h2>Aluno: {{ info.aluno.nome }}</h2>
-      <ul>
-        {% for presenca in info.presencas %}
-          <li>
-            {{ presenca.disciplina }} - {{ presenca.data }}: <span class="{{ presenca.status_classe }}">{{ presenca.status_classe }}</span>
-            {% if presenca.justificativa %}
-              (Justificativa: {{ presenca.justificativa }})
-            {% endif %}
-          </li>
-        {% endfor %}
-      </ul>
-    {% endfor %}
-  {% else %}
-    <p>Não há aulas disponíveis no momento.</p>
-  {% endif %}
-</div>
-
-
-
-            <!-- Top Selling -->
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Publicidade <span>| Escolar</span> </h5>
-  
-                <!-- Slides with captions -->
-                <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
-                  <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                  </div>
-                  {% for pub in publicidade %}
-                  <div class="carousel-inner">
-                    <div class="carousel-item active{% if forloop.first %}active{% endif %}">
-                      <img src="{{ pub.imagem.url }}" class="d-block w-100" alt="...">
-                      <div class="carousel-caption d-none d-md-block">
-                        <p class="badge bg-warning">{{ pub.titulo }}</p>
-                        <br>
-                        <p class="badge bg-warning">{{ pub.conteudo }}</p>
-                      </div>
-                    </div>
-                    {% endfor %}
+                      {% with aluno_presencas=presencas|dictsort:"aluno_id" %}
+                        {% for presenca in aluno_presencas %}
+                          {% if presenca.aluno == aluno %}
+                            <h5 class="card-title text-primary">Aula Atual: {{ presenca.aula.disciplina }} - {{ presenca.aula.data }}</h5>
+                            <h6 class="card-title text-primary">Objectivo da aula: {{ presenca.aula.objectivo }}</h6>
+                            <!-- <p class="card-text">Presença: {{ presenca.get_presente_display }}</p> -->
+                            
+                              {% if presenca.presente == 'P' %}
+                                <h4 class="text-success"> Presença: Presente</h4>
+                              {% elif presenca.presente == 'A' %}
+                                <h4 class="text-danger">Presença: Ausente</h4>
+                              {% elif presenca.presente == 'T' %}
+                                <h4 class="text-warning">Presença: Atrasado</h4>
+                              {% endif %}
+                       
+                          {% endif %}
+                          {% if not aluno_presencas %}
+                          <p>Não há presenças registradas para este aluno na aula atual.</p>
+                         {% endif %}
+                        {% endfor %}
+                       
+                      {% endwith %}
+                      
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-  
-                  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                  </button>
-                  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                  </button>
-  
-                </div><!-- End Slides with captions -->
-  
+            {% endfor %}
           </div>
-        </div><!-- End Left side columns -->
+        {% else %}
+          <div class="card">
+            <div class="card-body">
+              <div class="col-lg-3">
+                <div class="card">
+                  <img src="{% static 'img/9842877.jpg' %}" class="card-img-top" alt="Imagem de professor">
+                  <div class="card-body">
+                    <p class="card-text">LibroOrario - Organize suas aulas facilmente</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <marquee behavior="" direction="">Aqui Você terá acesso a presenças de todos os teus Educandos | Sem Aulas No Momento</marquee>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- Top Selling -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Publicidade <span>| Escolar</span> </h5>
+
+      <!-- Slides with captions -->
+      <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
         </div>
+        {% for pub in publicidade %}
+        <div class="carousel-inner">
+          <div class="carousel-item active{% if forloop.first %}active{% endif %}">
+            <img src="{{ pub.imagem.url }}" class="d-block w-100" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+              <p class="badge bg-warning">{{ pub.titulo }}</p>
+              <br>
+              <p class="badge bg-warning">{{ pub.conteudo }}</p>
+            </div>
+          </div>
+          {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+
+      </div><!-- End Slides with captions -->
+
+</div>
+</div><!-- End Left side columns -->
         <div class="col-xxl-4 col-xl-12">
           <div class="card info-card propinas-card">
             <div class="card-body">

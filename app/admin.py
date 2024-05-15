@@ -22,7 +22,7 @@ admin.site.register(Aula)
 admin.site.register(Turma)
 admin.site.register(Curso)
 admin.site.register(Classe)
-admin.site.register(Horario)
+# admin.site.register(Horario)
 admin.site.register(ConteudoEducacional)
 admin.site.register(ProfessorDisciplina)
 admin.site.register(Evento)
@@ -77,4 +77,16 @@ class ComunicadoAdmin(admin.ModelAdmin):
 
     enviar_comunicado.short_description = "Enviar comunicado de pagamento"
 
-admin.site.register(Comunicado, ComunicadoAdmin)
+@admin.register(Horario)
+class HorarioAdmin(admin.ModelAdmin):
+    list_display = ['disciplina', 'turma', 'dia_semana', 'hora_inicio', 'hora_termino', 'sala_aula']
+    list_filter = ['dia_semana', 'turma', 'disciplina']
+    search_fields = ['dia_semana', 'turma__nome', 'disciplina__nome']
+    ordering = ['dia_semana', 'hora_inicio']
+
+    fieldsets = (
+        (None, {
+            'fields': ('turma', 'disciplina', 'dia_semana', 'hora_inicio', 'hora_termino', 'sala_aula')
+        }),
+    )
+

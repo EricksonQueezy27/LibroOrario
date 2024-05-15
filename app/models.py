@@ -54,7 +54,7 @@ class Professor(models.Model):
     disciplinas_associadas = models.ManyToManyField(Disciplina)
     turmas_associadas = models.ManyToManyField(Turma,blank=True)
     foto = models.ImageField(upload_to="images/professores/", blank=True, null=True)
-    # horarios = models.ManyToManyField('Horario', blank=True, related_name='horarios_professor')
+    horarios = models.ManyToManyField('Horario', blank=True, related_name='horarios_professor')
         
     def __str__(self):
         return f"{self.nome} - {self.departamento}"

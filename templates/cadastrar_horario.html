@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Horário - Bootstrap e CSS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ZenhBWKWvBRzQ2lnBwYiHymYWvFZj70TyTbt+OcfZogMJzT+pC8P1CNbtQjSHmcy" crossorigin="anonymous">
+    <style>
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: inline-block;
+            margin-bottom: .5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-3">
+        <h1>Formulário de Horário</h1>
+        <form method="post">
+            {% csrf_token %}  <div class="form-group">
+                <label for="turma">Turma:</label>
+                <select class="form-select" name="turma" id="turma">
+                    <option value="">-- Selecione a Turma --</option>
+                    {% for turma in turmas %}
+                        <option value="{{ turma.id }}">{{ turma.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="disciplina">Disciplina:</label>
+                <select class="form-select" name="disciplina" id="disciplina">
+                    <option value="">-- Selecione a Disciplina --</option>
+                    {% for disciplina in disciplinas %}
+                        <option value="{{ disciplina.id }}">{{ disciplina.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="dia_semana">Dia da Semana:</label>
+                <select class="form-select" name="dia_semana" id="dia_semana">
+                    <option value="">-- Selecione o Dia --</option>
+                    <option value="1">Segunda-feira</option>
+                    <option value="2">Terça-feira</option>
+                    <option value="3">Quarta-feira</option>
+                    <option value="4">Quinta-feira</option>
+                    <option value="5">Sexta-feira</option>
+                    </select>
+            </div>
+            <div class="form-group">
+                <label for="hora_inicio">Hora de Início:</label>
+                <input type="time" class="form-control" name="hora_inicio" id="hora_inicio">
+            </div>
+            <div class="form-group">
+                <label for="hora_termino">Hora de Término:</label>
+                <input type="time" class="form-control" name="hora_termino" id="hora_termino">
+            </div>
+            <div class="form-group">
+                <label for="sala_aula">Sala de Aula:</label>
+                <input type="text" class="form-control" name="sala_aula" id="sala_aula" placeholder="Ex: A-101">
+            </div>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b4FxqZk++aDYXa2fOyqVW3YLlgsUZRO1T+cVlQMh7mEPGkP4x+s7jCuxLifjI3GfY" crossorigin="anonymous"></script>
+</body>

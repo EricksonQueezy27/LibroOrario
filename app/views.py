@@ -527,36 +527,23 @@ def enc(request):
     publicidade = Publicidade.objects.all()
 
     # Get students associated with the encarregado
-    alunos = encarregado.alunos_associados.all()
+      # Passo 2: Obter os alunos associados ao encarregado
+    alunos_associados = encarregado.alunos_associados.all()
+    
+    # Passo 3: Identificar a aula atual
+    # Vamos assumir que a aula atual é identificada por data e hora (isso pode variar dependendo de como você define "aula atual")
+    agora = timezone.now().date()
+    
+    # Passo 4: Filtrar as presenças desses alunos na aula atual
+    presencas = Presenca.objects.filter(aluno__in=alunos_associados, data=agora)
 
-    # Filter current aulas (happening now)
-    aulas_atuais = Aula.objects.filter(data__lte=datetime.now(), data__gte=datetime.now())
-
-    presencas_alunos = {}
-
-    # Loop through students and filter their presenças for current aulas
-    for aluno in alunos:
-        presencas = Presenca.objects.filter(aluno=aluno, aula__in=aulas_atuais)
-        presenca_data = []
-        for presenca in presencas:
-            # Check if PresencaJustificativa exists for the current presenca
-            justificativa = Presenca.justificativa.objects.filter(presenca=presenca).first()
-            # Add presence details with status class
-            presenca_data.append({
-                'disciplina': presenca.aula.disciplina.nome,
-                'data': presenca.aula.data,
-                'status_classe': presenca.get_status_class(),  # Get status class here
-                'justificativa': justificativa.justificativa if justificativa else None,
-            })
-        presencas_alunos[aluno.id] = {'aluno': aluno, 'presencas': presenca_data}
-
+    # Renderizar os resultados na template
     context = {
-        "encarregado": encarregado,
-        "publicidade": publicidade,
-        "presencas_alunos": presencas_alunos,
+        'encarregado': encarregado,
+        'presencas': presencas,
+        'publicidade':publicidade,
     }
-
-    return render(request, "encarregado.html", context)
+    return render(request, 'encarregado.html', context)
 
 
 def aluno_pagou_mes(aluno, mes):

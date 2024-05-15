@@ -222,7 +222,16 @@ class TurmaForm(forms.ModelForm):
 
 
 
-
+class HorarioForm(forms.ModelForm):
+    class Meta:
+        model = Horario
+        fields = ['turma', 'disciplina', 'dia_semana', 'hora_inicio', 'hora_termino', 'sala_aula']
+        widgets = {
+            'dia_semana': forms.Select(attrs={'class': 'form-select'}),
+            'hora_inicio': forms.TimeInput(attrs={'class': 'form-control'}),
+            'hora_termino': forms.TimeInput(attrs={'class': 'form-control'}),
+            'sala_aula': forms.TextInput(attrs={'class': 'form-control'}),
+        }
         
 
 class PublicidadeForm(forms.ModelForm):

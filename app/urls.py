@@ -84,19 +84,10 @@ urlpatterns = [
     path('historico_pagamentos_aluno/<int:aluno_id>/', historico_pagamentos_aluno, name='historico_pagamentos_aluno'),
     path('licitacoes_pendentes/', licitacoes_pendentes, name='listar_licitacoes_pendentes'),
     path('aprovar_pagamento/<int:pagamento_id>/', aprovar_pagamento, name='aprovar_pagamento'),
-     path('reprovar-pagamento/<int:pagamento_id>/', reprovar_pagamento, name='reprovar_pagamento'),
-     path('processar-pagamento/', processar_pagamento_e_gerar_pdf, name='processar_pagamento_e_gerar_pdf'),
-
-
-
+    path('reprovar-pagamento/<int:pagamento_id>/', reprovar_pagamento, name='reprovar_pagamento'),
+    path('processar-pagamento/', processar_pagamento_e_gerar_pdf, name='processar_pagamento_e_gerar_pdf'),
+    path('cadastrar_horario/', cadashorario, name='cadastrar_horarios'),
     
-    # Outras URLs...
-
-
-
-
-
-
 
  
 ]
