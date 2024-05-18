@@ -32,6 +32,27 @@
       <!-- Template Main CSS File -->
       <link href={% static "assets/css/style.css" %} rel="stylesheet">
       <style>
+        body {
+          /* ... other card styles ... */
+          background: linear-gradient(to right, #4361EE, #F7C26B, #4361EE); /* Blue, orange, blue gradient */
+          background-size: 200% 100%; /* Stretch gradient to cover the background */
+          animation: gradient 5s ease-in-out infinite; /* Animation properties */
+        }
+        
+        @keyframes gradient {
+          0% {
+            background-position: 0% 50%; /* Start position */
+          }
+          25% {
+            background-position: 100% 50%; /* Midpoint position 1 */
+          }
+          75% {
+            background-position: 0% 50%; /* Midpoint position 2 */
+          }
+          100% {
+            background-position: 100% 50%; /* End position */
+          }
+        }
         /* Estilo personalizado */
         .card {
           margin-bottom: 20px;
@@ -82,27 +103,10 @@
             display: block; /* Exibir a imagem como bloco para centralizar horizontalmente */
             margin: 0 auto; /* Margem automática nas laterais para centralizar horizontalmente */
         }
-          
-
-      #video-background {
-          position: fixed;
-          right: 0;
-          bottom: 0;
-          min-width: 100%;
-          min-height: 100%;
-          width: auto;
-          height: auto;
-          z-index: -1000; 
-          -webkit-filter: brightness(70%);
-          filter: brightness(70%);
-      }
       </style>
     </head>
     <body>
-      <video id="video-background" autoplay loop muted>
-        <source src="{% static 'V.mp4' %}" type="video/mp4">
-        Seu navegador não suporta a tag de vídeo.
-    </video>
+    
       <div class="container">
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">

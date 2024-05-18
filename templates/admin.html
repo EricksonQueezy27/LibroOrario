@@ -43,6 +43,11 @@
             </a>
           </li>
           <li>
+            <li>
+              <a href="{% url 'lista_adiciona_disciplinas' %}">Disciplinas</a>
+              </a>
+            </li>
+            <li>
             <a href="{% url 'listar_licitacoes_pendentes' %}">Solicitação de pagamentos</a>
             </a>
           </li>
@@ -83,16 +88,44 @@
       </ol>
     </nav>
   </div><!-- End Page Title -->   
-  <section class="section dashboard">
+  <style>
+    .info-card {
+        min-height: 150px;
+        margin-bottom: 20px;
+        color: #fff;
+    }
+    .info-card .card-body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .info-card .card-icon {
+        font-size: 2rem;
+        width: 50px;
+        height: 50px;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+    }
+    .info-card .card-title {
+        margin-bottom: 0;
+    }
+    .carousel-inner img {
+        max-height: 400px;
+        object-fit: cover;
+    }
+</style>
+</head>
+<body>
+
+<section class="section dashboard">
+<div class="container">
     <div class="row">
         <div class="col-lg-8">
             <div class="row">
                 <!-- Turmas Card -->
                 <div class="col-xxl-4 col-md-6">
-                    <div class="card info-card turmas-card bg-primary">
-                        <div class="filter">
-                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                        </div>
+                    <div class="card info-card bg-primary">
                         <div class="card-body">
                             <h5 class="card-title">Número de Turmas</h5>
                             <div class="d-flex align-items-center">
@@ -109,10 +142,7 @@
     
                 <!-- Alunos Card -->
                 <div class="col-xxl-4 col-md-6">
-                    <div class="card info-card alunos-card bg-success">
-                        <div class="filter">
-                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                        </div>
+                    <div class="card info-card bg-success">
                         <div class="card-body">
                             <h5 class="card-title">Número de Alunos</h5>
                             <div class="d-flex align-items-center">
@@ -129,10 +159,7 @@
     
                 <!-- Professores Card -->
                 <div class="col-xxl-4 col-md-6">
-                    <div class="card info-card professores-card bg-warning">
-                        <div class="filter">
-                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                        </div>
+                    <div class="card info-card bg-warning">
                         <div class="card-body">
                             <h5 class="card-title">Número de Professores</h5>
                             <div class="d-flex align-items-center">
@@ -149,10 +176,7 @@
     
                 <!-- Encarregados Card -->
                 <div class="col-xxl-4 col-md-6">
-                    <div class="card info-card encarregados-card bg-info">
-                        <div class="filter">
-                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                        </div>
+                    <div class="card info-card bg-info">
                         <div class="card-body">
                             <h5 class="card-title">Número de Encarregados</h5>
                             <div class="d-flex align-items-center">
@@ -167,74 +191,226 @@
                     </div>
                 </div><!-- End Encarregados Card -->
 
+                <!-- Solicitações Card -->
                 <div class="col-xxl-4 col-md-6">
-                  <div class="card info-card encarregados-card {% if numero_de_solicitacoes > 0 %}bg-warning{% else %}bg-success{% endif %}">
-                      <div class="filter">
-                          <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                      </div>
-                      <div class="card-body">
-                          <h5 class="card-title">Número de Solicitações de Pagamentos Pendentes</h5>
-                          {% if numero_de_solicitacoes > 0 %}
-                              <div class="d-flex align-items-center">
-                                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="bi bi-currency-dollar"></i>
-
-                                  </div>
-                                  <div class="ps-3">
-                                      <h6>{{ numero_de_solicitacoes }}</h6>
-                                  </div>
-                              </div>
-                          {% else %}
-                              <p class="card-text">Não há solicitações pendentes.</p>
-                          {% endif %}
-                      </div>
-                  </div>
-              </div>
-              
+                    <div class="card info-card {% if numero_de_solicitacoes > 0 %}bg-warning{% else %}bg-success{% endif %}">
+                        <div class="card-body">
+                            <h5 class="card-title">Número de Solicitações de Pagamentos Pendentes</h5>
+                            {% if numero_de_solicitacoes > 0 %}
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-currency-dollar"></i>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6>{{ numero_de_solicitacoes }}</h6>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <p class="card-text">Não há solicitações pendentes.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div><!-- End Solicitações Card -->
             </div><!-- End row -->
         </div><!-- End col-lg-8 -->
     </div>
+
+    <div class="container mt-5">
+      <div class="custom-card">
+          <div class="custom-card-header">
+              <h5 class="mb-0">
+                  <a class="custom-btn-link" href="{% url 'cadastrar_horarios' %}">Cadastrar + Horarios</a>
+                  </a>          
+          </div>
+          <div id="collapseHorarios" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+              <div class="custom-card-body">
+                  <table class="custom-table custom-table-bordered custom-table-hover custom-table-striped">
+                      <thead class="custom-thead-dark">
+                          <tr>
+                              <th scope="col">Disciplina</th>
+                              <th scope="col">Turma</th>
+                              <th scope="col">Dia da Semana</th>
+                              <th scope="col">Hora de Início</th>
+                              <th scope="col">Hora de Término</th>
+                              <th scope="col">Sala de Aula</th>
+                              <th scope="col">Professor</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {% for horario in horarios %}
+                          <tr>
+                              <td>{{ horario.disciplina }}</td>
+                              <td>{{ horario.turma }}</td>
+                              <td>{{ horario.get_dia_semana_display }}</td>
+                              <td>{{ horario.hora_inicio }}</td>
+                              <td>{{ horario.hora_termino }}</td>
+                              <td>{{ horario.sala_aula }}</td>
+                              <td>{{ horario.professor }}</td>
+                          </tr>
+                          {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  <style>
+      .custom-card {
+          border: 1px solid #dee2e6;
+          border-radius: 0.25rem;
+          margin-bottom: 1.5rem;
+          background-color: #fff;
+      }
+      .custom-card-header {
+          padding: 0.75rem 1.25rem;
+          margin-bottom: 0;
+          background-color: #f8f9fa;
+          border-bottom: 1px solid #dee2e6;
+      }
+      .custom-btn-link {
+          font-weight: bold;
+          color: #007bff;
+          text-decoration: none;
+          background-color: transparent;
+          border: none;
+          padding: 0;
+      }
+      .custom-btn-link:hover {
+          text-decoration: underline;
+      }
+      .custom-card-body {
+          padding: 1.25rem;
+      }
+      .custom-table {
+          width: 100%;
+          margin-bottom: 1rem;
+          color: #212529;
+      }
+      .custom-table-bordered {
+          border: 1px solid #dee2e6;
+      }
+      .custom-table-hover tbody tr:hover {
+          background-color: rgba(0, 0, 0, 0.075);
+      }
+      .custom-table-striped tbody tr:nth-of-type(odd) {
+          background-color: rgba(0, 0, 0, 0.05);
+      }
+      .custom-thead-dark th {
+          color: #fff;
+          background-color: #343a40;
+          border-color: #454d55;
+      }
+  </style>
+  
   
 
-<hr>
-
-    <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Publicidade <span>| Escolar</span> </h5>
-      
+    <hr>
+    <div class="custom-card mt-4">
+      <div class="custom-card-body">
+          <h5 class="custom-card-title">Publicidade <span>| Escolar</span></h5>
           <!-- Slides with captions -->
-          <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-            </div>
-      
-            <div class="carousel-inner">
-              {% for pub in publicidades %}
-              <div class="carousel-item{% if forloop.first %} active{% endif %}">
-                <img src="{{ pub.imagem.url }}" class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                  <p class="badge bg-warning">{{ pub.titulo }}</p>
-                  <br>
-                  <p class="badge bg-warning">{{ pub.conteudo }}</p>
-                </div>
+          <div id="customCarouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+              <div class="carousel-inner">
+                  {% for pub in publicidades %}
+                  <div class="carousel-item{% if forloop.first %} active{% endif %}">
+                      <img src="{{ pub.imagem.url }}" class="d-block w-100" alt="..." style="max-height: 400px; max-width: 800px; object-fit: cover;">
+                      <div class="carousel-caption d-md-block">
+                          <h5 class="custom-carousel-title">{{ pub.titulo }}</h5>
+                          <p class="custom-carousel-content">{{ pub.conteudo }}</p>
+                      </div>
+                  </div>
+                  {% endfor %}
               </div>
-              {% endfor %}
-            </div>
-      
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
+              <button class="carousel-control-prev" type="button" data-bs-target="#customCarouselExampleCaptions" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#customCarouselExampleCaptions" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+              </button>
           </div><!-- End Slides with captions -->
-        </div>
       </div>
+  </div>
+  
+  <style>
+      .custom-card {
+          border-radius: 10px;
+          overflow: hidden;
+      }
+      .custom-card-title {
+          font-size: 1.5rem;
+          color: #333;
+          margin-bottom: 1rem;
+          text-align: center;
+      }
+      .carousel-inner {
+          position: relative;
+      }
+      .carousel-item {
+          display: none;
+          position: relative;
+          transition: opacity 0.5s ease-in-out;
+      }
+      .carousel-item.active {
+          display: block;
+          opacity: 1;
+      }
+      .carousel-caption {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+          padding: 20px;
+          color: #fff;
+      }
+      .custom-carousel-title {
+          font-size: 1.25rem;
+          margin-bottom: 10px;
+      }
+      .custom-carousel-content {
+          font-size: 1rem;
+      }
+      .carousel-control-prev, .carousel-control-next {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 10;
+          background-color: rgba(255, 255, 255, 0.5);
+          border: none;
+          color: #333;
+          font-size: 2rem;
+      }
+      .carousel-control-prev {
+          left: 20px;
+      }
+      .carousel-control-next {
+          right: 20px;
+      }
+      .carousel-control-prev-icon, .carousel-control-next-icon {
+          width: 30px;
+          height: 30px;
+          background-size: cover;
+      }
+  </style>
+  
 
-  </section>
+<!-- Adicionando Bootstrap JS e dependências -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    // Ativar carrossel com auto-ride
+    $('#customCarouselExampleCaptions').carousel({
+        interval: 3000,
+        ride: 'carousel'
+    });
+</script>
+
+
+</section>
 
 {% endblock %}

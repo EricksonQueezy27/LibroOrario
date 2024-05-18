@@ -1,21 +1,42 @@
 {% extends 'base_admin.html' %}
+
 {% block content %}
-<h1>Detalhes do Professor: {{ professor.nome }}</h1>
-<p>Email: {{ professor.email }}</p>
-<p>Departamento: {{ professor.departamento }}</p>
-<p>Titulação: {{ professor.titulacao }}</p>
-
-<h2>Horários</h2>
-<ul>
-  {% for horario in professor.horarios.all %}
-  <li>{{ horario }}</li>
-  {% endfor %}
-</ul>
-
-<h2>Turmas Associadas</h2>
-<ul>
-  {% for turma in professor.turmas_associadas.all %}
-  <li>{{ turma }}</li>
-  {% endfor %}
-</ul>
+<div class="container">
+  <div class="card shadow rounded-lg border-0 mx-auto mt-5">
+    <div class="card-header bg-transparent border-0">
+      <h1 class="text-primary fs-4 fw-bold">Detalhes do Professor: {{ professor.nome }}</h1>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <a href="{% url 'editar_professor' professor.id %}" class="btn btn-primary">Editar Professor</a>
+            <h2 class="text-secondary fs-5 mb-3">Informações Pessoais</h2>
+            <p><strong>Email:</strong> {{ professor.email }}</p>
+            <p><strong>Departamento:</strong> {{ professor.departamento }}</p>
+            <p><strong>Titulação:</strong> {{ professor.titulacao }}</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <h2 class="text-secondary fs-5 mb-3">Horários</h2>
+            <ul class="list-group">
+              {% for horario in horarios%}
+              <li class="list-group-item">{{ horario.dia_semana }} - {{ horario.hora_inicio|time:"H:i" }} às {{ horario.hora_termino|time:"H:i" }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div>
+            <h2 class="text-secondary fs-5 mb-3">Turmas Associadas</h2>
+            <ul class="list-group">
+              {% for turma in professor.turmas_associadas.all %}
+              <li class="list-group-item">{{ turma.nome }} - {{ turma.classe }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

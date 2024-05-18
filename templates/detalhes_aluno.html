@@ -123,7 +123,7 @@
                     </li>
     
                     <li class="nav-item">
-                      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Definições</button>
+                      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Presenças</button>
                     </li>
     
                     <li class="nav-item">
@@ -242,12 +242,37 @@
                       <form>
     
                         <div class="row mb-3">
-                          <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Email Notificação</label>
+             
                           <div class="col-md-8 col-lg-9">
                             <div class="form-check">
                               <!-- Comportamento e Disciplina -->
-<div class="collapse" id="comportamento{{ aluno.id }}">
-  <div class="card card-body">
+                              {% if presencas_aluno %}
+                              <h2>Presenças do Aluno na disciplina de {{ disciplina_professor.nome}}</h2>
+                              <table class="table">
+                                  <thead>
+                                      <tr>
+                                          <th>Data</th>
+                                          <th>Status</th>
+                                          <th>Nota</th>
+                                          <th>Justificativa</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      {% for presenca in presencas_aluno %}
+                                          <tr>
+                                              <td>{{ presenca.data }}</td>
+                                              <td>{{ presenca.get_presente_display }}</td>
+                                              <td>{{ presenca.nota }}</td>
+                                              <td>{{ presenca.justificativa }}</td>
+                                          </tr>
+                                      {% endfor %}
+                                  </tbody>
+                              </table>
+                          {% else %}
+                              <p>Nenhuma presença registrada para este aluno na disciplina {{ disciplina }}.</p>
+                          {% endif %}
+                          
+  {% comment %} <div class="card card-body">
       <h2>Comportamento e Disciplina</h2>
       {% if comportamento_aluno %}
           <p><strong>Descrição:</strong> {{ comportamento_aluno.descricao }}</p>
@@ -261,15 +286,8 @@
           {{ form_comportamento.as_p }}
           <button type="submit" class="btn btn-primary">Salvar</button>
       </form>
-  </div>
+  </div> {% endcomment %}
 </div></div>
-                            
-    
-                        <div class="text-center">
-                          <button type="submit" class="btn btn-primary">Salvar</button>
-                        </div>
-                      </form><!-- End settings Form -->
-    
                     </div>
     
                     <div class="tab-pane fade pt-3" id="profile-change-password">

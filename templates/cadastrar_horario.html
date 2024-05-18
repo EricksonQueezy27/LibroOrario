@@ -1,68 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário de Horário - Bootstrap e CSS</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ZenhBWKWvBRzQ2lnBwYiHymYWvFZj70TyTbt+OcfZogMJzT+pC8P1CNbtQjSHmcy" crossorigin="anonymous">
-    <style>
-        .form-group {
-            margin-bottom: 1rem;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastrar Horário - Enhanced</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to right, #ece9e6, #ffffff);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .blur-effect {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(5px);
+      z-index: -1;
+    }
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    body {
+        /* ... other card styles ... */
+        background: linear-gradient(to right, #4361EE, #F7C26B, #4361EE); /* Blue, orange, blue gradient */
+        background-size: 200% 100%; /* Stretch gradient to cover the background */
+        animation: gradient 15s ease infinite; /* Animation properties */
+      }
+      
+      @keyframes gradient {
+        0% {
+          background-position: 0% 50%; /* Start position */
         }
-        label {
-            display: inline-block;
-            margin-bottom: .5rem;
+        50% {
+          background-position: 100% 50%; /* Midpoint position */
         }
-    </style>
+        100% {
+          background-position: 0% 50%; /* End position */
+        }
+      }
+      
+    .card-header {
+      background-color: #ffffff;
+      border-bottom: none;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
-    <div class="container mt-3">
-        <h1>Formulário de Horário</h1>
-        <form method="post">
-            {% csrf_token %}  <div class="form-group">
-                <label for="turma">Turma:</label>
-                <select class="form-select" name="turma" id="turma">
-                    <option value="">-- Selecione a Turma --</option>
-                    {% for turma in turmas %}
-                        <option value="{{ turma.id }}">{{ turma.nome }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="disciplina">Disciplina:</label>
-                <select class="form-select" name="disciplina" id="disciplina">
-                    <option value="">-- Selecione a Disciplina --</option>
-                    {% for disciplina in disciplinas %}
-                        <option value="{{ disciplina.id }}">{{ disciplina.nome }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="dia_semana">Dia da Semana:</label>
-                <select class="form-select" name="dia_semana" id="dia_semana">
-                    <option value="">-- Selecione o Dia --</option>
-                    <option value="1">Segunda-feira</option>
-                    <option value="2">Terça-feira</option>
-                    <option value="3">Quarta-feira</option>
-                    <option value="4">Quinta-feira</option>
-                    <option value="5">Sexta-feira</option>
-                    </select>
-            </div>
-            <div class="form-group">
-                <label for="hora_inicio">Hora de Início:</label>
-                <input type="time" class="form-control" name="hora_inicio" id="hora_inicio">
-            </div>
-            <div class="form-group">
-                <label for="hora_termino">Hora de Término:</label>
-                <input type="time" class="form-control" name="hora_termino" id="hora_termino">
-            </div>
-            <div class="form-group">
-                <label for="sala_aula">Sala de Aula:</label>
-                <input type="text" class="form-control" name="sala_aula" id="sala_aula" placeholder="Ex: A-101">
-            </div>
-            <button type="submit" class="btn btn-primary">Salvar</button>
-        </form>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <a class="navbar-brand" href="{% url 'iadmin' %}">LibroOrario</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'iadmin' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'iadmin' %}">Horários</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'iadmin' %}">Sobre</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'iadmin' %}">Contato</a>
+        </li>
+      </ul>
     </div>
+  </nav>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b4FxqZk++aDYXa2fOyqVW3YLlgsUZRO1T+cVlQMh7mEPGkP4x+s7jCuxLifjI3GfY" crossorigin="anonymous"></script>
+  <div class="container mt-5 pt-5">
+    <div class="modal-backdrop blur-effect"></div>
+    <div class="card shadow rounded-lg border-0 mx-auto" style="max-width: 600px;">
+      <div class="card-header bg-transparent border-0 d-flex justify-content-center">
+        <h2 class="text-primary fs-4 fw-bold mb-0">Cadastrar Horário</h2>
+      </div>
+      <div class="card-body px-4">
+        <form method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="id_turma">Turma</label>
+            <select id="id_turma" name="turma" class="form-control">
+              {% for turma in form.turma.field.choices %}
+                <option value="{{ turma.0 }}">{{ turma.1 }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="id_disciplina">Disciplina</label>
+            <select id="id_disciplina" name="disciplina" class="form-control">
+              {% for disciplina in form.disciplina.field.choices %}
+                <option value="{{ disciplina.0 }}">{{ disciplina.1 }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="id_dia_semana">Dia da Semana</label>
+            <select id="id_dia_semana" name="dia_semana" class="form-control">
+              {% for dia_semana in form.dia_semana.field.choices %}
+                <option value="{{ dia_semana.0 }}">{{ dia_semana.1 }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="id_hora_inicio">Hora de Início</label>
+            <input type="time" id="id_hora_inicio" name="hora_inicio" class="form-control" value="{{ form.hora_inicio.value }}">
+          </div>
+          <div class="form-group">
+            <label for="id_hora_termino">Hora de Término</label>
+            <input type="time" id="id_hora_termino" name="hora_termino" class="form-control" value="{{ form.hora_termino.value }}">
+          </div>
+          <div class="form-group">
+            <label for="id_sala_aula">Sala de Aula</label>
+            <input type="text" id="id_sala_aula" name="sala_aula" class="form-control" value="{{ form.sala_aula.value }}">
+          </div>
+          <div class="form-group">
+            <label for="id_professor">Professor</label>
+            <select id="id_professor" name="professor" class="form-control">
+              {% for professor in form.professor.field.choices %}
+                <option value="{{ professor.0 }}">{{ professor.1 }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary float-end">Salvar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+</html>

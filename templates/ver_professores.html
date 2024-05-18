@@ -37,21 +37,24 @@
                 {% for disciplina in professor.disciplinas_associadas.all %}
                 <li class="list-group-item">{{ disciplina.nome }}</li>
                 {% endfor %}
-            </ul>
-            <p class="card-text">Turmas Associadas:</p>
-            <ul class="list-group">
+              </ul>
+              <p class="card-text">Turmas Associadas:</p>
+              <ul class="list-group">
                 {% for turma in professor.turmas_associadas.all %}
                 <li class="list-group-item">{{ turma.nome }} - {{ turma.classe }}</li>
                 <a href="{% url 'visualizar_turma' turma.id %}" class="btn btn-primary btn-sm">Visualizar Turma</a>
                 <br> 
                 {% endfor %}
-            </ul>
+              </ul>
               <a href="{% url 'atribuir_turmas_horarios' professor.id %}" class="btn btn-success btn-sm">Atribuir Turmas e Horários</a>
               <a href="{% url 'eliminar_professor' professor.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+              <!-- Botão "Mais Detalhes" -->
+              <a href="{% url 'detalhes_professor' professor.id %}" class="btn btn-info btn-sm">Mais Detalhes</a>
           </div>
       </div>
   </div>
   {% endfor %}
 </div>
+
 
 {% endblock %}

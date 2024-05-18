@@ -29,7 +29,70 @@
 
   <!-- Template Main CSS File -->
   <link href={% static "assets/css/style.css" %} rel="stylesheet">
+<style>
+  body {
+    /* ... other card styles ... */
+    background: linear-gradient(to right, #4362ee30, #f7c16b52, #4362ee7b); /* Blue, orange, blue gradient */
+    background-size: 200% 100%; /* Stretch gradient to cover the background */
+    animation: gradient 5s ease-in-out infinite; /* Animation properties */
+  }
+  
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%; /* Start position */
+    }
+    25% {
+      background-position: 100% 50%; /* Midpoint position 1 */
+    }
+    75% {
+      background-position: 0% 50%; /* Midpoint position 2 */
+    }
+    100% {
+      background-position: 100% 50%; /* End position */
+    }
+  }
+  /* Estilos para o cartão do encarregado */
+/* Estilos para os cartões do encarregado */
+/* Estilos para os cartões do encarregado */
 
+
+
+.card:last-child {
+  margin-left: 0; /* Remove a margem direita do último cartão */
+}
+
+
+.card-body {
+  padding: 15px; /* Adiciona espaço interno ao corpo do cartão */
+}
+
+.card-title {
+  font-size: 18px; /* Define o tamanho da fonte do título */
+  margin-bottom: 10px; /* Adiciona espaço abaixo do título */
+}
+
+.card-text {
+  margin-bottom: 5px; /* Adiciona espaço abaixo do texto do cartão */
+}
+
+.card-img-top {
+  border-radius: 8px 8px 0 0; /* Adiciona cantos arredondados apenas na parte superior da imagem */
+  max-width: 100%; /* Define a largura máxima da imagem */
+  max-height: 200px; /* Define a altura máxima da imagem */
+  object-fit: cover; /* Garante que a imagem cubra todo o espaço disponível */
+}
+
+.btn-primary {
+  background-color: #007bff; /* Cor de fundo do botão */
+  border-color: #007bff; /* Cor da borda do botão */
+}
+
+.btn-primary:hover {
+  background-color: #0056b3; /* Cor de fundo do botão ao passar o mouse */
+  border-color: #0056b3; /* Cor da borda do botão ao passar o mouse */
+}
+
+</style>
 </head>
 
 <body>
@@ -43,17 +106,7 @@
         <span class="d-none d-lg-block">LibroOrario</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
-    </div><!-- End Logo -->
-
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-        
-      </form>
-   
-    </div><!-- End Search Bar -->
-    
+    </div><!-- End Logo -->    
     {% if not "/iadmin/" in request.path %}
     <button type="button" onclick="history.back()" class="btn btn-secondary">Voltar</button>
 {% endif %}
@@ -108,10 +161,11 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}" data-toggle="modal" data-target="#logoutModal">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Sair</span>
-              </a>
+              <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+            
             </li>
 
           </ul><!-- End Profile Dropdown Items -->
@@ -153,10 +207,23 @@
   <script src={% static "assets/vendor/simple-datatables/simple-datatables.js" %}></script>
   <script src={% static "assets/vendor/tinymce/tinymce.min.js" %}></script>
   <script src={% static "assets/vendor/php-email-form/validate.js" %}></script>
+  <!-- Adicionando Bootstrap CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<!-- Adicionando Bootstrap JS e dependências -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 
   <!-- Template Main JS File -->
   <script src={% static "assets/js/main.js" %}></script>
-
+  <script>
+    // Ativar carrossel com auto-ride
+    $('#customCarouselExampleCaptions').carousel({
+        interval: 3000,
+        ride: 'carousel'
+    });
+</script>
 </body>
 
 </html>

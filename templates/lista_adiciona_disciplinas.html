@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disciplinas</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 50px;
+        }
+        body {
+            /* ... other card styles ... */
+            background: linear-gradient(to right, #4361EE, #F7C26B, #4361EE); /* Blue, orange, blue gradient */
+            background-size: 200% 100%; /* Stretch gradient to cover the background */
+            animation: gradient 5s ease-in-out infinite; /* Animation properties */
+          }
+          
+          @keyframes gradient {
+            0% {
+              background-position: 0% 50%; /* Start position */
+            }
+            25% {
+              background-position: 100% 50%; /* Midpoint position 1 */
+            }
+            75% {
+              background-position: 0% 50%; /* Midpoint position 2 */
+            }
+            100% {
+              background-position: 100% 50%; /* End position */
+            }
+          }
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <a class="navbar-brand" href="{% url 'iadmin' %}">LibroOrario</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'iadmin' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Horários</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Sobre</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contato</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card shadow rounded-lg border-0 mx-auto">
+            <div class="card-header bg-transparent border-0 d-flex justify-content-between">
+                <h2 class="text-primary fs-4 fw-bold mb-0">Disciplinas</h2>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addDisciplinaModal">
+                    Adicionar Disciplina
+                </button>
+            </div>
+            <div class="card-body px-4">
+                <ul class="list-group">
+                    {% for disciplina in disciplinas %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ disciplina.nome }}
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#confirmDeleteModal" data-id="{{ disciplina.id }}">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                            
+                            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#editDisciplinaModal" data-id="{{ disciplina.id }}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            
+                        </div>
+                    </li>
+                {% endfor %}
+                
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="addDisciplinaModal" tabindex="-1" aria-labelledby="addDisciplinaModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addDisciplinaModalLabel">Adicionar Disciplina</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_nome">Nome</label>
+                            <input type="text" id="id_nome" name="nome" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Exclusão</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Tem certeza de que deseja excluir esta disciplina?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <a id="deleteButton" class="btn btn-danger">Excluir</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editDisciplinaModal" tabindex="-1" role="dialog" aria-labelledby="editDisciplinaModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editDisciplinaModalLabel">Editar Disciplina</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editDisciplinaForm" method="post">
+                        {% csrf_token %}
+                        <!-- Aqui você pode adicionar campos para editar os detalhes da disciplina -->
+                        <input type="hidden" id="editDisciplinaId" name="id">
+                        <div class="form-group">
+                            <label for="editNomeDisciplina">Nome</label>
+                            <input type="text" class="form-control" id="editNomeDisciplina" name="nome" required>
+                        </div>
+                        <!-- Adicione mais campos conforme necessário -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" form="editDisciplinaForm">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#confirmDeleteModal').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget);
+                var disciplinaId = button.data('id');
+                var modal = $(this);
+                modal.find('.modal-footer #deleteButton').attr('href', '/excluir_disciplina/' + disciplinaId + '/');
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#editDisciplinaModal').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget);
+                var disciplinaId = button.data('id');
+                var modal = $(this);
+                // Aqui você pode fazer uma requisição AJAX para buscar os detalhes da disciplina com o ID disciplinaId e preencher o modal com esses detalhes
+            });
+        });
+    </script>
+    
+</body>
+</html>

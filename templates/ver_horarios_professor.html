@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horários do Professor</title>
+    <!-- Adicione o link para o Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href={% static "assets/vendor/bootstrap/css/bootstrap.min.css" %} rel="stylesheet">
+    <link href={% static "assets/vendor/bootstrap-icons/bootstrap-icons.css" %} rel="stylesheet">
+    <link href={% static "assets/vendor/boxicons/css/boxicons.min.css" %} rel="stylesheet">
+    <link href={% static "assets/vendor/quill/quill.snow.css" %} rel="stylesheet">
+    <link href={% static "assets/vendor/quill/quill.bubble.css" %} rel="stylesheet">
+    <link href={% static "assets/vendor/remixicon/remixicon.css" %} rel="stylesheet">
+    <link href={% static "assets/vendor/simple-datatables/style.css" %} rel="stylesheet">
+  
+    <!-- Template Main CSS File -->
+    <link href={% static "assets/css/style.css" %} rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4">Horários do Professor</h1>
+        <div class="list-group">
+            {% for horario in horarios %}
+                <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ horario.disciplina }}</h5>
+                        <small>{{ horario.dia_semana }} - {{ horario.hora_inicio|time:"H:i" }} às {{ horario.hora_termino|time:"H:i" }}</small>
+                    </div>
+                    <p class="mb-1">Turma: {{ horario.turma }}</p>
+                    <small>{{ horario.sala_aula }}</small>
+                </a>
+            {% endfor %}
+            <a href="#" class="btn btn-secondary mt-3" onclick="history.go(-1)">Voltar</a>
+        </div>
+    </div>
+
+    <!-- Adicione os scripts do Bootstrap (opcional, se você precisar de componentes JavaScript do Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -77,6 +77,10 @@ def index(request):
 
     return render(request, 'index.html')
 
+def librooraio(request):
+    
+    return render(request, 'site.html')
+
 
 
 @login_required
@@ -168,10 +172,41 @@ def listar_alunos(request):
 
 
 @login_required
+def presencas_disciplina(request, disciplina_id):
+    # Obter a disciplina do professor
+    disciplina = get_object_or_404(ProfessorDisciplina, id=disciplina_id, professor=request.user.professor)
+
+    # Obter todas as presenças dos alunos nesta disciplina
+    presencas = Presenca.objects.filter(aula__disciplina=disciplina.disciplina)
+
+    # Passar os dados para o template
+    context = {
+        'disciplina': disciplina,
+        'presencas': presencas,
+    }
+
+    return render(request, 'presencas_disciplina.html', context)
+
+@login_required
+def detalhes_aluno(request, aluno_id):
+    aluno = get_object_or_404(Aluno, id=aluno_id)
+    disciplina_professor = Disciplina.objects.filter(professor=request.user.professor).first()  # Supondo que o usuário logado seja um professor
+    presencas_aluno = Presenca.objects.filter(aluno=aluno, aula__disciplina=disciplina_professor)
+
+    # Restante do código...
+
+    context = {
+        "aluno": aluno,
+        "presencas_aluno": presencas_aluno,
+        # Outras variáveis de contexto...
+    }
+    return render(request, 'detalhes_aluno.html', context)
+@login_required
 def detalhes_aluno(request, aluno_id):
     aluno = get_object_or_404(Aluno, id=aluno_id)
     informacoes_academicas = InformacoesAcademicas.objects.filter(aluno=aluno)
-
+    disciplina_professor = Disciplina.objects.filter(professor=request.user.professor).first()  # Supondo que o usuário logado seja um professor
+    presencas_aluno = Presenca.objects.filter(aluno=aluno, aula__disciplina=disciplina_professor)
     if request.method == "GET":
         form = InformacoesAcademicasForm(request.GET)
         if form.is_valid():
@@ -203,6 +238,8 @@ def detalhes_aluno(request, aluno_id):
         "informacoes_academicas": informacoes_academicas,
         "form_comportamento": form_comportamento,
         "comportamento_aluno": comportamento_aluno,
+        "presencas_aluno": presencas_aluno,
+        'disciplina_professor':disciplina_professor,
     }
     return render(request, 'detalhes_aluno.html', context)
 
@@ -549,6 +586,7 @@ def enc(request):
 def aluno_pagou_mes(aluno, mes):
     return Propina.objects.filter(aluno=aluno, mes=mes, pago=True).exists()
 
+@login_required
 def historico_pagamentos(request, encarregado_id):
     if request.user.is_authenticated:
         if request.user.encarregado.id != encarregado_id:
@@ -569,7 +607,7 @@ def historico_pagamentos(request, encarregado_id):
         return render(request, "historico_pagamentos.html", context)
     else:
         return redirect("login")
-
+@login_required
 def historico_pagamentos_aluno(request, aluno_id):
     aluno = Aluno.objects.get(pk=aluno_id)
     
@@ -611,7 +649,7 @@ def historico_pagamentos_aluno(request, aluno_id):
     return render(request, 'historico_pagamentos_aluno.html', context)
 
 
-
+@login_required
 def visualizar_educandos(request, encarregado_id):
     encarregado = get_object_or_404(Encarregado, pk=encarregado_id)
     alunos_associados = encarregado.alunos_associados.all()
@@ -637,7 +675,7 @@ def visualizar_educandos(request, encarregado_id):
     }
     return render(request, "educandos.html", context)
 
-
+@login_required
 def editar_informacao_academica(request, informacao_academica_id):
     informacao_academica = get_object_or_404(
         InformacoesAcademicas, pk=informacao_academica_id
@@ -655,7 +693,7 @@ def editar_informacao_academica(request, informacao_academica_id):
 
     return render(request, "editar_informacao_academica.html", {"form": form})
 
-
+@login_required
 def excluir_informacao_academica(request, informacao_academica_id):
     informacao_academica = get_object_or_404(
         InformacoesAcademicas, pk=informacao_academica_id
@@ -669,7 +707,7 @@ def excluir_informacao_academica(request, informacao_academica_id):
         # Lógica para renderizar um formulário de confirmação de exclusão
         pass
 
-
+@login_required
 def horario_professor(request, turma_id):
     turma = Turma.objects.get(pk=turma_id)
     horarios = Horario.objects.filter(turma=turma)
@@ -715,20 +753,57 @@ def login(request):
         )
 
 
+# @login_required
+# def perfilenc(request):
+#     user_instance = request.user
+#     encarregado = get_object_or_404(Encarregado, user=user_instance)
+#     if request.method == 'POST':
+#         user_form = UserForm(request.POST, instance=user_instance)
+#         encarregado_form = EncarregadoForm2(request.POST, request.FILES, instance=encarregado)
+#         if user_form.is_valid() and encarregado_form.is_valid():
+#             user_instance = user_form.save(commit=False)  # Salvar o usuário separadamente
+#             user_instance.set_password(user_form.cleaned_data['password'])  # Definir a senha
+#             user_instance.save()  # Salvar o usuário
+#             encarregado_form.save()  # Salvar o encarregado
+#             return redirect('perfilenc')  # Redirecionar para a mesma página após salvar
+#     else:
+#         user_form = UserForm(instance=user_instance)
+#         encarregado_form = EncarregadoForm2(instance=encarregado)
+#     return render(request, 'perfilenc.html', {'user_form': user_form, 'encarregado_form': encarregado_form, 'encarregado': encarregado})
+
 @login_required
 def perfilenc(request):
-    # encarregado = get_object_or_404(Encarregado, user=request.user)
+    user_instance = request.user
+    if request.method == 'POST':
+        form = UserForm(request.POST, instance=user_instance)
+        if form.is_valid():
+            user = form.save(commit=False)
+            password = form.cleaned_data['password']
+            if password:  # Se uma nova senha foi fornecida, atualize-a
+                user.set_password(password)
+            user.save()
+            return redirect('perfilenc')  # Redirecionar para a página de perfil após salvar
+    else:
+        form = UserForm(instance=user_instance)
+    return render(request, 'perfilenc.html', {'form': form})
 
-    context = {
-        #'encarregado': encarregado,
-    }
-    return render(request, "perfilenc.html", context)
-
+@login_required
+def editar_encarregado2(request, encarregado_id):
+    encarregado = get_object_or_404(Encarregado, pk=encarregado_id)
+    if request.method == 'POST':
+        form = EncarregadoForm2(request.POST, request.FILES, instance=encarregado)
+        if form.is_valid():
+            form.save()
+              # Redirecionar para a página de perfil ou outra página desejada
+    else:
+        form = EncarregadoForm2(instance=encarregado)
+    return render(request, 'editar_encarregado1.html', {'form': form})
 
 @login_required
 def perfilpro(request):
     professor = get_object_or_404(Professor, user=request.user)
     prof = Professor.objects.filter(user=request.user)
+    disciplinas = professor.disciplinas_associadas.all() 
     if request.method == "POST":
         form = ProfForm(request.POST, request.FILES, instance=professor)
         if form.is_valid():
@@ -736,10 +811,10 @@ def perfilpro(request):
         return redirect(perfilpro)
     else:
         form = ProfForm(instance=professor)
-    disciplinas_associadas = professor.disciplinas_associadas.all()
+    
     context = {
         "professo": professor,
-        "disciplinas_associadas": disciplinas_associadas,
+        "disciplinas": disciplinas,
         "form": form,
         "prof": prof,
     }
@@ -762,19 +837,19 @@ def perfilpro(request):
 #     idade_calculada = hoje.year - nascimento.year - ((hoje.month, hoje.day) < (nascimento.month, nascimento.day))
 #     return idade_calculada
 
-
+@login_required
 def listar_turmas(request):
     turmas = Turma.objects.all()
     context = {"turmas": turmas}
     return render(request, "listar_turmas.html", context)
 
-
+@login_required
 def listar_aulas(request):
     aulas = Aula.objects.all()
     context = {"aulas": aulas}
     return render(request, "listar_aulas.html", context)
 
-
+@login_required
 def detalhes_aula(request, aula_id):
     aula = get_object_or_404(Aula, id=aula_id)
     presencas = aula.presenca_set.all()
@@ -792,7 +867,7 @@ def detalhes_aula(request, aula_id):
 
     return render(request, "detalhes_aula.html", context)
 
-
+@login_required
 def avalicao(request):
 
     return render(request, "avalicao.html")
@@ -801,11 +876,13 @@ def avalicao(request):
 @login_required
 def detalhes_turma(request, turma_id):
     turma = get_object_or_404(Turma, id=turma_id)
-    alunos_relacionados = turma.alunos.all()
+    alunos_relacionados = turma.alunos.all().order_by('nome')
     hora_atual = datetime.now().time()
     professor_instance = Professor.objects.filter(user=request.user)
     disciplinas = ProfessorDisciplina.objects.filter(professor=professor_instance.get())
-    horarios = Horario.objects.filter(turma=turma)
+    professor_id = request.user.professor.id
+    horarios = Horario.objects.filter(turma=turma, professor=professor_id)
+
     # Obtenha a disciplina selecionada
     # disciplina_selecionada = request.GET.get("disciplina")
     # if disciplina_selecionada:
@@ -845,7 +922,18 @@ def detalhes_turma(request, turma_id):
     }
 
     return render(request, "detalhes_turma.html", context)
+@login_required
+def ver_horarios_professor(request):
+    # Recupere todos os horários relacionados ao professor logado
+    professor = request.user.professor  # Supondo que o professor esteja associado ao usuário
+    horarios = Horario.objects.filter(professor=professor)
 
+    context = {
+        'horarios': horarios
+    }
+
+    return render(request, 'ver_horarios_professor.html', context)
+@login_required
 def aula(request, aula_id):
     aula = Aula.objects.get(id=aula_id)
     turma_aula = aula.turma
@@ -894,7 +982,7 @@ def registrar_presenca(request, aluno_id, aula_id):
 
 
 
-
+@login_required
 def iniciar_aula_turma(request, turma_id):
     horario_data = Horario.objects.filter(turma=turma_id)
     date = datetime.now()
@@ -927,7 +1015,7 @@ def iniciar_aula_turma(request, turma_id):
 
     return render(request, "iniciar_aula.html", context=context)
 
-
+@login_required
 def iniciar_aula(request):
     if request.method == "POST":
         professor = request.user.professor
@@ -976,7 +1064,7 @@ def iniciar_aula(request):
         {"form": form, "disciplinas": disciplinas_lecionando},
     )
 
-
+@login_required
 def editar_aula(request, pk):
     aula = Aula.objects.get(pk=pk)
     form = EditarAulaForm(instance=aula)
@@ -991,7 +1079,7 @@ def editar_aula(request, pk):
     }
     return render(request, "editar_aula.html", context)
 
-
+@login_required
 def excluir_aula(request, pk):
     if request.method == "POST":
         aula = Aula.objects.get(pk=pk)
@@ -1022,7 +1110,7 @@ def excluir_aula(request, pk):
 
 #     return render(request, "registrar_presenca.html", context)
 
-
+@login_required
 def lancar_notas(request, pk):
     aula = Aula.objects.get(pk=pk)
     turma = aula.turma
@@ -1038,7 +1126,7 @@ def lancar_notas(request, pk):
     }
     return render(request, "avaliacao.html", context)
 
-
+@login_required
 def visualizar_boletim(request, aluno_id):
     aluno = get_object_or_404(Aluno, pk=aluno_id)
     boletim = Boletim.objects.filter(aluno=aluno)
@@ -1049,7 +1137,7 @@ def visualizar_boletim(request, aluno_id):
     }
     return render(request, "visualizar_boletim.html", context)
 
-
+@login_required
 def finalizar_aula(request):
     aula = Aula.objects.get(fim__isnull=True)
     aula.fim = timezone.now()
@@ -1075,6 +1163,10 @@ def estatisticas_turma(request, turma_id):
 
     return render(request, "estatisticas_turma.html", context)
 
+registros = EstatisticaTurma.objects.all()
+
+# Exclui todos os registros
+registros.delete()
 
 @login_required
 def avaliacoes_turma(request, turma_id):
@@ -1109,7 +1201,7 @@ def avaliacoes_turma(request, turma_id):
 
 
 logger = logging.getLogger(__name__)
-
+@login_required
 def realizar_pagamento(request, aluno_id):
     aluno = get_object_or_404(Aluno, id=aluno_id)
     encarregado = Encarregado.objects.get(user=request.user)
@@ -1128,15 +1220,14 @@ def realizar_pagamento(request, aluno_id):
 
     return render(request, "realizar_pagamento.html", {"form": form, "aluno": aluno})
 
-
+@login_required
 def pagamento_realizado(request):
     return render(request, "pagamento_realizado.html")
 
-
+@login_required
 def comunicado(request):
 
     return render(request, "comunicado.html")
-
 
 def pagina_de_erro(request):
 
@@ -1148,8 +1239,46 @@ def is_superuser(user):
     return user.is_authenticated and user.is_superuser
 
 
-# Aplica o decorator à sua view
+@user_passes_test(is_superuser)# Aplica o decorator à sua view
+def cadashorario(request):
+    if request.method == 'POST':
+        form = HorarioForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('iadmin')  # Redirecione para a lista de horários ou outra página
+    else:
+        form = HorarioForm()
+    return render(request, 'cadastrar_horario.html', {'form': form})
 
+@user_passes_test(is_superuser)
+def lista_adiciona_disciplinas(request):
+    if request.method == 'POST':
+        form = DisciplinaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_adiciona_disciplinas')
+    else:
+        form = DisciplinaForm()
+    
+    disciplinas = Disciplina.objects.all()
+    return render(request, 'lista_adiciona_disciplinas.html', {'form': form, 'disciplinas': disciplinas})
+
+
+@user_passes_test(is_superuser)
+def excluir_disciplina(request, disciplina_id):
+    disciplina = get_object_or_404(Disciplina, pk=disciplina_id)
+    disciplina.delete()
+    return redirect('lista_adiciona_disciplinas')
+
+@user_passes_test(is_superuser)
+def editar_disciplina(request, disciplina_id):
+    disciplina = Disciplina.objects.get(pk=disciplina_id)
+    data = {
+        'id': disciplina.id,
+        'nome': disciplina.nome,
+        # Adicione mais campos conforme necessário
+    }
+    return JsonResponse(data)
 
 @user_passes_test(is_superuser)
 def iadmin(request):
@@ -1177,7 +1306,7 @@ def iadmin(request):
     bi = user.bi
     telefone = user.telefone
     foto = user.foto
-
+    horarios = Horario.objects.all()
     # Define o contexto com as informações do usuário e os números contados
     context = {
         "username": username,
@@ -1193,6 +1322,7 @@ def iadmin(request):
         "numero_de_encarregados": numero_de_encarregados,
         "publicidades": publicidades,
         'numero_de_solicitacoes': numero_de_solicitacoes,
+        'horarios':horarios,
     }
 
     # Renderiza a página 'admin.html' passando o contexto para o template
@@ -1355,18 +1485,34 @@ def ver_professores(request):
     professores = Professor.objects.all()
     return render(request, "ver_professores.html", {"professores": professores})
 
-
 @user_passes_test(is_superuser)
 def ver_encarregado(request, encarregado_id):
     encarregado = get_object_or_404(Encarregado, pk=encarregado_id)
-    return render(request, "ver_encarregado.html", {"encarregado": encarregado})
+    
+    query = request.GET.get('q')
+    if query:
+        alunos = encarregado.alunos_associados.filter(nome__icontains=query).order_by('nome')
+    else:
+        alunos = encarregado.alunos_associados.all().order_by('nome')
+
+    return render(request, "ver_encarregado.html", {
+        "encarregado": encarregado,
+        "alunos": alunos,
+        "query": query,
+    })
+  
 
 
 @user_passes_test(is_superuser)
 def ver_alunos(request):
-    alunos = Aluno.objects.all()
+    query = request.GET.get('q')
+    if query:
+        alunos = Aluno.objects.filter(nome__icontains=query).order_by('nome')
+    else:
+        alunos = Aluno.objects.all().order_by('nome')
     context = {
         "alunos": alunos,
+        "query": query,
     }
     return render(request, "ver_alunos.html", context)
 
@@ -1391,6 +1537,14 @@ def reprovar_pagamento(request, pagamento_id):
     messages.success(request, f'O pagamento de {pagamento.aluno} foi reprovado e removido com sucesso.')
     
     return redirect('listar_licitacoes_pendentes')
+@login_required
+def meu_horario(request, professor_id):
+    professor = get_object_or_404(Professor, id=professor_id)
+    
+    context = {
+        'professor': professor,
+    }
+    return render(request, 'meu_horario.html', context)
 
 @user_passes_test(is_superuser)
 def cadastrar_publicidade_comunicado(request):
@@ -1490,8 +1644,23 @@ def atribuir_turmas_horarios(request, professor_id):
 @user_passes_test(is_superuser)
 def detalhes_professor(request, professor_id):
     professor = get_object_or_404(Professor, id=professor_id)
-    return render(request, "detalhes_professor.html", {"professor": professor})
+    horarios = Horario.objects.filter(professor=professor)
+    # Adicione outras informações relevantes aqui, se necessário
+    context =  {"professor": professor, "horarios": horarios}
 
+    return render(request, "detalhes_professor.html",context)
+
+@user_passes_test(is_superuser)
+def editar_professor(request, professor_id):
+    professor = get_object_or_404(Professor, id=professor_id)
+    if request.method == 'POST':
+        form = ProfessorForm(request.POST, instance=professor)
+        if form.is_valid():
+            form.save()
+            return redirect('detalhes_professor', professor_id=professor.id)
+    else:
+        form = ProfessorForm(instance=professor)
+    return render(request, 'editar_professor.html', {'form': form})
 
 @user_passes_test(is_superuser)  # Restringe acesso somente a superusuários
 def sigup(request):
@@ -1580,9 +1749,29 @@ def cadastrar_encarregado(request):
 
 @user_passes_test(is_superuser)
 def encarregado_list_view(request):
-    encarregados = Encarregado.objects.all()
-    return render(request, "encarregado_list.html", {"encarregados": encarregados})
+    query = request.GET.get('q')
+    if query:
+        encarregados = Encarregado.objects.filter(nome__icontains=query).order_by('nome')
+    else:
+        encarregados = Encarregado.objects.all().order_by('nome')
+    
+    return render(request, "encarregado_list.html", {
+        "encarregados": encarregados,
+        "query": query,
+    })
 
+def handler400(request, exception):
+    return render(request, '400.html', status=400)
+
+def handler404(request, exception):
+    return render(request, '404.html', status=404)
+
+def handler500(request):
+    return render(request, '500.html', status=500)
+
+def handler405(request, exception):
+    # Renderiza o template personalizado para o erro 405
+    return render(request, '405.html', status=405)
 
 @user_passes_test(is_superuser)  # Restringe acesso somente a superusuários
 def enca(request):

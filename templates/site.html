@@ -1,0 +1,1005 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>LibroOrario</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+
+ <!-- Favicons -->
+ <link href={% static "assets/img/favicon.png" %} rel="icon">
+ <link href={% static "assets/img/apple-touch-icon.png" %}    rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+  <link href="{% static 'site/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'site/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'site/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'site/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+  <link href="{% static 'site/vendor/aos/aos.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'site/css/main.css' %}" rel="stylesheet">
+
+ 
+</head>
+
+<body class="index-page" data-bs-spy="scroll" data-bs-target="#navmenu">
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="container-fluid d-flex align-items-center justify-content-between">
+
+      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <!-- <img src="assets/img/logo.png" alt=""> -->
+        <h1>LibroOrario</h1>
+        <span>.</span>
+      </a>
+
+      <!-- Nav Menu -->
+      <nav id="navmenu" class="navmenu">
+        <ul>
+            <li><a href="{% url 'librooraio' %}#hero" class="active">Home</a></li>
+            <li><a href="{% url 'librooraio' %}#about">Sobre</a></li>
+            <li><a href="{% url 'librooraio' %}#services">Serviços</a></li>
+            <li><a href="{% url 'librooraio' %}#portfolio">Portfolio</a></li>
+            <li><a href="{% url 'librooraio' %}#team">Equipe</a></li>
+            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </ul>
+    </nav><!-- End Nav Menu -->
+    
+
+      <a class="btn-getstarted" href="{% url 'index' %}">Começar</a>
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+
+    <!-- Hero Section - Home Page -->
+    <section id="hero" class="hero">
+
+      <img src="{% static 'site/img/hero-bg.jpg' %}" alt="" data-aos="fade-in">
+
+
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-10">
+            <h2 data-aos="fade-up" data-aos-delay="100">Seja Bem-Vindo Ao LibroOrario</h2>
+            <p data-aos="fade-up" data-aos-delay="200">Uma solução completa para gerenciamento de tempo e presença</p>
+            <p>Registre, gerencie e acompanhe o tempo de forma eficiente.</p>
+          </div>
+        </div>
+      </div>
+
+    </section><!-- End Hero Section -->
+
+    <!-- About Section - Home Page -->
+    <section id="about" class="about">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row align-items-xl-center gy-5">
+
+          <div class="col-xl-5 content">
+            <h3>Sobre Nós</h3>
+            <h2>LibroOrario</h2>
+            <p>Bem-vindo ao LibroOrario, a solução abrangente para gerenciamento de tempo e presença! Aqui, na interseção da inovação tecnológica e educação, nossa missão é transformar a maneira como escolas,
+               professores, alunos e encarregados abordam o controle de tempo e a gestão de presença.
+              Nossa missão é simplificar o gerenciamento do tempo.
+              Desenvolvido para escolas, professores, alunos e encarregados.</p>
+            <a href="#" class="read-more"><span>Ler mais</span><i class="bi bi-arrow-right"></i></a>
+          </div>
+
+          <div class="col-xl-7">
+            <div class="row gy-4 icon-boxes">
+
+              <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="icon-box">
+                  <i class="bi bi-buildings"></i>
+                  <h3>Missão</h3>
+                  <p>Nosso propósito é simplificar e otimizar processos, oferecendo ferramentas intuitivas e eficientes para tornar a gestão educacional mais fluida e acessível. Acreditamos que um controle de tempo eficaz contribui diretamente para um ambiente educacional mais produtivo e focado no aprendizado.</p>
+                </div>
+              </div> <!-- End Icon Box -->
+
+              <div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="icon-box">
+                  <i class="bi bi-clipboard-pulse"></i>
+                  <h3>Compromisso com a Educação</h3>
+                  <p>Entendemos os desafios enfrentados pelas instituições educacionais e, por isso, desenvolvemos o LibroOrario para ser uma solução adaptável e personalizável. Queremos fortalecer a experiência educacional.</p>
+                </div>
+              </div> <!-- End Icon Box -->
+
+              <div class="col-md-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="icon-box">
+                  <i class="bi bi-command"></i>
+                  <h3>Inovação Tecnológica</h3>
+                  <p>Em um mundo em constante evolução, abraçamos a tecnologia como aliada na busca pela excelência na gestão educacional.
+                     Nossa plataforma é alimentada por avanços tecnológicos, proporcionando não apenas eficiência,
+                     mas também uma experiência aprimorada para todos os usuários.</p>
+                </div>
+              </div> <!-- End Icon Box -->
+
+              <div class="col-md-6" data-aos="fade-up" data-aos-delay="500">
+                <div class="icon-box">
+                  <i class="bi bi-graph-up-arrow"></i>
+                  <h3>Valores</h3>
+                  <p>Transparência: Acreditamos na importância da comunicação clara e aberta.<br>
+                    Eficiência: Buscamos a otimização de processos para melhorar a produtividade.<br>
+                    Inovação: Estamos comprometidos em explorar e implementar soluções tecnológicas avançadas.<br>
+                    </p>
+                </div>
+              </div> <!-- End Icon Box -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section><!-- End About Section -->
+
+    <!-- Stats Section - Home Page -->
+    <section id="stats" class="stats">
+
+      <img src="{% static 'site/img/stats-bg.jpg' %}" alt="" data-aos="fade-in">
+
+
+      <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-3 col-md-6">
+            <div class="stats-item text-center w-100 h-100">
+              <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1" class="purecounter"></span>
+              <p>Clientes</p>
+            </div>
+          </div><!-- End Stats Item -->
+
+          <div class="col-lg-3 col-md-6">
+            <div class="stats-item text-center w-100 h-100">
+              <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1" class="purecounter"></span>
+              <p>Projectos</p>
+            </div>
+          </div><!-- End Stats Item -->
+
+          <div class="col-lg-3 col-md-6">
+            <div class="stats-item text-center w-100 h-100">
+              <span data-purecounter-start="0" data-purecounter-end="1453" data-purecounter-duration="1" class="purecounter"></span>
+              <p>Horas de Suporte</p>
+            </div>
+          </div><!-- End Stats Item -->
+
+          <div class="col-lg-3 col-md-6">
+            <div class="stats-item text-center w-100 h-100">
+              <span data-purecounter-start="0" data-purecounter-end="32" data-purecounter-duration="1" class="purecounter"></span>
+              <p>Trabalhos</p>
+            </div>
+          </div><!-- End Stats Item -->
+
+        </div>
+
+      </div>
+
+    </section><!-- End Stats Section -->
+
+    <!-- Services Section - Home Page -->
+    <section id="services" class="services">
+
+      <!--  Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Serviços</h2>
+        <p>O LibroOrario é mais do que uma ferramenta de gestão: é uma parceira na busca pela eficiência, transparência e sucesso educacional. Explore nossos 
+          serviços e descubra como podemos transformar a gestão educacional na sua instituição.</p>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-6 " data-aos="fade-up" data-aos-delay="100">
+            <div class="service-item d-flex">
+              <div class="icon flex-shrink-0"><i class="bi bi-briefcase"></i></div>
+              <div>
+                <h4 class="title"><a href="#" class="stretched-link">Controle de Presença Automatizado</a></h4>
+                <p class="description">Simplifique o registro de presença dos alunos com nosso sistema automatizado.
+                   Elimine a papelada e reduza erros, proporcionando uma visão clara da frequência escolar.</p>
+              </div>
+            </div>
+          </div>
+          <!-- End Service Item -->
+
+          <div class="col-lg-6 " data-aos="fade-up" data-aos-delay="200">
+            <div class="service-item d-flex">
+              <div class="icon flex-shrink-0"><i class="bi bi-card-checklist"></i></div>
+              <div>
+                <h4 class="title"><a href="#" class="stretched-link">Gestão de Propinas</a></h4>
+                <p class="description">Uma solução completa para gerenciamento de propinas. Visualize resumos,
+                   detalhes de pagamentos e receba notificações automáticas para encarregados em atraso.</p>
+              </div>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-lg-6 " data-aos="fade-up" data-aos-delay="300">
+            <div class="service-item d-flex">
+              <div class="icon flex-shrink-0"><i class="bi bi-bar-chart"></i></div>
+              <div>
+                <h4 class="title"><a href="#" class="stretched-link">Comunicação Integrada</a></h4>
+                <p class="description">Facilite a comunicação entre professores, alunos e encarregados. Mensagens,
+                   notificações e alertas são integrados, mantendo todos informados de forma eficiente.</p>
+              </div>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-lg-6 " data-aos="fade-up" data-aos-delay="400">
+            <div class="service-item d-flex">
+              <div class="icon flex-shrink-0"><i class="bi bi-binoculars"></i></div>
+              <div>
+                <h4 class="title"><a href="#" class="stretched-link">Relatórios Analíticos</a></h4>
+                <p class="description">Obtenha insights valiosos por meio de relatórios analíticos. Avalie o desempenho escolar, presença, e mais, para tomar decisões informadas.</p>
+              </div>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-lg-6 " data-aos="fade-up" data-aos-delay="500">
+            <div class="service-item d-flex">
+              <div class="icon flex-shrink-0"><i class="bi bi-brightness-high"></i></div>
+              <div>
+                <h4 class="title"><a href="#" class="stretched-link">Lembretes Automáticos</a></h4>
+                <p class="description">Configure lembretes automáticos para encarregados em atraso com pagamentos.
+                   Notificações por SMS são enviadas para garantir que todos estejam cientes das obrigações financeiras.</p>
+              </div>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-lg-6 " data-aos="fade-up" data-aos-delay="600">
+            <div class="service-item d-flex">
+              <div class="icon flex-shrink-0"><i class="bi bi-calendar4-week"></i></div>
+              <div>
+                <h4 class="title"><a href="#" class="stretched-link">Gestão de Aulas e Horários</a></h4>
+                <p class="description">Organize a programação escolar de forma eficaz. Horários de aulas, salas e professores são gerenciados de maneira intuitiva, 
+                  garantindo uma experiência tranquila</p>
+              </div>
+            </div>
+          </div><!-- End Service Item -->
+
+        </div>
+
+      </div>
+
+    </section><!-- End Services Section -->
+
+    <!-- Features Section - Home Page -->
+    <section id="features" class="features">
+
+      <!--  Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>
+          Recursos Principais do LibroOrario</h2>
+        <p>Garantia de uma experiência fluida e sem complicações.</p>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+
+        <div class="row gy-4 align-items-center features-item">
+          <div class="col-lg-5 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
+            <h3>Registro de Presença Eficiente</h3>
+            <p>
+              Controle automatizado de presença para alunos.
+Eliminação de papelada e redução de erros.
+Visão clara da frequência escolar.
+            </p>
+            <a href="{% url 'index' %}" class="btn btn-get-started">Começar</a>
+          </div>
+          <div class="col-lg-7 order-1 order-lg-2 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="100">
+            <div class="image-stack">
+              <img src="{% static 'site/img/features-light-1.jpg' %}" alt="" class="stack-front">
+              <img src="{% static 'site/img/features-light-2.jpg' %}" alt="" class="stack-back">
+
+            </div>
+          </div>
+        </div><!-- Features Item -->
+
+        <div class="row gy-4 align-items-stretch justify-content-between features-item ">
+          <div class="col-lg-6 d-flex align-items-center features-img-bg" data-aos="zoom-out">
+            <img src="{% static 'site/img/features-light-3.jpg' %}" class="img-fluid" alt="">
+
+          </div>
+          <div class="col-lg-5 d-flex justify-content-center flex-column" data-aos="fade-up">
+            <h3>Gestão de Propinas Integrada</h3>
+            <p>Uma solução completa para gerenciamento de propinas. Visualize resumos, 
+              detalhes de pagamentos e receba notificações automáticas para encarregados em atraso.</p>
+            <ul>
+              <li><i class="bi bi-check"></i> <span>Resumo de propinas pagas e pendentes.</span></li>
+              <li><i class="bi bi-check"></i><span>Detalhes sobre descontos e bolsas aplicadas.</span></li>
+              <li><i class="bi bi-check"></i> <span>Notificações automáticas para encarregados em atraso</span>.</li>
+            </ul>
+            <a href="{% url 'index' %}" class="btn btn-get-started align-self-start">Login</a>
+          </div>
+        </div><!-- Features Item -->
+
+      </div>
+
+    </section><!-- End Features Section -->
+
+    <!-- Portfolio Section - Home Page -->
+    <section id="portfolio" class="portfolio">
+
+      <!--  Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Portfolio</h2>
+        <p>Portfólio do LibroOrario</p>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+
+        <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+
+          <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
+            <li data-filter="*" class="filter-active">All</li>
+            <li data-filter=".filter-app">App</li>
+            <li data-filter=".filter-product">Card</li>
+            <li data-filter=".filter-branding">Web</li>
+          </ul><!-- End Portfolio Filters -->
+
+          <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
+              <img src="{% static 'site/img/masonry-portfolio/masonry-portfolio-1.jpg' %}" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>Escolas de Ensino Fundamental e Médio</h4>
+                <p>-Implementação bem-sucedida em diversas escolas de ensino fundamental e médio.
+                 <br>- Melhoria significativa na gestão acadêmica e administrativa.</p>
+                 <a href="{% static 'site/img/masonry-portfolio/masonry-portfolio-1.jpg' %}" title="App 1" data-gallery="portfolio-gallery-app" class="glightbox preview-link">
+                  <i class="bi bi-zoom-in"></i></a>
+                <a href="" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
+              <img src="{% static 'site/img/masonry-portfolio/masonry-portfolio-2.jpeg' %}" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                  <h4>Faculdades e Universidades</h4>
+                  <p>-Adaptação do LibroOrario para atender às demandas complexas de faculdades e universidades.
+                      <br>-Aumento da eficiência na gestão de aulas, presença e propinas.</p>
+                  <a href="{% static 'site/img/masonry-portfolio/masonry-portfolio-2.jpg' %}" title="Product 1" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+              </div>
+          </div><!-- End Portfolio Item -->
+          
+          <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
+              <img src="{% static 'site/img/masonry-portfolio/masonry-portfolio-3.jpeg' %}" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                  <h4>Escolas Especializadas</h4>
+                  <p>-Aplicação em escolas especializadas, como escolas de idiomas, artes e esportes.
+                      <br>-Flexibilidade para se adequar a diferentes tipos de instituições educacionais</p>
+                  <a href="{% static 'site/img/masonry-portfolio/masonry-portfolio-3.jpg' %}" title="Branding 1" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+              </div>
+          </div><!-- End Portfolio Item -->
+          
+          <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
+              <img src="{% static 'site/img/masonry-portfolio/masonry-portfolio-4.jpg' %}" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                  <h4>Experiência em Diversas Disciplinas</h4>
+                  <p>-Suporte eficiente para escolas de diferentes disciplinas acadêmicas.
+                      <br>-Personalização para atender às necessidades específicas de cada área de estudo.</p>
+                  <a href="{% static 'site/img/masonry-portfolio/masonry-portfolio-4.jpg' %}" title="App 2" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+              </div>
+          </div><!-- End Portfolio Item -->
+          
+          <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
+              <img src="{% static 'site/img/masonry-portfolio/masonry-portfolio-5.jpg' %}" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                  <h4>Resultados Comprovados</h4>
+                  <p>-Feedback positivo de diretores, professores, alunos e encarregados.
+                      <br>-Impacto positivo nas operações diárias e no desempenho acadêmico.</p>
+                  <a href="{% static 'site/img/masonry-portfolio/masonry-portfolio-5.jpg' %}" title="Product 2" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+              </div>
+          </div><!-- End Portfolio Item -->
+          
+          <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
+              <img src="{% static 'site/img/masonry-portfolio/masonry-portfolio-6.jpg' %}" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                  <h4> Atualizações Contínuas</h4>
+                  <p>-Compromisso com melhorias contínuas com base no feedback dos usuários.
+                      <br>- Integração de tecnologias emergentes para uma experiência educacional moderna.</p>
+                  <a href="{% static 'site/img/masonry-portfolio/masonry-portfolio-6.jpg' %}" title="Branding 2" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+              </div>
+          </div><!-- End Portfolio Item -->
+          
+          <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
+              <img src="{% static 'site/img/masonry-portfolio/masonry-portfolio-7.jpg' %}" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                  <h4>Escalabilidade Comprovada</h4>
+                  <p>-Implementação bem-sucedida em escolas de diferentes tamanhos.
+                      <br>-Capacidade de escalar para atender a instituições de ensino de todos os portes.</p>
+                  <a href="{% static 'site/img/masonry-portfolio/masonry-portfolio-7.jpg' %}" title="App 3" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+              </div>
+          </div><!-- End Portfolio Item -->
+          
+          <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
+              <img src="{% static 'site/img/masonry-portfolio/masonry-portfolio-8.jpg' %}" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                  <h4>Personalização Flexível</h4>
+                  <p>-Adaptação do sistema para atender aos requisitos específicos de cada cliente.
+                      <br>-Flexibilidade para personalizar módulos e funcionalidades conforme necessário.</p>
+                  <a href="{% static 'site/img/masonry-portfolio/masonry-portfolio-8.jpg' %}" title="Product 3" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+              </div>
+          </div><!-- End Portfolio Item -->
+          
+          <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
+              <img src="{% static 'site/img/masonry-portfolio/masonry-portfolio-9.jpg' %}" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                  <h4> Impacto Positivo na Educação</h4>
+                  <p>- Contribuição para uma gestão educacional mais eficiente e centrada no aluno.
+                      <br> - Facilitação do processo de aprendizagem com tecnologia acessível.</p>
+                  <a href="{% static 'site/img/masonry-portfolio/masonry-portfolio-9.jpg' %}" title="Branding 2" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                  <a href="" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+              </div>
+          </div><!-- End Portfolio Item -->
+                    
+
+          </div><!-- End Portfolio Container -->
+
+        </div>
+
+      </div>
+
+    </section><!-- End Portfolio Section -->      
+
+    <!-- Faq Section - Home Page -->
+    <section id="faq" class="faq">
+
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="content px-xl-5">
+              <h3><span>Perguntas Frequentes sobre o</span><strong> LibroOrario</strong></h3>
+              <p>
+                Explore nosso portfólio diversificado e veja como o LibroOrario tem transformado a gestão educacional em diferentes contextos, 
+                proporcionando resultados tangíveis e impulsionando o sucesso acadêmico.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+
+            <div class="faq-container">
+              <div class="faq-item faq-active">
+                <h3><span class="num">1.</span> <span> O que é o LibroOrario?</span></h3>
+                <div class="faq-content">
+                  <p>O LibroOrario é um sistema de gestão educacional abrangente projetado para escolas, faculdades e universidades. Ele oferece soluções para gerenciar aulas, 
+                    presença, propinas e outras atividades acadêmicas e administrativas.</p>
+                </div>
+                <i class="faq-toggle bi bi-chevron-right"></i>
+              </div><!-- End Faq item-->
+
+              <div class="faq-item">
+                <h3><span class="num">2.</span> <span>Quais são os principais recursos do LibroOrario?</span></h3>
+                <div class="faq-content">
+                  <p>O sistema inclui recursos como gestão de aulas, registro de presença, controle de propinas, notificações automáticas, 
+                    perfis de usuário personalizados, integração de calendário e muito mais.</p>
+                </div>
+                <i class="faq-toggle bi bi-chevron-right"></i>
+              </div><!-- End Faq item-->
+
+              <div class="faq-item">
+                <h3><span class="num">3.</span> <span>O LibroOrario é adequado para diferentes tipos de instituições educacionais?</span></h3>
+                <div class="faq-content">
+                  <p>Sim, o LibroOrario é altamente adaptável e adequado para escolas de ensino fundamental e médio, faculdades, universidades, 
+                    escolas especializadas e outras instituições educacionais.</p>
+                </div>
+                <i class="faq-toggle bi bi-chevron-right"></i>
+              </div><!-- End Faq item-->
+
+              <div class="faq-item">
+                <h3><span class="num">4.</span> <span> Como o sistema contribui para a eficiência operacional?</span></h3>
+                <div class="faq-content">
+                  <p>O LibroOrario automatiza processos manuais, oferecendo uma gestão eficiente de aulas, presença e propinas.
+                     Isso reduz a carga de trabalho administrativo e melhora a eficiência operacional.</p>
+                </div>
+                <i class="faq-toggle bi bi-chevron-right"></i>
+              </div><!-- End Faq item-->
+
+              <div class="faq-item">
+                <h3><span class="num">5.</span> <span>Quais benefícios o LibroOrario oferece aos encarregados, professores e alunos?</span></h3>
+                <div class="faq-content">
+                  <p>Encarregados têm acesso fácil a informações sobre presença, propinas e comunicados. Professores podem gerenciar aulas de forma eficiente,
+                     e alunos podem acompanhar seu desempenho acadêmico.</p>
+                </div>
+                <i class="faq-toggle bi bi-chevron-right"></i>
+              </div><!-- End Faq item-->
+              <div class="faq-item">
+                <h3><span class="num">6.</span> <span>Como posso implementar o LibroOrario na minha instituição?</span></h3>
+                <div class="faq-content">
+                  <p>Entre em contato conosco para discutir suas necessidades específicas. 
+                    Oferecemos suporte durante todo o processo de implementação, garantindo uma transição suave.</p>
+                </div>
+                <i class="faq-toggle bi bi-chevron-right"></i>
+              </div><!-- End Faq item-->
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- End Faq Section -->
+
+    <!-- Team Section - Home Page -->
+    <section id="team" class="team">
+
+      <!--  Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Team</h2>
+        <p>Profissionais dedicados ao desenvolvimento de soluções eficientes</p>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+        <div class="row gy-5">
+            <div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="100">
+                <div class="member-img">
+                    <img src="{% static 'site/img/team/team-1.jpg' %}" class="img-fluid" alt="">
+                    <div class="social">
+                        <a href="#"><i class="bi bi-twitter"></i></a>
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                        <a href="#"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="member-info text-center">
+                    <h4>Erickson C Quizila</h4>
+                    <span>Chief Executive Officer</span>
+                    <p>Como fundador do LibroOrario, Erickson Quizila lidera a visão estratégica e o desenvolvimento do sistema. Com uma sólida experiência em educação e tecnologia, 
+                        Erickson Quizila está empenhado em fornecer soluções inovadoras para melhorar a eficiência das instituições educacionais.</p>
+                </div>
+            </div><!-- End Team Member -->
+            <div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="100">
+                <div class="member-img">
+                    <img src="{% static 'site/img/team/team-0.jpg' %}" class="img-fluid" alt="">
+                    <div class="social">
+                        <a href="#"><i class="bi bi-twitter"></i></a>
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                        <a href="#"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="member-info text-center">
+                    <h4>Ganilson Garcia</h4>
+                    <span>Chief Operating Officer</span>
+                    <p>Como CO do LibroOrario, Ganilson Garcia é responsável por supervisionar as operações diárias da empresa. Com uma ampla experiência em gestão e operações, Ganilson Garcia trabalha para garantir que o LibroOrario atenda às necessidades dos clientes e mantenha altos padrões de qualidade.</p>
+                </div>
+            </div><!-- End Team Member -->
+        </div>
+    </div>
+    
+
+    <!-- Call-to-action Section - Home Page -->
+    <section id="call-to-action" class="call-to-action">
+
+      <img src="{% static 'site/img/cta-bg.jpg' %}" alt="">
+
+      <div class="container">
+        <div class="row justify-content-center" data-aos="zoom-in" data-aos-delay="100">
+          <div class="col-xl-10">
+            <div class="text-center">
+              <h3>Chamada para Ação</h3>
+              <p>Você está pronto para transformar a gestão educacional e 
+                otimizar os processos da sua instituição de ensino? O LibroOrario é a solução que você procura! Descubra como nossa plataforma pode simplificar a administração escolar, melhorar a comunicação e proporcionar uma experiência educacional mais eficiente.
+              <br>Não perca mais tempo com processos manuais e desorganizados. Experimente o LibroOrario hoje e dê o próximo passo em direção a uma administração escolar eficiente e centrada no aluno.</p>
+              <a class="cta-btn" href="{% url 'index' %}">Chamada para Ação</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section><!-- End Call-to-action Section -->
+
+    <!-- Testimonials Section - Home Page -->
+    <section id="testimonials" class="testimonials">
+
+      <div class="container">
+
+        <div class="row align-items-center">
+
+          <div class="col-lg-5 info" data-aos="fade-up" data-aos-delay="100">
+            <h3>Depoimentos</h3>
+            <p>
+              Confira o que nossos usuários têm a dizer sobre a experiência com o LibroOrario:
+            </p>
+          </div>
+
+          <div class="col-lg-7" data-aos="fade-up" data-aos-delay="200">
+
+            <div class="swiper">
+              <template class="swiper-config">
+                {
+                "loop": true,
+                "speed" : 600,
+                "autoplay": {
+                "delay": 5000
+                },
+                "slidesPerView": "auto",
+                "pagination": {
+                "el": ".swiper-pagination",
+                "type": "bullets",
+                "clickable": true
+                }
+                }
+              </template>
+              <div class="swiper-wrapper">
+
+                <div class="swiper-slide">
+                    <div class="testimonial-item">
+                        <div class="d-flex">
+                            <img src="{% static 'site/img/testimonials/testimonials-1.jpg' %}" class="testimonial-img flex-shrink-0" alt="">
+                            <div>
+                                <h3>Paulino Mandy</h3>
+                                <h4>Professor</h4>
+                                <div class="stars">
+                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p>
+                            <i class="bi bi-quote quote-icon-left"></i>
+                            <span>O LibroOrario revolucionou a forma como gerenciamos a presença dos alunos e simplificou a comunicação com os encarregados. Uma ferramenta indispensável para qualquer instituição de ensino.</span>
+                            <i class="bi bi-quote quote-icon-right"></i>
+                        </p>
+                    </div>
+                </div><!-- End testimonial item -->
+            
+                <div class="swiper-slide">
+                    <div class="testimonial-item">
+                        <div class="d-flex">
+                            <img src="{% static 'site/img/testimonials/testimonials-2.jpg' %}" class="testimonial-img flex-shrink-0" alt="">
+                            <div>
+                                <h3>Alexandre F. Quizila</h3>
+                                <h4>Encarregado</h4>
+                                <div class="stars">
+                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p>
+                            <i class="bi bi-quote quote-icon-left"></i>
+                            <span>A facilidade de acesso às informações sobre a presença e o desempenho acadêmico do meu filho tornou minha experiência como encarregado mais tranquila. Estou muito satisfeito com o LibroOrario.</span>
+                            <i class="bi bi-quote quote-icon-right"></i>
+                        </p>
+                    </div>
+                </div><!-- End testimonial item -->
+            
+                <div class="swiper-slide">
+                    <div class="testimonial-item">
+                        <div class="d-flex">
+                            <img src="{% static 'site/img/testimonials/testimonials-3.jpg' %}" class="testimonial-img flex-shrink-0" alt="">
+                            <div>
+                                <h3>Telma Policarpo</h3>
+                                <h4>Diretora</h4>
+                                <div class="stars">
+                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p>
+                            <i class="bi bi-quote quote-icon-left"></i>
+                            <span>Como gestora escolar, encontrei no LibroOrario uma solução abrangente para otimizar nossos processos administrativos. A equipe de suporte é excelente, e a plataforma atende todas as nossas necessidades.</span>
+                            <i class="bi bi-quote quote-icon-right"></i>
+                        </p>
+                    </div>
+                </div><!-- End testimonial item -->
+            
+                <div class="swiper-slide">
+                    <div class="testimonial-item">
+                        <div class="d-flex">
+                            <img src="{% static 'site/img/testimonials/testimonials-4.jpg' %}" class="testimonial-img flex-shrink-0" alt="">
+                            <div>
+                                <h3>João Quizila</h3>
+                                <h4>Estudante</h4>
+                                <div class="stars">
+                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p>
+                            <i class="bi bi-quote quote-icon-left"></i>
+                            <span>O LibroOrario facilitou o acompanhamento das aulas e eventos escolares. É uma ferramenta intuitiva que contribui para a organização da minha vida acadêmica.</span>
+                            <i class="bi bi-quote quote-icon-right"></i>
+                        </p>
+                    </div>
+                </div><!-- End testimonial item -->
+            
+                <div class="swiper-slide">
+                    <div class="testimonial-item">
+                        <div class="d-flex">
+                            <img src="{% static 'site/img/testimonials/testimonials-5.jpg' %}" class="testimonial-img flex-shrink-0" alt="">
+                            <div>
+                                <h3>Ganilson Garcia</h3>
+                                <h4>Professor</h4>
+                                <div class="stars">
+                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p>
+                            <i class="bi bi-quote quote-icon-left"></i>
+                            <span>Como educador, o LibroOrario trouxe eficiência para minha rotina, permitindo o registro preciso da presença dos alunos e oferecendo uma visão clara do desempenho da turma. Uma ferramenta valiosa para o ambiente escolar.</span>
+                            <i class="bi bi-quote quote-icon-right"></i>
+                        </p>
+                    </div>
+                </div><!-- End testimonial item -->
+            
+            </div>
+            
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section><!-- End Testimonials Section -->
+
+    <!-- Recent-posts Section - Home Page -->
+    <section id="recent-posts" class="recent-posts">
+
+      <!--  Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Postados Recentemente</h2>
+        <p>LibroOrario</p>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+        <div class="row gy-4">
+            <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <article>
+                    <div class="post-img">
+                        <img src="{% static 'site/img/blog/blog-1.jpg' %}" alt="" class="img-fluid">
+                    </div>
+                    <p class="post-category">Melhores Práticas para Gestão de Horários Escolares</p>
+                    <h2 class="title">
+                        <a href="#">Descubra dicas e estratégias eficazes para a administração de horários escolares, otimizando o tempo de professores e alunos.</a>
+                    </h2>
+                    <div class="d-flex align-items-center">
+                        <div class="post-meta">
+                            <p class="post-date">
+                                <time datetime="2022-01-01">Jan 1, 2022</time>
+                            </p>
+                        </div>
+                    </div>
+                </article>
+            </div><!-- End post list item -->
+            
+            <!-- Repeat the above structure for other articles -->
+            
+            <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <article>
+                    <div class="post-img">
+                        <img src="{% static 'site/img/blog/blog-2.jpg' %}" alt="" class="img-fluid">
+                    </div>
+                    <p class="post-category">"Inovações Tecnológicas na Educação: Como o LibroOrario Está na Vanguarda"</p>
+                    <h2 class="title">
+                        <a href="#">Explore as últimas tendências tecnológicas na educação e saiba como o LibroOrario está incorporando inovações para melhorar a experiência de alunos, professores e encarregados.</a>
+                    </h2>
+                    <div class="d-flex align-items-center">
+                        <div class="post-meta">
+                            <p class="post-date">
+                                <time datetime="2022-01-01">Jun 5, 2022</time>
+                            </p>
+                        </div>
+                    </div>
+                </article>
+            </div><!-- End post list item -->
+            
+            <!-- Repeat the above structure for other articles -->
+            
+            <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <article>
+                    <div class="post-img">
+                        <img src="{% static 'site/img/blog/blog-3.jpg' %}" alt="" class="img-fluid">
+                    </div>
+                    <p class="post-category">"Importância da Presença Escolar: Como Acompanhar e Melhorar a Frequência dos Alunos"</p>
+                    <h2 class="title">
+                        <a href="#">Analise a relevância da presença escolar e descubra ferramentas do LibroOrario que facilitam o monitoramento da frequência dos alunos, promovendo um ambiente educacional mais eficaz.</a>
+                    </h2>
+                    <div class="d-flex align-items-center">
+                        <div class="post-meta">
+                            <p class="post-date">
+                                <time datetime="2022-01-01">Jun 22, 2022</time>
+                            </p>
+                        </div>
+                    </div>
+                </article>
+            </div><!-- End post list item -->
+            
+        </div><!-- End recent posts list -->
+    </div>
+
+
+    <!-- Contact Section - Home Page -->
+    <section id="contact" class="contact">
+
+      <!--  Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Contacte-nos</h2>
+        <p>Se você tiver alguma dúvida, sugestão ou precisar de suporte,
+           entre em contato conosco. Estamos aqui para ajudar!</p>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-6">
+
+            <div class="row gy-4">
+              <div class="col-md-6">
+                <div class="info-item" data-aos="fade" data-aos-delay="200">
+                  <i class="bi bi-geo-alt"></i>
+                  <h3>Endereço</h3>
+                  <p>Lubango,Huila,Angola</p>
+                  <p>Casa-Verde</p>
+                </div>
+              </div><!-- End Info Item -->
+
+              <div class="col-md-6">
+                <div class="info-item" data-aos="fade" data-aos-delay="300">
+                  <i class="bi bi-telephone"></i>
+                  <h3>Telefone</h3>
+                  <p>+244 935 833 722</p>
+                  <p>+244 947 707 678</p>
+                </div>
+              </div><!-- End Info Item -->
+
+              <div class="col-md-6">
+                <div class="info-item" data-aos="fade" data-aos-delay="400">
+                  <i class="bi bi-envelope"></i>
+                  <h3>Email</h3>
+                  <p>erickonqueezy@gmail.com</p>
+                  <p>equizila@gmail.com</p>
+                </div>
+              </div><!-- End Info Item -->
+
+              <div class="col-md-6">
+                <div class="info-item" data-aos="fade" data-aos-delay="500">
+                  <i class="bi bi-clock"></i>
+                  <h3>Aberto</h3>
+                  <p>Segunda - Sexta</p>
+                  <p>9:00AM - 05:00PM</p>
+                </div>
+              </div><!-- End Info Item -->
+
+            </div>
+
+          </div>
+
+          <div class="col-lg-6">
+            <form action="#" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+              <div class="row gy-4">
+
+                <div class="col-md-6">
+                  <input type="text" name="name" class="form-control" placeholder="Insia o Nome" required>
+                </div>
+
+                <div class="col-md-6 ">
+                  <input type="email" class="form-control" name="email" placeholder="Insira o teu email" required>
+                </div>
+
+                <div class="col-md-12">
+                  <input type="text" class="form-control" name="subject" placeholder="Disciplina">
+                </div>
+
+                <div class="col-md-12">
+                  <textarea class="form-control" name="message" rows="6" placeholder="Mensagem" required></textarea>
+                </div>
+
+                <div class="col-md-12 text-center">
+                  <div class="loading">Carregando</div>
+                  <div class="error-message">erro</div>
+                  <div class="sent-message">A tua Mensagem foi enviada com sucesso</div>
+
+                  <button type="submit">Enviar</button>
+                </div>
+
+              </div>
+            </form>
+          </div><!-- End Contact Form -->
+
+        </div>
+
+      </div>
+
+    </section><!-- End Contact Section -->
+
+  </main>
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-5 col-md-12 footer-about">
+          <a href="index.html" class="logo d-flex align-items-center">
+            <span>Anexos</span>
+          </a>
+          <p>Além disso, gostaríamos de compartilhar alguns documentos e recursos que podem ser úteis para você.
+             Sinta-se à vontade para baixá-los e explorar.</p>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About us</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Terms of service</a></li>
+            <li><a href="#">Privacy policy</a></li>
+          </ul>
+        </div>
+
+        
+
+        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+          <p>Guia do Usuário - LibroOrario</p>
+          <p>Apresentação Institucional</p>
+          <p>Política de Privacidade</p>
+          <p class="mt-4">Estamos comprometidos em fornecer as informações necessárias para tornar sua experiência com o LibroOrario a melhor possível. Se precisar de mais alguma coisa,
+             não hesite em entrar em contato.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+      <p>&copy; <span>Copyright</span> <strong class="px-1">EDQ</strong> <span>All Rights Reserved</span></p>
+      <div class="credits">
+        Designed by <a href="#">Youn'D</a>
+      </div>
+    </div>
+
+  </footer><!-- End Footer -->
+
+  <!-- Scroll Top Button -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'site/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'site/vendor/glightbox/js/glightbox.min.js' %}"></script>
+    <script src="{% static 'site/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+    <script src="{% static 'site/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+    <script src="{% static 'site/vendor/swiper/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'site/vendor/aos/aos.js' %}"></script>
+    <script src="{% static 'site/vendor/php-email-form/validate.js' %}"></script>
+
+    <!-- Template Main JS File -->
+    <script src="{% static 'site/js/main.js' %}"></script>
+
+</body>
+
+</html>

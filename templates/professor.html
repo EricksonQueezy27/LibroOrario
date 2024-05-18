@@ -252,10 +252,11 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}" data-toggle="modal" data-target="#logoutModal">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Sair</span>
-              </a>
+              <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+            
             </li>
 
           </ul><!-- End Profile Dropdown Items -->
@@ -289,7 +290,7 @@
             </a>
           </li>
           <li>
-            <a href="{% url 'turmas' %}">
+            <a href="{% url 'ver_horarios_professor' %}">
               <i class="bi bi-circle"></i><span>Meu Horario</span>
             </a>
           </li>
@@ -348,7 +349,7 @@
 
       </li><!-- End Icons Nav -->
 
-      <li class="nav-heading">Pages</li>
+      <li class="nav-heading">Paginas</li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="{% url 'perfilpro' %}">
@@ -554,7 +555,7 @@
     
         </div>
     </div>
-            <!-- Card with an image on bottom -->
+            {% comment %} <!-- Card with an image on bottom -->
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">Horário do Professor</h5>
@@ -579,80 +580,65 @@
               </div>
               <img src="{% static 'img/icons8-agenda-64.png' %}" class="card-img-bottom" alt="..." style="width: 50px;">
 
-            </div><!-- End Card with an image on bottom -->
+            </div><!-- End Card with an image on bottom -->  </div>{% endcomment %}
   
+         
+            <div class="card" style="max-width: 900px;">
+              <div class="card-body">
+                  <h5 class="card-title">Publicidade <span>| Escolar</span> </h5>
+          
+                  <!-- Slides with captions -->
+                  <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+                      <div class="carousel-indicators">
+                          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                      </div>
+          
+                      <div class="carousel-inner">
+                          {% for pub in publicidade %}
+                          <div class="carousel-item{% if forloop.first %} active{% endif %}">
+                              <img src="{{ pub.imagem.url }}" class="d-block w-100" alt="..." style="max-height: 400px; max-width: 800px; object-fit: cover;">
+                              <div class="carousel-caption d-none d-md-block">
+                                  <p class="badge bg-warning">{{ pub.titulo }}</p>
+                                  <br>
+                                  <p class="badge bg-warning">{{ pub.conteudo }}</p>
+                              </div>
+                          </div>
+                          {% endfor %}
+                      </div>
+          
+                      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Previous</span>
+                      </button>
+                      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Next</span>
+                      </button>
+                  </div><!-- End Slides with captions -->
+              </div>
           </div>
-          <div class="card" style="max-width: 900px;">
-            <div class="card-body">
-              <h5 class="card-title">Publicidade <span>| Escolar</span> </h5>
           
-              <!-- Slides with captions -->
-              <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-indicators">
-                  <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                  <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                  <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                </div>
-          
-                <div class="carousel-inner">
-                  {% for pub in publicidade %}
-                  <div class="carousel-item{% if forloop.first %} active{% endif %}">
-                    <img src="{{ pub.imagem.url }}" class="d-block w-100" alt="...">
-                    <div class="carousel-caption d-none d-md-block">
-                      <p class="badge bg-warning">{{ pub.titulo }}</p>
-                      <br>
-                      <p class="badge bg-warning">{{ pub.conteudo }}</p>
-                    </div>
-                  </div>
-                  {% endfor %}
-                </div>
-          
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Next</span>
-                </button>
-              </div><!-- End Slides with captions -->
-            </div>
-          </div>
   
             <!-- Card with titles, buttons, and links -->
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Card with titles, buttons, and links</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <p class="card-text"><a href="#" class="btn btn-primary">Button</a></p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
+                  <h5 class="card-title">Bem-vindo ao LibroOrario</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">Sistema de Gerenciamento Escolar</h6>
+                  <p class="card-text">O LibroOrario é uma plataforma completa projetada para facilitar o gerenciamento de informações acadêmicas, horários, presenças e muito mais.</p>
+                  <p class="card-text">Com o LibroOrario, os professores podem facilmente:</p>
+                  <ul class="list-group list-group-flush">
+                      <li class="list-group-item">Visualizar e gerenciar horários de aula</li>
+                      <li class="list-group-item">Registrar e acompanhar presenças dos alunos</li>
+                      <li class="list-group-item">Atribuir e gerenciar notas dos alunos</li>
+                      <li class="list-group-item">Comunicar-se com alunos e pais</li>
+                  </ul>
+                  <p class="card-text mt-3">Comece a aproveitar todas as vantagens do LibroOrario agora mesmo!</p>
+                  <a href="#" class="btn btn-primary">Sou Professor</a>
               </div>
-            </div><!-- End Card with titles, buttons, and links -->
-  
-            <!-- Special title treatmen -->
-            <div class="card text-center">
-              <div class="card-header">
-                <ul class="nav nav-pills card-header-pills">
-                  <li class="nav-item">
-                    <a class="nav-link active" href="#">Active</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                  </li>
-                </ul>
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div><!-- End Special title treatmen -->
-  
+          </div>
+          
           </div>
   
         </div>

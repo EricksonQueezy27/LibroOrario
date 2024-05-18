@@ -143,31 +143,9 @@
           <li>
             
         </ul>
-      </li><!-- End Components Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-journal-text"></i><span>Comunicados</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="forms-elements.html">
-              <i class="bi bi-circle"></i><span>Fazer Uma Publicação</span>
-            </a>
-          </li>
-          <li>
-     
+      </li><!-- End Components Nav -->     
         </ul>
       </li><!-- End Forms Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'perfilpro' %}">
-          <i class="bi bi-person"></i>
-          <span>Perfil</span>
-        </a>
-      </li><!-- End Profile Page Nav -->
-
-
     </ul>
 
   </aside><!-- End Sidebar-->
@@ -241,7 +219,8 @@
     
                       <div class="row">
                         <div class="col-lg-3 col-md-4 label">Disciplina</div>
-                        <div class="col-lg-9 col-md-8"></div>
+                        {% for disciplina in disciplinas %}<div class="col-lg-9 col-md-8">{{disciplina.nome}}</div>
+                        {% endfor %}
                       </div>
     
                       <div class="row">
@@ -290,82 +269,7 @@
                         </form> 
                         </div>
     
-                        <div class="row mb-3">
-                          <label for="about" class="col-md-4 col-lg-3 col-form-label">Sobre</label>
-                          <div class="col-md-8 col-lg-9">
-                            <textarea name="about" class="form-control" id="about" style="height: 100px">....</textarea>
-                          </div>
-                        </div>
-    
-                        <div class="row mb-3">
-                          <label for="company" class="col-md-4 col-lg-3 col-form-label">Disciplina</label>
-                          <div class="col-md-8 col-lg-9">
-                            {% for disciplina in professor.disciplinas_associadas.all %}
-                            <input name="company" type="text" class="form-control" id="company" value="{{disciplina.nome}}">
-                               {%endfor%}
-                          </div>
-                        </div>
-    
-                        <div class="row mb-3">
-                          <label for="Job" class="col-md-4 col-lg-3 col-form-label">Area de Formação</label>
-                          <div class="col-md-8 col-lg-9">
-                            <input name="job" type="text" class="form-control" id="Job" value="Web Designer">
-                          </div>
-                        </div>
-    
-                        <div class="row mb-3">
-                          <label for="Address" class="col-md-4 col-lg-3 col-form-label">Localização</label>
-                          <div class="col-md-8 col-lg-9">
-                            <input name="address" type="text" class="form-control" id="Address" value="A108 Adam Street, New York, NY 535022">
-                          </div>
-                        </div>
-    
-                        <div class="row mb-3">
-                          <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Telefone</label>
-                          <div class="col-md-8 col-lg-9">
-                            <input name="phone" type="text" class="form-control" id="Phone" value="(436) 486-3538 x29071">
-                          </div>
-                        </div>
-    
-                        <div class="row mb-3">
-                          <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
-                          <div class="col-md-8 col-lg-9">
-                            <input name="email" type="email" class="form-control" id="Email" value="k.anderson@example.com">
-                          </div>
-                        </div>
-    
-                        <div class="row mb-3">
-                          <label for="Twitter" class="col-md-4 col-lg-3 col-form-label">Twitter</label>
-                          <div class="col-md-8 col-lg-9">
-                            <input name="twitter" type="text" class="form-control" id="Twitter" value="https://twitter.com/#">
-                          </div>
-                        </div>
-    
-                        <div class="row mb-3">
-                          <label for="Facebook" class="col-md-4 col-lg-3 col-form-label">Facebook</label>
-                          <div class="col-md-8 col-lg-9">
-                            <input name="facebook" type="text" class="form-control" id="Facebook" value="https://facebook.com/#">
-                          </div>
-                        </div>
-    
-                        <div class="row mb-3">
-                          <label for="Instagram" class="col-md-4 col-lg-3 col-form-label">Instagram</label>
-                          <div class="col-md-8 col-lg-9">
-                            <input name="instagram" type="text" class="form-control" id="Instagram" value="https://instagram.com/#">
-                          </div>
-                        </div>
-    
-                        <div class="row mb-3">
-                          <label for="Linkedin" class="col-md-4 col-lg-3 col-form-label">Linkedin</label>
-                          <div class="col-md-8 col-lg-9">
-                            <input name="linkedin" type="text" class="form-control" id="Linkedin" value="https://linkedin.com/#">
-                          </div>
-                        </div>
-    
-                        <div class="text-center">
-                          <button type="submit" class="btn btn-primary">Salvar</button>
-                        </div>
-                      </form><!-- End Profile Edit Form -->
+                        
     
                     </div>
     

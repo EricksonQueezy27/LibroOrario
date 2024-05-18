@@ -7,6 +7,8 @@ from crispy_forms.bootstrap import Field
 from django.forms import formset_factory
 from users.models import User
 from django.contrib.auth.forms import UserChangeForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.hashers import make_password
 
 class ConteudoEducacionalForm(forms.ModelForm):
     class Meta:
@@ -225,15 +227,61 @@ class TurmaForm(forms.ModelForm):
 class HorarioForm(forms.ModelForm):
     class Meta:
         model = Horario
-        fields = ['turma', 'disciplina', 'dia_semana', 'hora_inicio', 'hora_termino', 'sala_aula']
+        fields = ['turma', 'disciplina', 'dia_semana', 'hora_inicio', 'hora_termino', 'sala_aula','professor']
         widgets = {
             'dia_semana': forms.Select(attrs={'class': 'form-select'}),
             'hora_inicio': forms.TimeInput(attrs={'class': 'form-control'}),
             'hora_termino': forms.TimeInput(attrs={'class': 'form-control'}),
             'sala_aula': forms.TextInput(attrs={'class': 'form-control'}),
         }
-        
+  
+  
+class UserForm(forms.ModelForm):
+    password = forms.CharField(label='Senha', widget=forms.PasswordInput)
 
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'telefone', 'foto', 'password']
+
+class EncarregadoForm2(forms.ModelForm):
+    class Meta:
+        model = Encarregado
+        fields = ['nome', 'email', 'telefone', 'profissao', 'foto']
+        
+# class UserForm(forms.ModelForm):
+#     password = forms.CharField(label='Senha', widget=forms.PasswordInput)
+
+#     class Meta:
+#         model = User
+#         fields = ['username', 'password']
+
+#     def clean_password(self):
+#         password = self.cleaned_data.get('password')
+#         if password == self.instance.password:
+#             return password
+#         return make_password(password)
+
+#     def clean_password(self):
+#         password = self.cleaned_data.get('password')
+#         if password == self.instance.password:
+#             return password
+#         return make_password(password)
+
+# class EncarregadoForm2(forms.ModelForm):
+#     class Meta:
+#         model = Encarregado
+#         fields = ['nome', 'telefone', 'foto', 'profissao']
+             
+class ProfessorForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password', 'bi', 'telefone', 'foto']
+        
+class DisciplinaForm(forms.ModelForm):
+    class Meta:
+        model = Disciplina
+        fields = ['nome']
+        
 class PublicidadeForm(forms.ModelForm):
     class Meta:
         model = Publicidade

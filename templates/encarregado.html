@@ -30,10 +30,62 @@
   <!-- Template Main CSS File -->
   <link href={% static "assets/css/style.css" %} rel="stylesheet">
   <style>
+    body {
+      /* ... other card styles ... */
+      background: linear-gradient(to right, #4361EE, #F7C26B, #4361EE);
+      background-size: 200% 100%; 
+      animation: gradient 5s ease-in-out infinite; 
+    }
+    
+    @keyframes gradient {
+      0% {
+        background-position: 0% 50%;
+      }
+      25% {
+        background-position: 100% 50%;
+      }
+      75% {
+        background-position: 0% 50%;
+      }
+      100% {
+        background-position: 100% 50%;
+      }
+    }
     .aluno-imagem {
         max-width: 100%; /* Define a largura máxima para garantir o mesmo tamanho para todas as imagens */
         height: auto; /* Permite que a altura seja ajustada proporcionalmente à largura */
     }
+    /* Estilos para o carrossel */
+.carousel-item img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Estilos para o card de publicidade */
+.advertisement-card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.advertisement-card h5 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.advertisement-card p {
+  font-size: 14px;
+}
+/* Estilos para o carrossel */
+.carousel-item img {
+  max-width: 100%; /* Garante que a largura da imagem não exceda a largura do contêiner */
+  max-height: 300px; /* Define uma altura máxima para todas as imagens */
+  object-fit: cover; /* Redimensiona a imagem para preencher o contêiner mantendo a proporção */
+}
+
+
 </style>
 <style>
   .card {
@@ -263,10 +315,11 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}" data-toggle="modal" data-target="#logoutModal">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Sair</span>
-              </a>
+              <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+            
             </li>
 
           </ul><!-- End Profile Dropdown Items -->
@@ -506,30 +559,18 @@
     <div class="card-body">
       <h5 class="card-title">Publicidade <span>| Escolar</span> </h5>
 
-      <!-- Slides with captions -->
       <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        </div>
-        {% for pub in publicidade %}
         <div class="carousel-inner">
-          <div class="carousel-item active{% if forloop.first %}active{% endif %}">
-            <img src="{{ pub.imagem.url }}" class="d-block w-100" alt="...">
-            <div class="carousel-caption d-none d-md-block">
-              <p class="badge bg-warning">{{ pub.titulo }}</p>
-              <br>
-              <p class="badge bg-warning">{{ pub.conteudo }}</p>
+          {% for pub in publicidade %}
+          <div class="carousel-item{% if forloop.first %} active{% endif %}">
+            <div class="advertisement-card">
+              <img src="{{ pub.imagem.url }}" class="d-block mx-auto" alt="...">
+              <h5 class="card-title">{{ pub.titulo }}</h5>
+              <p class="card-text">{{ pub.conteudo }}</p>
             </div>
           </div>
           {% endfor %}
-          </div>
         </div>
-      </div>
-    </div>
-  </div>
-
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Previous</span>
@@ -538,8 +579,9 @@
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Next</span>
         </button>
-
-      </div><!-- End Slides with captions -->
+      </div>
+      
+      
 
 </div>
 </div><!-- End Left side columns -->
@@ -600,6 +642,7 @@
   <script src={% static "assets/vendor/simple-datatables/simple-datatables.js" %}></script>
   <script src={% static "assets/vendor/tinymce/tinymce.min.js" %}></script>
   <script src={% static "assets/vendor/php-email-form/validate.js" %}></script>
+  <script src={% static "assets/js/main.js" %}></script>
   <script>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
@@ -613,7 +656,7 @@
 </script>
 
   <!-- Template Main JS File -->
-  <script src={% static "assets/js/main.js" %}></script>
+ 
   <script>
     function mostrarMesAtualEMesesRestantesNoAnoLetivo() {
       const dataAtual = new Date();
@@ -654,7 +697,16 @@
   <script link rel="stylesheet" href="{% static 'fullcalendar/core/main.css' %}"></script>
   
   <script src="{% static 'fullcalendar/core/main.js' %}"></script>
-  
+  <!-- Importe a biblioteca Bootstrap JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  // Inicie o carrossel com o método carousel()
+  $('.carousel').carousel({
+    interval: 5000 // Define o intervalo de mudança de slide para 5 segundos (5000 milissegundos)
+  });
+</script>
+
 </body>
 
 </html>

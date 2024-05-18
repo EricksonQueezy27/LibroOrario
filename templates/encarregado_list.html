@@ -1,8 +1,51 @@
 {% extends 'base_admin.html' %}
-
+{% load static %}
+<style>
+    .card-custom {
+        transition: transform 0.2s ease-in-out;
+    }
+    .card-custom:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+    .card-img-top-custom {
+        height: 200px;
+        object-fit: cover;
+    }
+    .icon-placeholder {
+        font-size: 6rem;
+        color: #ddd;
+    }
+    .card-body-custom {
+        padding: 1.5rem;
+    }
+    .btn-custom {
+        background-color: #4a90e2;
+        border: none;
+        color: white;
+    }
+    .btn-custom:hover {
+        background-color: #357abd;
+    }
+</style>
 {% block content %}
 <div class="container">
     <h1 class="my-4">Lista de Encarregados</h1>
+
+    <!-- Formulário de Pesquisa -->
+    <form method="GET" action="{% url 'encarregado_list' %}" class="mb-4">
+        <div class="form-group">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Pesquisar encarregados" value="{{ query }}">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Pesquisar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Botão para adicionar mais encarregados -->
+    <a href="{% url 'enca' %}" class="btn btn-success">Adicionar + Encarregados</a>
     <div class="row">
         {% for encarregado in encarregados %}
             <div class="col-md-4 mb-4">
@@ -10,8 +53,8 @@
                     {% if encarregado.foto %}
                         <img src="{{ encarregado.foto.url }}" class="card-img-top" alt="Foto do Encarregado">
                     {% else %}
-                        <div class="text-center py-3">
-                            <i class="bi bi-person-circle fs-1 text-muted"></i>
+                        <div class="text-center py-5">
+                            <img src="{% static 'enca.png' %}" class="card-img-top" alt="Imagem padrão">
                         </div>
                     {% endif %}
                     <div class="card-body">
@@ -24,14 +67,13 @@
                                 <li>{{ aluno.nome }}</li>
                             {% endfor %}
                         </ul>
-                        <!-- Adicione outros campos relevantes aqui -->
                         <a href="{% url 'ver_encarregado' encarregado.pk %}" class="btn btn-primary">Ver</a>
                     </div>
                 </div>
             </div>
         {% endfor %}
     </div>
-    <!-- Botão para adicionar mais encarregados -->
-    <a href="{% url 'enca' %}" class="btn btn-success">Adicionar + Encarregados</a>
+</div>
+
 </div>
 {% endblock %}

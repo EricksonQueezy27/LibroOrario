@@ -1,27 +1,37 @@
 {% extends 'base_admin.html' %}
-
+{% load static %}
 {% block content %}
 
 <!-- Cards de Publicidades -->
 <section class="section">
     <div class="container">
         <h2>Alunos Matriculados</h2>
+             <!-- Formulário de Pesquisa -->
+             <form method="GET" action="{% url 'ver_alunos' %}" class="mb-4">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Pesquisar alunos" value="{{ query }}">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">Pesquisar</button>
+                    </div>
+                </div>
+            </form>
         <div class="row">
             {% for aluno in alunos %}
             <div class="col-md-4">
-                <div class="card">
-                    {% if aluno.foto %}  <!-- Use 'aluno.foto' em vez de 'foto' -->
+                <div class="card mb-4">
+                    {% if aluno.foto %}
                     <img src="{{ aluno.foto.url }}" class="card-img-top" alt="{{ aluno.nome }}">
-                    {% endif %} 
+                    {% else %}
+                    <img src="{% static 'aluna.png' %}" class="card-img-top" alt="Imagem padrão">
+                    {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ aluno.nome }}</h5>
                         <p class="card-text">Idade: {{ aluno.idade }}</p>
                         <p class="card-text">Gênero: {{ aluno.sexo }}</p>
                         <p class="card-text">Encarregado: {{ aluno.encarregado_nome }}</p>
                         <p class="card-text">Turma: {{ aluno.turma }} {{ aluno.turma.classe }}</p>
-                        
-                        <a href="{% url 'editar_aluno' aluno.id %}">Editar {{ aluno.nome }}</a>
-                        <a href="{% url 'eliminar_aluno' aluno.id %}" class="btn btn-danger">Eliminar {{ aluno.nome }}</a>
+                        <a href="{% url 'editar_aluno' aluno.id %}" class="btn btn-primary">Editar</a>
+                        <a href="{% url 'eliminar_aluno' aluno.id %}" class="btn btn-danger">Eliminar</a>
                     </div>
                 </div>
             </div>
@@ -29,5 +39,34 @@
         </div>
     </div>
 </section>
+
+<!-- Adicione um estilo CSS para melhorar a aparência dos cards -->
+<style>
+    .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-10px);
+    }
+    .card-img-top {
+        height: 200px;
+        object-fit: cover;
+    }
+    .card-body {
+        padding: 1rem;
+    }
+    .card-title {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+    }
+    .card-text {
+        margin-bottom: 0.5rem;
+    }
+    .btn {
+        margin-right: 0.5rem;
+    }
+</style>
+
 
 {% endblock %}

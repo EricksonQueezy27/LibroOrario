@@ -1,10 +1,18 @@
 from django.urls import path,include
 from .views import *
 from django.contrib.admin.views.decorators import staff_member_required
+from django.conf.urls import handler400, handler404, handler500
+from django.contrib.auth import views as auth_views
 
+handler400 = 'app.views.handler400'
+handler404 = 'app.views.handler404'
+handler500 = 'app.views.handler500'
+handler405 = 'app.views-handler405'
 urlpatterns = [
-    path("", index, name="index"),
+    path("", librooraio, name="librooraio"),
+    path("index", index, name="index"),
     path("login/", login, name="login"),
+     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('professor/', prof, name='prof'),
     path('perfilpro/', perfilpro, name='perfilpro'),
     #path('encperf/', encperf, name='encperf'),
@@ -87,6 +95,14 @@ urlpatterns = [
     path('reprovar-pagamento/<int:pagamento_id>/', reprovar_pagamento, name='reprovar_pagamento'),
     path('processar-pagamento/', processar_pagamento_e_gerar_pdf, name='processar_pagamento_e_gerar_pdf'),
     path('cadastrar_horario/', cadashorario, name='cadastrar_horarios'),
+    path('disciplinas/', lista_adiciona_disciplinas, name='lista_adiciona_disciplinas'),
+    path('excluir_disciplina/<int:disciplina_id>/', excluir_disciplina, name='excluir_disciplina'),
+    path('editar_disciplina/<int:disciplina_id>/', editar_disciplina, name='editar_disciplina'),
+    path('professor/<int:professor_id>/editar/', editar_professor, name='editar_professor'),
+    path('editar_encarregado/', editar_encarregado2, name='editar_encarregado'),
+    path('ver_horarios_professor/', ver_horarios_professor, name='ver_horarios_professor'),
+
+
     
 
  
