@@ -109,7 +109,7 @@
                         <i class="ri-team-fill"></i>
                       </div>
                       <div class="ps-3">
-                        <h6>{{ numero_de_turmas }}</h6>
+                        <h6>Pagamentos do Encarregado {{user.first_name}}</h6>
                         <span class="text-success small pt-1 fw-bold">Ver</span> <span class="text-muted small pt-2 ps-1">Pagamentos</span>
   
                       </div>
@@ -133,20 +133,12 @@
                     <ul class="list-group">
                         {% for aluno in alunos %}
                         <li class="list-group-item">{{ aluno.nome }}</li>
+                        <a href="{% url 'historico_pagamentos_aluno' aluno.id %}" class="btn btn-primary">Ver Pagamentos de {{ aluno.nome }}</a>
                         {% endfor %}
                     </ul>
                 </div>
             </div>
-            <div class="row mt-3">
-                <div class="col-md-12">
-                    {% if alunos %}
-                    {% for aluno in alunos %}
-                    <a href="{% url 'historico_pagamentos_aluno' aluno.id %}" class="btn btn-primary">Ver Pagamentos de {{ aluno.nome }}</a>
-                    {% endfor %}
-                    {% endif %}
-                </div>
-            </div>
-        </div>
+       
 <div class="container mt-5">
     <h1 class="mb-4">Comunicados de Pagamento</h1>
     

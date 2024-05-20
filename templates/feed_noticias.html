@@ -18,7 +18,11 @@
       <!-- Google Fonts -->
       <link href="https://fonts.gstatic.com" rel="preconnect">
       <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-    
+      <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+
+
+
+				
       <!-- Vendor CSS Files -->
       <link href={% static "assets/vendor/bootstrap/css/bootstrap.min.css" %} rel="stylesheet">
       <link href={% static "assets/vendor/bootstrap-icons/bootstrap-icons.css" %} rel="stylesheet">
@@ -32,27 +36,7 @@
       <!-- Template Main CSS File -->
       <link href={% static "assets/css/style.css" %} rel="stylesheet">
       <style>
-        body {
-          /* ... other card styles ... */
-          background: linear-gradient(to right, #4361EE, #F7C26B, #4361EE); /* Blue, orange, blue gradient */
-          background-size: 200% 100%; /* Stretch gradient to cover the background */
-          animation: gradient 5s ease-in-out infinite; /* Animation properties */
-        }
         
-        @keyframes gradient {
-          0% {
-            background-position: 0% 50%; /* Start position */
-          }
-          25% {
-            background-position: 100% 50%; /* Midpoint position 1 */
-          }
-          75% {
-            background-position: 0% 50%; /* Midpoint position 2 */
-          }
-          100% {
-            background-position: 100% 50%; /* End position */
-          }
-        }
         /* Estilo personalizado */
         .card {
           margin-bottom: 20px;
@@ -141,31 +125,32 @@
                 </a>
             </div>
             <!-- Loop pelos Storys -->
-<div class="d-flex flex-wrap">
-    <!-- Loop pelos Storys -->
-    {% for story in storys %}
-    <div class="story-card">
-        <a href="#" onclick="showStoryDetails('{{ story.imagem.url }}', '{{ story.titulo }}', '{{ story.descricao }}', '{{ story.data_publicacao }}', '{{ story.autor }}')">
-            <img src="{{ story.imagem.url }}" alt="{{ story.titulo }}" onclick="incrementarVisualizacoes('{{ story.id }}')">
-            <div class="author">
-                {% if story.autor.encarregado %}
-                <p class="p1">Encarregado:{{ story.autor.encarregado.nome }}</p>
-                {% elif story.autor.professor %}
-                {{ story.autor.professor.nome }}
-                {% elif story.autor.gestor %}
-                {{ story.autor.user.nome }}
-                {% endif %}
-            </div>
-            {% if story.autor == request.user %}
-            <div class="author">
-                <i class="fas fa-eye"></i> <span id="story-views-{{ story.id }}">{{ story.visualizacoes }}</span>
-            </div>
-            {% endif %}
-        </a>
-    </div>
-    {% endfor %}
-</div>
-
+            <div class="d-flex flex-wrap">
+              {% for story in storys %}
+              <div class="story-card">
+                  <a href="#" onclick="showStoryDetails('{{ story.imagem.url }}', '{{ story.titulo }}', '{{ story.descricao }}', '{{ story.data_publicacao }}', '{{ story.autor }}')">
+                      <img src="{{ story.imagem.url }}" alt="{{ story.titulo }}" class="responsive" onclick="incrementarVisualizacoes('{{ story.id }}')">
+                      <div class="author">
+                          {% if story.autor.encarregado %}
+                          <p class="p1">Encarregado:{{ story.autor.encarregado.nome }}</p>
+                          {% elif story.autor.professor %}
+                          {{ story.autor.professor.nome }}
+                          {% elif story.autor.gestor %}
+                          {{ story.autor.user.nome }}
+                          {% endif %}
+                      </div>
+                      {% if story.autor == request.user %}
+                      <div class="author">
+                          <i class="fas fa-eye"></i> <span id="story-views-{{ story.id }}">{{ story.visualizacoes }}</span>
+                      </div>
+                      {% endif %}
+                  </a>
+              </div>             
+              {% endfor %}
+          </div>
+          <div class="d-flex flex-wrap" id="story-container">
+            <!-- Os storys serão adicionados aqui -->
+        </div>       
             
         <!-- Área do Feed de Notícias -->
         <h1 class="mt-4 mb-4">Feed de Notícias</h1>
@@ -366,38 +351,45 @@
 <script src={% static "assets/vendor/simple-datatables/simple-datatables.js" %}></script>
 <script src={% static "assets/vendor/tinymce/tinymce.min.js" %}></script>
 <script src={% static "assets/vendor/php-email-form/validate.js" %}></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <script>
-    // Adiciona um degradê automático ao nome da pessoa com base na cor dominante da imagem
-    document.querySelectorAll('.story-card').forEach(card => {
-      const img = card.querySelector('img');
-      const author = card.querySelector('.author');
-  
-      img.addEventListener('load', () => {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0, img.width, img.height);
-  
-        const imageData = ctx.getImageData(0, 0, img.width, img.height);
-        const data = imageData.data;
-        let r = 0, g = 0, b = 0;
-  
-        for (let i = 0; i < data.length; i += 4) {
-          r += data[i];
-          g += data[i + 1];
-          b += data[i + 2];
+  $('.responsive').slick({
+    dots: true,
+    infinite: false,
+    speed: 300,
+    slidesToShow: 4,
+    slidesToScroll: 4,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true
         }
-  
-        r = Math.floor(r / (data.length / 4));
-        g = Math.floor(g / (data.length / 4));
-        b = Math.floor(b / (data.length / 4));
-  
-        const gradient = `linear-gradient(to top, rgba(${r}, ${g}, ${b}, 0.8), transparent)`;
-        author.style.background = gradient;
-      });
-    });
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+      // You can unslick at a given breakpoint now by adding:
+      // settings: "unslick"
+      // instead of a settings object
+    ]
+  });
   </script>
+
 
 
 </body>

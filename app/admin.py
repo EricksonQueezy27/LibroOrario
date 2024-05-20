@@ -11,6 +11,8 @@ admin.site.name  = "LibroOrario"
 admin.site.register(Publicidade)
 # admin.site.register(Propina)
 admin.site.register(Presenca)
+admin.site.register(Alerta)
+admin.site.register(Alerta2)
 admin.site.register(Aluno)
 admin.site.register(Nota)
 #admin.site.register(Avaliacao)

@@ -1,12 +1,71 @@
 {% extends 'base_admin.html' %}
 
 {% block content %}
-<div class="container">
-    <h1>Editar Aluno {{ aluno.nome }}</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+<section class="section">
+  <div class="container">
+    <h2>Editar Aluno <i class="fas fa-edit"></i></h2>
+    <form method="post" enctype="multipart/form-data" class="student-edit-form">
+      {% csrf_token %}
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="nome">Nome Completo:</label>
+            {{ form.nome }}
+          </div>
+
+          <div class="form-group">
+            <label for="profissao_encarregado">Profissão do Encarregado:</label>
+            {{ form.profissao_encarregado }}
+          </div>
+
+          <div class="form-group">
+            <label for="data_nascimento">Data de Nascimento:</label>
+            {{ form.data_nascimento }}
+          </div>
+
+          <div class="form-group">
+            <label for="foto">Foto:</label>
+            {{ form.foto }}
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="sexo">Sexo:</label>
+            {{ form.sexo }}
+          </div>
+          <div class="form-group">
+            <label for="encarregado_nome">Nome do Encarregado:</label>
+            {{ form.encarregado_nome }}
+          </div>
+
+          <div class="form-group">
+            <label for="encarregado_numero">Número do Encarregado:</label>
+            {{ form.encarregado_numero }}
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Salvar Alterações</button>
     </form>
-</div>
+  </div>
+</section>
+
+<style>
+  .student-edit-form {
+    /* Adicione estilos para elementos do formulário como plano de fundo, bordas, preenchimento, etc. */
+  }
+
+  .form-group {
+    margin-bottom: 1rem; /* Adicione algum espaçamento entre os grupos de formulário */
+  }
+
+  .btn-primary {
+    /* Estilize o botão de envio (cor, efeito hover, etc.) */
+  }
+
+  /* Adicione estilos para outros elementos como rótulos, ícones, etc. */
+</style>
 {% endblock %}
+

@@ -14,6 +14,7 @@ class User(AbstractUser):
     foto = models.ImageField(upload_to  ="images/users/", blank=True, null=True)
     is_professor = models.BooleanField(default=False)
     is_encarregado = models.BooleanField(default=False)
+    # face_encoding = models.BinaryField(null=True, blank=True)
     
     def __str__(self):
         return self.username

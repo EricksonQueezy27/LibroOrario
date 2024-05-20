@@ -237,16 +237,32 @@ class HorarioForm(forms.ModelForm):
   
   
 class UserForm(forms.ModelForm):
-    password = forms.CharField(label='Senha', widget=forms.PasswordInput)
+    password = forms.CharField(label='Senha', widget=forms.PasswordInput, required=False)
 
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'telefone', 'foto', 'password']
 
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({'class': 'form-control'})
+        self.fields['first_name'].widget.attrs.update({'class': 'form-control'})
+        self.fields['last_name'].widget.attrs.update({'class': 'form-control'})
+        self.fields['telefone'].widget.attrs.update({'class': 'form-control'})
+        self.fields['foto'].widget.attrs.update({'class': 'form-control-file'})
+        self.fields['password'].widget.attrs.update({'class': 'form-control'})
+
 class EncarregadoForm2(forms.ModelForm):
     class Meta:
         model = Encarregado
         fields = ['nome', 'email', 'telefone', 'profissao', 'foto']
+        widgets = {
+            'nome': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'telefone': forms.TextInput(attrs={'class': 'form-control'}),
+            'profissao': forms.TextInput(attrs={'class': 'form-control'}),
+            'foto': forms.FileInput(attrs={'class': 'form-control-file'}),
+        }
         
 # class UserForm(forms.ModelForm):
 #     password = forms.CharField(label='Senha', widget=forms.PasswordInput)
@@ -354,15 +370,50 @@ class Encarregado1Form(forms.ModelForm):
 
 
 class AlunoForm1(forms.ModelForm):
-    class Meta:
-        model = Aluno
-        fields = ['nome', 'profissao_encarregado', 'data_nascimento', 'foto', 'encarregado_nome', 'encarregado_numero']
+  class Meta:
+    model = Aluno
+    fields = ['nome', 'profissao_encarregado', 'data_nascimento', 'foto', 'encarregado_nome', 'encarregado_numero', 'sexo']
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Personalize os widgets, rótulos, etc., conforme necessário    
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    # Personalize os widgets, rótulos, etc., conforme necessário
+    self.fields['nome'].widget = forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nome Completo'})
+    self.fields['profissao_encarregado'].widget = forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Profissão do Encarregado'})
+    self.fields['data_nascimento'].widget = forms.DateInput(attrs={'class': 'form-control', 'type': 'date'})
+    self.fields['foto'].widget = forms.FileInput(attrs={'class': 'form-control-file'})
+    self.fields['encarregado_nome'].widget = forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nome do Encarregado'})
+    self.fields['encarregado_numero'].widget = forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Número do Encarregado'})  
         
 
+
+class ComunicadoEncForm(forms.ModelForm):
+    class Meta:
+        model = ComunicadoEnc
+        fields = ['titulo', 'mensagem', 'turmas_destino']
+        widgets = {
+            'titulo': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Digite o título do comunicado',
+                'required': True
+            }),
+            'mensagem': forms.Textarea(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Digite a mensagem',
+                'rows': 5,
+                'required': True
+            }),
+            'turmas_destino': forms.SelectMultiple(attrs={
+                'class': 'form-control',
+                'required': False
+            }),
+        }
+
+    def __init__(self, *args, **kwargs):
+        turmas_queryset = kwargs.pop('turmas_queryset', None)
+        super(ComunicadoEncForm, self).__init__(*args, **kwargs)
+        if turmas_queryset is not None:
+            self.fields['turmas_destino'].queryset = turmas_queryset
+            
 class StoryForm(forms.ModelForm):
     class Meta:
         model = Story

@@ -30,27 +30,8 @@
   <!-- Template Main CSS File -->
   <link href={% static "assets/css/style.css" %} rel="stylesheet">
   <style>
-    body {
-      /* ... other card styles ... */
-      background: linear-gradient(to right, #4361EE, #F7C26B, #4361EE);
-      background-size: 200% 100%; 
-      animation: gradient 5s ease-in-out infinite; 
-    }
-    
-    @keyframes gradient {
-      0% {
-        background-position: 0% 50%;
-      }
-      25% {
-        background-position: 100% 50%;
-      }
-      75% {
-        background-position: 0% 50%;
-      }
-      100% {
-        background-position: 100% 50%;
-      }
-    }
+   
+
     .aluno-imagem {
         max-width: 100%; /* Define a largura máxima para garantir o mesmo tamanho para todas as imagens */
         height: auto; /* Permite que a altura seja ajustada proporcionalmente à largura */
@@ -438,7 +419,7 @@
           <i class="ri-team-fill"></i>
         </div>
         <div class="ps-3">
-          <h6>{{ alunosn }}</h6>
+          <h6>{{ alunos }}</h6>
           <span class="text-success small pt-1 fw-bold">Os Teus</span>
           <span class="text-muted small pt-2 ps-1">Filhos</span>
         </div>

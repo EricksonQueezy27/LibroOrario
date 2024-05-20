@@ -87,6 +87,49 @@ class Classe(models.Model):
     def __str__(self):
         return self.nome
 
+class Alerta(models.Model):
+    aluno  = models.ForeignKey("app.Aluno", on_delete=models.CASCADE, blank=True, null=True)
+    descricao = models.TextField(max_length =5000)
+    MONTH_CHOICES = [
+        (1, 'Janeiro'),
+        (2, 'Fevereiro'),
+        (3, 'Março'),
+        (4, 'Abril'),
+        (5, 'Maio'),
+        (6, 'Junho'),
+        (7, 'Julho'),
+        (8, 'Agosto'),
+        (9, 'Setembro'),
+        (10, 'Outubro'),
+        (11, 'Novembro'),
+        (12, 'Dezembro'),
+    ]
+    mes = models.IntegerField(choices=MONTH_CHOICES)
+    
+    def __str__(self):
+        return self.descricao
+
+class Alerta2(models.Model):
+    aluno  = models.ForeignKey("app.Aluno", on_delete=models.CASCADE, blank=True, null=True)
+    descricao = models.TextField(max_length =5000)
+    MONTH_CHOICES = [
+        (1, 'Janeiro'),
+        (2, 'Fevereiro'),
+        (3, 'Março'),
+        (4, 'Abril'),
+        (5, 'Maio'),
+        (6, 'Junho'),
+        (7, 'Julho'),
+        (8, 'Agosto'),
+        (9, 'Setembro'),
+        (10, 'Outubro'),
+        (11, 'Novembro'),
+        (12, 'Dezembro'),
+    ]
+    mes = models.IntegerField(choices=MONTH_CHOICES)
+    
+    def __str__(self):
+        return self.descricao
 class Aluno(models.Model):
     professor = models.ForeignKey(Professor, on_delete=models.CASCADE, blank=True, null=True)
     
@@ -100,6 +143,7 @@ class Aluno(models.Model):
         ('Masculino', 'masculino'),
         ('Feminino', 'feminino'),
     ]
+
     sexo = models.CharField(choices=tipo_sexo, max_length=30)
     classes = [
         ('10ª classe','10ª Classe'),
@@ -126,6 +170,16 @@ class Aluno(models.Model):
         turma_nome = self.turma.nome if self.turma else "Sem turma"
         return f"{self.nome} - Idade: {self.idade} - Turma: {turma_nome}"
 
+
+class ComunicadoEnc(models.Model):
+    titulo = models.CharField(max_length=100)
+    mensagem = models.TextField()
+    data_publicacao = models.DateTimeField(auto_now_add=True)
+    professor_autor = models.ForeignKey('Professor', on_delete=models.CASCADE)
+    turmas_destino = models.ManyToManyField('Turma', blank=True)  # Turmas para as quais o comunicado será enviado
+
+    def __str__(self):
+        return self.titulo
     
 class InformacoesAcademicas(models.Model):
     aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE, related_name='informacoes_academicas')
@@ -156,7 +210,7 @@ class Nota(models.Model):
         ('Exercício', 'Exercício'),
         ('Avaliação Oral', 'Avaliação Oral'),
         ('Outro', 'Outro'),
-        # Adicione outras opções conforme necessário
+        
     ]
     
     aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE)
@@ -178,9 +232,15 @@ class Aula(models.Model):
     objectivo = models.TextField( max_length=1000)
     inicio = models.TimeField()
     fim = models.TimeField()
+    status_aula = [
+        ('Em_andamento','Em_andamento'),
+        ('Finalizada', 'Finalizada'),
+        ('Pendente', 'Pendente'),
+    ]
+    tipo_status = models.CharField(max_length=255, choices=status_aula)
 
     def __str__(self):
-        return f'{self.disciplina} - Turma: {self.turma} - Data: {self.data} - Início: {self.inicio}'
+        return f'{self.disciplina} - Turma: {self.turma} - Data: {self.data} - Início: {self.inicio} - {self.tipo_status}'
 
 
 
@@ -192,7 +252,6 @@ class Presenca(models.Model):
         ('T', 'Atrasado'),
         ('J', 'Justificado'),
     ]
-
     aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE)
     aula = models.ForeignKey(Aula, on_delete=models.CASCADE)
     data = models.DateField()

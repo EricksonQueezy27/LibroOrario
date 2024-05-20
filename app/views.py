@@ -3,6 +3,11 @@ import logging
 from typing import Counter
 from django.shortcuts import render, redirect
 from django.views import View
+# from html5lib import serialize
+from .utils import sms
+
+# from .utils import enviar_sms
+from datetime import date
 from .models import *
 from django.db import IntegrityError
 from datetime import datetime, time
@@ -23,8 +28,8 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 
 # from django_sendsms.backends.base import BaseSmsBackend
-import speech_recognition as sr
-import pyttsx3
+# import speech_recognition as sr
+# import pyttsx3
 
 def ouvir():
     recognizer = sr.Recognizer()
@@ -329,6 +334,7 @@ def prof(request):
     info_horario = False
     horarios_proximos = {}
     horarios_vencido = {}
+    
     for horarioIndex in horarios:
         curr_date = date.today()
         print(calendar.day_name[curr_date.weekday()])
@@ -477,7 +483,7 @@ def prof(request):
 
         
         if (
-            calendar.day_name[curr_date.weekday()] == "Friday  "
+            calendar.day_name[curr_date.weekday()] == "Friday"
             and horarioIndex.dia_semana == "Sexta"
         ):
             tempo_restante = (horario_inicio - now).total_seconds() / 3600
@@ -509,8 +515,7 @@ def prof(request):
                 }
             else:
                 print(f"Faltam {tempo_restante:.2f} horas para o início do horário")
-                
-                
+          
     # Filtrar disciplinas associadas ao professor
     disciplinas_associadas_professor = professor.disciplinas_associadas.all()
 
@@ -563,22 +568,20 @@ def enc(request):
 
     publicidade = Publicidade.objects.all()
 
-    # Get students associated with the encarregado
-      # Passo 2: Obter os alunos associados ao encarregado
+
     alunos_associados = encarregado.alunos_associados.all()
+    alunos = encarregado.alunos_associados.count()
     
-    # Passo 3: Identificar a aula atual
-    # Vamos assumir que a aula atual é identificada por data e hora (isso pode variar dependendo de como você define "aula atual")
     agora = timezone.now().date()
     
-    # Passo 4: Filtrar as presenças desses alunos na aula atual
+
     presencas = Presenca.objects.filter(aluno__in=alunos_associados, data=agora)
 
-    # Renderizar os resultados na template
     context = {
         'encarregado': encarregado,
         'presencas': presencas,
         'publicidade':publicidade,
+        'alunos':alunos,
     }
     return render(request, 'encarregado.html', context)
 
@@ -753,52 +756,38 @@ def login(request):
         )
 
 
-# @login_required
-# def perfilenc(request):
-#     user_instance = request.user
-#     encarregado = get_object_or_404(Encarregado, user=user_instance)
-#     if request.method == 'POST':
-#         user_form = UserForm(request.POST, instance=user_instance)
-#         encarregado_form = EncarregadoForm2(request.POST, request.FILES, instance=encarregado)
-#         if user_form.is_valid() and encarregado_form.is_valid():
-#             user_instance = user_form.save(commit=False)  # Salvar o usuário separadamente
-#             user_instance.set_password(user_form.cleaned_data['password'])  # Definir a senha
-#             user_instance.save()  # Salvar o usuário
-#             encarregado_form.save()  # Salvar o encarregado
-#             return redirect('perfilenc')  # Redirecionar para a mesma página após salvar
-#     else:
-#         user_form = UserForm(instance=user_instance)
-#         encarregado_form = EncarregadoForm2(instance=encarregado)
-#     return render(request, 'perfilenc.html', {'user_form': user_form, 'encarregado_form': encarregado_form, 'encarregado': encarregado})
-
 @login_required
 def perfilenc(request):
     user_instance = request.user
     if request.method == 'POST':
-        form = UserForm(request.POST, instance=user_instance)
+        form = UserForm(request.POST, request.FILES, instance=user_instance)
         if form.is_valid():
             user = form.save(commit=False)
             password = form.cleaned_data['password']
             if password:  # Se uma nova senha foi fornecida, atualize-a
                 user.set_password(password)
             user.save()
-            return redirect('perfilenc')  # Redirecionar para a página de perfil após salvar
+            messages.success(request, 'Perfil atualizado com sucesso.')
+            return redirect('perfilenc')
     else:
         form = UserForm(instance=user_instance)
+
     return render(request, 'perfilenc.html', {'form': form})
+
 
 @login_required
 def editar_encarregado2(request, encarregado_id):
-    encarregado = get_object_or_404(Encarregado, pk=encarregado_id)
+    user = request.user
+    encarregado = get_object_or_404(Encarregado, user=user)
     if request.method == 'POST':
         form = EncarregadoForm2(request.POST, request.FILES, instance=encarregado)
         if form.is_valid():
             form.save()
-              # Redirecionar para a página de perfil ou outra página desejada
+            messages.success(request, 'Dados do encarregado atualizados com sucesso.')
+            return redirect('perfilenc')  # Redirecionar para a página de perfil ou outra página desejada
     else:
         form = EncarregadoForm2(instance=encarregado)
     return render(request, 'editar_encarregado1.html', {'form': form})
-
 @login_required
 def perfilpro(request):
     professor = get_object_or_404(Professor, user=request.user)
@@ -938,46 +927,79 @@ def aula(request, aula_id):
     aula = Aula.objects.get(id=aula_id)
     turma_aula = aula.turma
     alunos_turma = turma_aula.alunos.all().order_by('nome')
+    
+    alunos = []
+    
+    for aluno in alunos_turma:
+        presenca = Presenca.objects.filter(aluno=aluno)
+        Sem_Presenca = False
+        Text = ""
+        
+        presente = False
+        Ausente = False
+        Justificado = False
+        Atrasado = False
+        if presenca:
+            if presenca.get().presente == "P":
+                presente = True
+                Text = "Presente"
+            if presenca.get().presente == "J":
+                Justificado = True
+                Text = "Presente"
+                
+            if presenca.get().presente == "T":
+                Atrasado = True
+                Text = "Presente"
+                
+            if presenca.get().presente == "A":
+                Ausente = True
+                Text = "Ausente"
+                
+        else:
+            Sem_Presenca = True      
+        object_data = {
+            "id": aluno.id, 
+            "nome":aluno.nome, 
+            "sexo":aluno.sexo, 
+            "Ausente":Ausente, 
+            "Presente":presente, 
+            "Justificado":Justificado, 
+            "Atrasado":Atrasado, 
+            "Presenca": Sem_Presenca,
+            "Text": Text
+        }
+        alunos.append(object_data)
+        print(object_data)
     context = {
         'aula': aula,
         'turma_aula': turma_aula,
-        'alunos_turma': alunos_turma,
+        'alunos_turma': alunos,
     }
     return render(request, "aula.html", context=context)
 
 def registrar_presenca(request, aluno_id, aula_id):
-    # Verifica se a requisição é do tipo POST
     if request.method == 'POST':
-        # Verifica se já existem duas entradas de presença para o aluno e aula específicos
         presencas = Presenca.objects.filter(aluno_id=aluno_id, aula_id=aula_id)
 
-        # Se já existirem duas entradas, retorna um erro 403 (proibido)
         if presencas.count() >= 2:
             return HttpResponseForbidden("Você já registrou a presença duas vezes.")
 
-        # Se houver uma ou nenhuma entrada de presença para o aluno e aula específicos
-        # verifica se a presença está sendo registrada como presente ou ausente
         if 'presenca' in request.POST:
             presente = request.POST['presenca']
             if presente == 'P' or presente == 'A':
-                # Se já existir uma entrada de presença, atualiza o valor de presente
                 presenca = presencas.first() if presencas.exists() else None
                 if presenca:
                     presenca.presente = presente
                     presenca.save()
                 else:
-                    # Se não existir, cria uma nova entrada de presença
-                    Presenca.objects.create(
+                    presenca = Presenca.objects.create(
                         aluno_id=aluno_id,
                         aula_id=aula_id,
                         data=date.today(),
                         presente=presente
                     )
-
-    # Redireciona para a página anterior
+                    
     return redirect(request.META.get('HTTP_REFERER', ''))
-
-
 
 
 
@@ -1008,12 +1030,20 @@ def iniciar_aula_turma(request, turma_id):
             aula.inicio=dateInicio
             aula.fim=dateFim
             aula.save()
+            print(horario_data.get().professor.user.telefone)
+            # sms.enviar_mensagem(horario_data.get().professor.user.telefone, "Iniciada com sucesso!")
+
             return redirect("aula", aula.id)
 
     else:
         context = {"error": "Erro ao buscar dados!"}
 
     return render(request, "iniciar_aula.html", context=context)
+
+# def marcar_presenca(request, aulaId, presenca ): 
+
+#     return redirect("aula", aula.id)
+
 
 @login_required
 def iniciar_aula(request):
@@ -1138,12 +1168,77 @@ def visualizar_boletim(request, aluno_id):
     return render(request, "visualizar_boletim.html", context)
 
 @login_required
-def finalizar_aula(request):
-    aula = Aula.objects.get(fim__isnull=True)
+def finalizar_aula(request, aula_id):
+    aula = Aula.objects.filter(id=aula_id).get()
+    aulaObject = Aula.objects.filter(id=aula_id).get()
+    
+    aulaObject.status_aula = "Finalizada"
+    aulaObject.save()
+    
+    turma_aula = aula.turma
+    alunos_turma = turma_aula.alunos.all().order_by('nome')
+    alunos = []
+    for aluno in alunos_turma:
+        presenca = Presenca.objects.filter(aluno=aluno)
+        Sem_Presenca = False
+        Text = ""
+        
+        presente = False
+        Ausente = False
+        Justificado = False
+        Atrasado = False
+        if presenca:
+            if presenca.get().presente == "P":
+                presente = True
+                Text = "Presente"
+                # message = (f'Olá caro encarregado o seu filho esteve Presente na aula de {}')
+                # # sms.enviar_mensagem(encarregado.user.telefone, message)
+                
+                # alerta = Alerta()
+                # alerta.aluno = aluno
+                # alerta.mes = datetime.month
+                # alerta.descricao = message
+                # alerta.save()
+                
+            if presenca.get().presente == "J":
+                Justificado = True
+                Text = "Presente"
+                
+            if presenca.get().presente == "T":
+                Atrasado = True
+                Text = "Presente"
+                
+            if presenca.get().presente == "A":
+                Ausente = True
+                Text = "Ausente"
+                message = (f'Olá caro encarregado o estudante {aluno.nome} esteve Ausente na aula de {aula.disciplina.nome}')
+                
+                sms.enviar_mensagem(935833722, message)
+                alerta = Alerta()
+                alerta.aluno = aluno
+                alerta.mes = 5
+                alerta.descricao = message
+                alerta.save()
+                
+        else:
+            Sem_Presenca = True      
+        object_data = {
+            "id": aluno.id, 
+            "nome":aluno.nome, 
+            "sexo":aluno.sexo, 
+            "Ausente":Ausente, 
+            "Presente":presente, 
+            "Justificado":Justificado, 
+            "Atrasado":Atrasado, 
+            "Presenca": Sem_Presenca,
+            "Text": Text
+        }
+        alunos.append(object_data)
+        print(object_data)
     aula.fim = timezone.now()
     aula.save()
     messages.success(request, "Aula finalizada com sucesso!")
-    return redirect("/")
+    return redirect("prof")
 
 
 @login_required
@@ -1226,8 +1321,37 @@ def pagamento_realizado(request):
 
 @login_required
 def comunicado(request):
+    if request.method == 'POST':
+        form = ComunicadoEncForm(request.POST, turmas_queryset=Turma.objects.filter(professor=request.user.professor))
+        if form.is_valid():
+            comunicado = form.save(commit=False)
+            comunicado.professor_autor = request.user.professor  # Supondo que o usuário logado é um professor
+            form.save()
+            
+            turmas_selecionadas = form.cleaned_data['turmas_destino']
+            if turmas_selecionadas:
+                alunos = Aluno.objects.filter(turma__in=turmas_selecionadas)
+                encarregados = Encarregado.objects.filter(alunos_associados__in=alunos).distinct()
+            else:
+                encarregados = Encarregado.objects.all()
 
-    return render(request, "comunicado.html")
+            if comunicado:
+                for encarregado in encarregados:
+                    ComunicadoEnc.objects.create(
+                        comunicado=comunicado,
+                        encarregado=encarregado
+                    )
+                messages.success(request, 'Comunicado criado com sucesso!')
+                return redirect('listar_comunicados')
+            else:
+                messages.error(request, 'Erro ao criar comunicado.')
+        else:
+            messages.error(request, 'Erro no formulário. Verifique os dados e tente novamente.')
+    else:
+        form = ComunicadoEncForm(turmas_queryset=Turma.objects.filter(professor=request.user.professor))
+
+    return render(request, 'comunicado.html', {'form': form})
+
 
 def pagina_de_erro(request):
 
@@ -1883,14 +2007,15 @@ def alunoed(request, aluno_id):
         form = AlunoForm1(instance=aluno)
     return render(request, "alunoed.html", {"form": form})
 
-
 @login_required
 def feed_noticias(request):
     publicidade = Publicidade.objects.all()
     storys = Story.objects.all()
+    # storys_json = serialize('json', storys)
     context = {
         "publicidade": publicidade,
         "storys": storys,
+        # "storys_json": storys_json,
     }
     return render(request, "feed_noticias.html", context)
 
@@ -1968,7 +2093,6 @@ class PresencasAlunoView(View):
             
             # Conta o número total de presenças, ausências e justificações
             status_counter = Counter(presenca.presente for presenca in presencas)
-
             total_presencas = status_counter['P']
             total_ausencias = status_counter['A']
             total_justificacoes = status_counter['J']

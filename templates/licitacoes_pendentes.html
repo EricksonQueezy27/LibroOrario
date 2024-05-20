@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,6 +12,18 @@
 
     <!-- Font Awesome (ícones) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <!-- Vendor CSS Files -->
+  <link href={% static "assets/vendor/bootstrap/css/bootstrap.min.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/bootstrap-icons/bootstrap-icons.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/boxicons/css/boxicons.min.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/quill/quill.snow.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/quill/quill.bubble.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/remixicon/remixicon.css" %} rel="stylesheet">
+  <link href={% static "assets/vendor/simple-datatables/style.css" %} rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href={% static "assets/css/style.css" %} rel="stylesheet">
+
 
    
 
@@ -158,6 +171,7 @@
         </tbody>
     </table>
 </div>
+<script src={% static "assets/js/main.js" %}></script>
 
 <!-- Bootstrap JS e jQuery (opcional, se necessário) -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

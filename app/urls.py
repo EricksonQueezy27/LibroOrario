@@ -3,6 +3,7 @@ from .views import *
 from django.contrib.admin.views.decorators import staff_member_required
 from django.conf.urls import handler400, handler404, handler500
 from django.contrib.auth import views as auth_views
+from .middleware import PropinaMiddlewareVerification
 
 handler400 = 'app.views.handler400'
 handler404 = 'app.views.handler404'
@@ -10,10 +11,10 @@ handler500 = 'app.views.handler500'
 handler405 = 'app.views-handler405'
 urlpatterns = [
     path("", librooraio, name="librooraio"),
-    path("index", index, name="index"),
+    path("index",PropinaMiddlewareVerification(index) , name="index"),
     path("login/", login, name="login"),
      path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('professor/', prof, name='prof'),
+    path('professor/', PropinaMiddlewareVerification(prof), name='prof'),
     path('perfilpro/', perfilpro, name='perfilpro'),
     #path('encperf/', encperf, name='encperf'),
     path('turmas/', turmas, name='turmas'),
@@ -25,7 +26,7 @@ urlpatterns = [
     path('alunos/', listar_alunos, name='listar_alunos'),
     path('alunos/<int:aluno_id>/', detalhes_aluno, name='detalhes_aluno'),
     #path('adicionar-comportamento/<int:aluno_id>/', adicionar_comportamento, name='adicionar_comportamento'),
-    path('encarregado/', enc, name='encarregado'),
+    path('encarregado/', PropinaMiddlewareVerification(enc), name='encarregado'),
     path('turmas/', turmas, name='turmas'),
     path('listar_turmas/', listar_turmas, name='listar_turmas'),
     path('detalhes_turma/<int:turma_id>/', detalhes_turma, name='detalhes_turma'),
@@ -42,7 +43,7 @@ urlpatterns = [
    path('professor/horario/', horario_professor, name='horario_professor'),
    # path('turma/<int:turma_id>/horario/', horario_turma, name='horario_turma'),
     path('iniciar-aula/', iniciar_aula, name='iniciar_aula'),
-    path('finalizar-aula/', finalizar_aula, name='finalizar_aula'),
+    path('finalizar-aula/<int:aula_id>/', finalizar_aula, name='finalizar_aula'),
     path('excluir_aula/<int:pk>/', excluir_aula, name='excluir_aula'),
     path('editar_aula/<int:pk>/', editar_aula, name='editar_aula'),
     path('registrar_presenca/<int:aluno_id>/<int:aula_id>/', registrar_presenca, name='registrar_presenca'),
@@ -75,7 +76,7 @@ urlpatterns = [
     path('cadastrar-encarregado/', cadastrar_encarregado, name='cadastrar_encarregado'),
     path('enca', enca, name='enca'),
     path('encarregados/', encarregado_list_view, name='encarregado_list'),
-    path('editar-encarregado/<int:id>/', editar_encarregado, name='editar_encarregado'),
+    path('editar_encarregado/<str:encarregado_id>/', editar_encarregado2, name='editar_encarregado'),
     path('eliminar-turma/<int:turma_id>/', eliminar_turma, name='eliminar_turma'),
      path('eliminar-professor/<int:professor_id>/', eliminar_professor, name='eliminar_professor'),
     path('eliminar-aluno/<int:id>/', eliminar_aluno, name='eliminar_aluno'),
